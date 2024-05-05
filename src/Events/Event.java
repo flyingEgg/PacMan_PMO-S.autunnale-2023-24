@@ -1,4 +1,4 @@
-package DesignPatterns.Events;
+package Events;
 
 public class Event {
     private EventType type;

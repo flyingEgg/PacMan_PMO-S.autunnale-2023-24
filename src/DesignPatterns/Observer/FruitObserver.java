@@ -1,6 +1,6 @@
 package DesignPatterns.Observer;
 
-import DesignPatterns.Events.Event;
+import Events.Event;
 
 public class FruitObserver {
     public void handleFruitEaten() {

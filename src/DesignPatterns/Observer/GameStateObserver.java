@@ -1,7 +1,7 @@
 package DesignPatterns.Observer;
 
 import API.GameState;
-import DesignPatterns.Events.Event;
+import Events.Event;
 
 public class GameStateObserver {
     private GameState currentState;

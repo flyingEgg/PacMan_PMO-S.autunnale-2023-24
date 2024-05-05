@@ -1,4 +1,4 @@
-package DesignPatterns.Events;
+package Events;
 
 public enum EventType {
     PACMAN_MOVED,

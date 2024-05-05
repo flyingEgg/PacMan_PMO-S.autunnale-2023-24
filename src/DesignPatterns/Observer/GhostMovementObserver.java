@@ -1,6 +1,6 @@
 package DesignPatterns.Observer;
 
-import DesignPatterns.Events.Event;
+import Events.Event;
 import DesignPatterns.Strategy.Direction;
 
 public class GhostMovementObserver {

@@ -1,7 +1,7 @@
 package DesignPatterns.Observer;
 
 import DesignPatterns.Composite.Dot;
-import DesignPatterns.Events.Event;
+import Events.Event;
 import DesignPatterns.Strategy.Direction;
 
 public class PacmanMovementObserver {
