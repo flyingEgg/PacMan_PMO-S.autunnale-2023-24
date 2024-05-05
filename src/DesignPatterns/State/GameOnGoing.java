@@ -1,11 +1,14 @@
 package DesignPatterns.State;
 
+
 import API.GameState;
 
-public class OnGoing implements GameState {
+public class GameOnGoing implements GameState {
+
+
     @Override
     public void enterState() {
-        // Logica per entrare nello stato "In corso"
+
     }
 
     @Override
