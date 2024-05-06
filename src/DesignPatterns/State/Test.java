@@ -11,12 +11,16 @@ import java.util.Scanner;
 public class Test {
 
     public static void main(String[] args){
-        Match partita = new Match();
-        Scanner scanner = new Scanner(System.in);
-        mainMenu(partita, scanner);
+        try{
+            Match partita = new Match();
+            Scanner scanner = new Scanner(System.in);
+            mainMenu(partita, scanner);
+        }catch (IllegalStateException e){
+        }
+
     }
 
-    private static void mainMenu(Match m, Scanner reader){
+    private static void mainMenu(Match m, Scanner reader) throws IllegalStateException{
         int choice;
 
         do{
@@ -25,6 +29,7 @@ public class Test {
             System.out.println("2. Test Pausa");
             System.out.println("3. Test Gameover");
             System.out.println("4. Chiudere");
+
 
             choice = reader.nextInt();
 
@@ -40,6 +45,9 @@ public class Test {
                     break;
                 case 4:
                     break;
+                default:
+                    System.out.println("Scelta inesistente");
+                    break;
             }
         }while(choice != 4);
         reader.close();
@@ -54,15 +62,18 @@ public class Test {
     private static void testGameOver(Match p){
         GameState stato = new GameOver(p);
         stato.enterState();
+
+
     }
 
     private static void testGamePause(Match p, Scanner read){
         GameState stato = new GamePause(p);
         int choice;
+        stato.enterState();
         do{
             System.out.println("Menu' di pausa");
             System.out.println("1. Riprendi");
-            System.out.println("2. Esci");
+            System.out.println("2. Esci al menu'");
 
             choice = read.nextInt();
 
@@ -71,11 +82,11 @@ public class Test {
                     stato.exitState();
                     testGameOnGoing(p);
                 }
-                case 2 -> stato.exitState(); // qui
+                case 2 -> {
+                    stato.exitState();
+                    mainMenu(p, read);
+                }
             }
         }while(choice != 2);
-        read.close();
-
     }
-
 }
