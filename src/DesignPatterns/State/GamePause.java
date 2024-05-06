@@ -18,7 +18,7 @@ public class GamePause implements GameState {
 
     @Override
     public void exitState() {
-
+        this.partita.pauseUnpauseGame(false);
     }
 
     @Override
@@ -26,11 +26,8 @@ public class GamePause implements GameState {
 
     }
 
-    public void resume() {
+    public void quit(){
 
     }
 
-    public void exit() {
-        // Logica per uscire dal gioco
-    }
 }
