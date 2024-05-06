@@ -14,8 +14,7 @@ public class Match {
 
     public void pauseUnpauseGame(boolean p){
         this.paused = p;
-        if(p)
-            this.onGoing = false;
+        this.onGoing = !p;
     }
 
     public boolean isOnGoing() {
