@@ -5,15 +5,15 @@ import API.GameState;
 
 public class GameOnGoing implements GameState {
 
-
     @Override
     public void enterState() {
+        System.out.println("Partita avviata");
 
     }
 
     @Override
     public void exitState() {
-        // Logica per uscire dallo stato "In corso"
+
     }
 
     @Override
