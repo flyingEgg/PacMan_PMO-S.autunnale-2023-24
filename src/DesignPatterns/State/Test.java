@@ -1,4 +1,4 @@
-package DesignPatterns.Observer;
+package DesignPatterns.State;
 
 import API.GameState;
 import DesignPatterns.State.GameOnGoing;
