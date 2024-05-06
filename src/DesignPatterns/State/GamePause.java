@@ -4,7 +4,7 @@ import API.GameState;
 import Main.Match;
 
 public class GamePause implements GameState {
-    private Match partita;
+    private final Match partita;
 
     public GamePause(Match p){
         this.partita = p;
@@ -13,6 +13,7 @@ public class GamePause implements GameState {
     @Override
     public void enterState() {
         this.partita.pauseUnpauseGame(true);
+        this.partita.startStopGame(false);
         this.partita.displayMessage();
     }
 
@@ -27,7 +28,7 @@ public class GamePause implements GameState {
     }
 
     public void quit(){
-
+        // logica che resetterà i dati di partita
     }
 
 }
