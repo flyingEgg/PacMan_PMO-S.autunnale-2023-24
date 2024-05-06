@@ -13,7 +13,6 @@ public class GamePause implements GameState {
     @Override
     public void enterState() {
         this.partita.pauseUnpauseGame(true);
-        this.partita.startStopGame(false);
         this.partita.displayMessage();
     }
 
