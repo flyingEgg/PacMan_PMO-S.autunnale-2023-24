@@ -1,36 +1,32 @@
 package DesignPatterns.State;
 
-
 import API.GameState;
 import Main.Match;
 
 public class GameOnGoing implements GameState {
     private final Match partita;
 
-    public GameOnGoing(Match p){
+    public GameOnGoing(Match p) {
         this.partita = p;
     }
 
     @Override
     public void enterState() {
-        if (!this.partita.isOnGoing() || this.partita.isPaused()){
-            this.partita.startStopGame(true);
-            this.partita.pauseUnpauseGame(false);
+        if (!this.partita.isOnGoing() || this.partita.isPaused()) {
+            this.partita.startStopGame(true); // Avvia la partita se non è in corso o è in pausa
+            this.partita.pauseUnpauseGame(false); // Riprende la partita se è in pausa
         }
-        System.out.println("Partita avviata");
-
         this.partita.displayMessage();
     }
 
     @Override
     public void exitState() {
+        // Interrompi la partita all'uscita dallo stato di "game on going"
         this.partita.startStopGame(false);
-        this.partita.displayMessage();
-        System.out.println("Partita terminata");
     }
 
     @Override
     public void update() {
-        // Logica di aggiornamento per lo stato "In corso"
+        // Aggiungi qui la logica di aggiornamento per lo stato di "game on going"
     }
 }

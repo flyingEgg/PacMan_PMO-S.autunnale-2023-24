@@ -10,30 +10,29 @@ import java.util.Scanner;
 
 public class Test {
 
-    public static void main(String[] args){
-        try{
+    public static void main(String[] args) {
+        try {
             Match partita = new Match();
             Scanner scanner = new Scanner(System.in);
             mainMenu(partita, scanner);
-        }catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
         }
 
     }
 
-    private static void mainMenu(Match m, Scanner reader) throws IllegalStateException{
+    private static void mainMenu(Match m, Scanner reader) throws IllegalStateException {
         int choice;
 
-        do{
+        do {
             System.out.println("Menu' principale");
             System.out.println("1. Test Avvia");
             System.out.println("2. Test Pausa");
             System.out.println("3. Test Gameover");
             System.out.println("4. Chiudere");
 
-
             choice = reader.nextInt();
 
-            switch (choice){
+            switch (choice) {
                 case 1:
                     testGameOnGoing(m);
                     break;
@@ -49,28 +48,33 @@ public class Test {
                     System.out.println("Scelta inesistente");
                     break;
             }
-        }while(choice != 4);
+        } while (choice != 4);
         reader.close();
     }
 
-    private static void testGameOnGoing(Match p){
+    private static void testGameOnGoing(Match p) {
         GameState stato = new GameOnGoing(p);
         stato.enterState();
         stato.exitState();
     }
 
-    private static void testGameOver(Match p){
-        GameState stato = new GameOver(p);
-        stato.enterState();
+    private static void testGameOver(Match p) {
+        // Istanza della partita
+        Match match = new Match();
 
+        // Istanza del GameOver con la partita corrente
+        GameState state = new GameOver(match);
 
+        // Entrata nello stato di Game Over
+        state.enterState();
+        state.exitState();
     }
 
-    private static void testGamePause(Match p, Scanner read){
+    private static void testGamePause(Match p, Scanner read) {
         GameState stato = new GamePause(p);
         int choice;
         stato.enterState();
-        do{
+        do {
             System.out.println("Menu' di pausa");
             System.out.println("1. Riprendi");
             System.out.println("2. Esci al menu'");
@@ -87,6 +91,6 @@ public class Test {
                     mainMenu(p, read);
                 }
             }
-        }while(choice != 2);
+        } while (choice != 2);
     }
 }

@@ -1,10 +1,14 @@
 package Main;
 
 public class Match {
-    boolean onGoing, paused;
+    private boolean onGoing;
+    private boolean paused;
+    private boolean gameOver;
 
-    public Match(){
-
+    public Match() {
+        this.onGoing = false;
+        this.paused = false;
+        this.gameOver = false;
     }
 
     public void startStopGame(boolean onGoing) {
@@ -12,25 +16,38 @@ public class Match {
         this.paused = false;
     }
 
-    public void pauseUnpauseGame(boolean p){
-        this.paused = p;
-        this.onGoing = !p;
+    public void pauseUnpauseGame(boolean paused) {
+        this.paused = paused;
+        if (!paused) {
+            this.onGoing = true;
+        }
+    }
+
+    public void gameOver() {
+        this.onGoing = false;
+        this.paused = false;
+        this.gameOver = true;
     }
 
     public boolean isOnGoing() {
         return onGoing;
     }
 
-    public boolean isPaused(){
+    public boolean isPaused() {
         return paused;
     }
 
-    public void displayMessage(){
-        if(onGoing)
-            System.out.println("Partita in corso");
-        else if (paused)
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void displayMessage() {
+        if (gameOver) {
+            System.out.println("Partita terminata");
+        } else if (paused) {
             System.out.println("Partita in pausa");
-        else
-            System.out.println("Partita non in corso");
+        } else {
+            System.out.println("Partita in corso");
+        }
     }
 }
