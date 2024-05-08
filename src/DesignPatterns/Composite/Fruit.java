@@ -7,12 +7,19 @@ public class Fruit implements MapComponent {
     private String type;
     private boolean eaten;
 
+    public Fruit(Position position, String type) {
+        this.position = position;
+        this.type = type;
+        this.eaten = false;
+    }
+
     @Override
     public void render() {
-        // Logica per disegnare il frutto sulla mappa di gioco
+        // Implementazione per disegnare il frutto sulla mappa di gioco
     }
 
     public void collect() {
+        this.eaten = true;
         // Logica per raccogliere il frutto
     }
 

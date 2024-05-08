@@ -56,17 +56,19 @@ public class Test {
 
     private static void testGameOnGoing(Match p) {
         GameState stato = new GameOnGoing(p);
-        Scanner pad = new Scanner(System.in);
-        stato.enterState();
-        while(Objects.equals(pad.next(), "p")){
-            if (Objects.equals(pad.next(), "p")){
-                stato.exitState();
-                testGamePause(p);
+        try (Scanner pad = new Scanner(System.in)) { // try perchè altrimenti il pad non viene mai chiuso e c'è una
+                                                     // resourse leak
+            stato.enterState();
+            while (Objects.equals(pad.next(), "p")) {
+                if (Objects.equals(pad.next(), "p")) {
+                    stato.exitState();
+                    testGamePause(p);
+                }
             }
-        }
-        if((Objects.equals(pad.next(), "x"))){
-            testGameOver(p);
-            stato.exitState();
+            if ((Objects.equals(pad.next(), "x"))) {
+                testGameOver(p);
+                stato.exitState();
+            }
         }
     }
 
@@ -104,7 +106,7 @@ public class Test {
                     mainMenu(p);
                 }
                 default ->
-                        System.out.println("Scelta inesistente");
+                    System.out.println("Scelta inesistente");
             }
         } while (choice != 2);
         read.close();
