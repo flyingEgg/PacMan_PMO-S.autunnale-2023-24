@@ -1,9 +1,11 @@
 package DesignPatterns.State;
 
 import API.GameState;
+import API.GameSubject;
+import API.GameSubjectListener;
 import Main.Match;
 
-public class GameOnGoing implements GameState {
+public class GameOnGoing implements GameState, GameSubject {
     private final Match partita;
 
     public GameOnGoing(Match p) {
@@ -28,5 +30,20 @@ public class GameOnGoing implements GameState {
     @Override
     public void update() {
         // Aggiungi qui la logica di aggiornamento per lo stato di "game on going"
+    }
+
+    @Override
+    public void attach(GameSubjectListener observer) {
+
+    }
+
+    @Override
+    public void detach(GameSubjectListener observer) {
+
+    }
+
+    @Override
+    public void notifyObservers() {
+
     }
 }

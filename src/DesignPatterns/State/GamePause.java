@@ -1,9 +1,11 @@
 package DesignPatterns.State;
 
 import API.GameState;
+import API.GameSubject;
+import API.GameSubjectListener;
 import Main.Match;
 
-public class GamePause implements GameState {
+public class GamePause implements GameState, GameSubject {
     private final Match partita;
 
     public GamePause(Match p) {
@@ -28,5 +30,20 @@ public class GamePause implements GameState {
 
     public void quit() {
         // Aggiungi qui la logica per uscire dalla partita
+    }
+
+    @Override
+    public void attach(GameSubjectListener observer) {
+
+    }
+
+    @Override
+    public void detach(GameSubjectListener observer) {
+
+    }
+
+    @Override
+    public void notifyObservers() {
+
     }
 }

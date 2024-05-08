@@ -1,9 +1,11 @@
 package DesignPatterns.State;
 
 import API.GameState;
+import API.GameSubject;
+import API.GameSubjectListener;
 import Main.Match;
 
-public class GameOver implements GameState {
+public class GameOver implements GameState, GameSubject {
     private Match partita;
 
     public GameOver(Match p) {
@@ -33,5 +35,20 @@ public class GameOver implements GameState {
 
     public void showScore() {
         // Aggiungi qui la logica per mostrare il punteggio
+    }
+
+    @Override
+    public void attach(GameSubjectListener observer) {
+
+    }
+
+    @Override
+    public void detach(GameSubjectListener observer) {
+
+    }
+
+    @Override
+    public void notifyObservers() {
+
     }
 }
