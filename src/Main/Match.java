@@ -24,10 +24,10 @@ public class Match {
         this.onGoing = !paused;
     }
 
-    public void gameOver() {
+    public void setGameOver(boolean gameover) {
         this.onGoing = false;
         this.paused = false;
-        this.gameOver = true;
+        this.gameOver = gameover;
     }
 
     public boolean isOnGoing() {
