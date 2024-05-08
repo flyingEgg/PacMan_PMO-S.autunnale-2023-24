@@ -12,7 +12,6 @@ import java.util.Scanner;
 public class Test {
 
     public static void main(String[] args) {
-
         Match partita = new Match();
         Scanner reader = new Scanner(System.in);
         mainMenu(partita, reader);
@@ -20,7 +19,6 @@ public class Test {
 
     private static void mainMenu(Match m, Scanner reader) throws IllegalStateException {
         int choice;
-
 
         do {
             System.out.println("Menu' principale");
@@ -59,7 +57,7 @@ public class Test {
                 stato.exitState();
                 testGamePause(p, pad);
                 break;
-            } else if((Objects.equals(pad.next(), "x"))){
+            } else if(pad.next().equals("x")){
                 stato.exitState();
                 testGameOver(p);
                 break;
@@ -68,11 +66,7 @@ public class Test {
     }
 
     private static void testGameOver(Match p) {
-        // Istanza della partita
-        Match match = new Match();
-
-        // Istanza del GameOver con la partita corrente
-        GameState state = new GameOver(match);
+        GameState state = new GameOver(p);
 
         // Entrata nello stato di Game Over
         state.enterState();
