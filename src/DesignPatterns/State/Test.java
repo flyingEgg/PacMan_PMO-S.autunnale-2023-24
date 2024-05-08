@@ -52,12 +52,12 @@ public class Test {
     private static void testGameOnGoing(Match p, Scanner pad) {
         GameState stato = new GameOnGoing(p);
         stato.enterState();
-        while(true){
-            if (pad.next().equals("p")){
+        while (true) {
+            if (pad.next().equals("p")) {
                 stato.exitState();
                 testGamePause(p, pad);
                 break;
-            } else if(pad.next().equals("x")){
+            } else if (pad.next().equals("x")) {
                 stato.exitState();
                 testGameOver(p);
                 break;
@@ -94,7 +94,7 @@ public class Test {
                     mainMenu(p, read);
                 }
                 default ->
-                        System.out.println("Scelta inesistente");
+                    System.out.println("Scelta inesistente");
             }
         } while (choice != 2);
     }
