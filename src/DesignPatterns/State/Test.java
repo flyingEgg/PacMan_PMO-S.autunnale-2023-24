@@ -6,6 +6,7 @@ import DesignPatterns.State.GameOver;
 import DesignPatterns.State.GamePause;
 import Main.Match;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Test {
@@ -13,15 +14,16 @@ public class Test {
     public static void main(String[] args) {
         try {
             Match partita = new Match();
-            Scanner scanner = new Scanner(System.in);
-            mainMenu(partita, scanner);
+            mainMenu(partita);
         } catch (IllegalStateException e) {
+            System.err.println(e);
         }
 
     }
 
-    private static void mainMenu(Match m, Scanner reader) throws IllegalStateException {
+    private static void mainMenu(Match m) throws IllegalStateException {
         int choice;
+        Scanner reader = new Scanner(System.in);
 
         do {
             System.out.println("Menu' principale");
@@ -37,7 +39,7 @@ public class Test {
                     testGameOnGoing(m);
                     break;
                 case 2:
-                    testGamePause(m, reader);
+                    testGamePause(m);
                     break;
                 case 3:
                     testGameOver(m);
@@ -54,8 +56,18 @@ public class Test {
 
     private static void testGameOnGoing(Match p) {
         GameState stato = new GameOnGoing(p);
+        Scanner pad = new Scanner(System.in);
         stato.enterState();
-        stato.exitState();
+        while(Objects.equals(pad.next(), "p")){
+            if (Objects.equals(pad.next(), "p")){
+                stato.exitState();
+                testGamePause(p);
+            }
+        }
+        if((Objects.equals(pad.next(), "x"))){
+            testGameOver(p);
+            stato.exitState();
+        }
     }
 
     private static void testGameOver(Match p) {
@@ -70,7 +82,8 @@ public class Test {
         state.exitState();
     }
 
-    private static void testGamePause(Match p, Scanner read) {
+    private static void testGamePause(Match p) {
+        Scanner read = new Scanner(System.in);
         GameState stato = new GamePause(p);
         int choice;
         stato.enterState();
@@ -88,9 +101,12 @@ public class Test {
                 }
                 case 2 -> {
                     stato.exitState();
-                    mainMenu(p, read);
+                    mainMenu(p);
                 }
+                default ->
+                        System.out.println("Scelta inesistente");
             }
         } while (choice != 2);
+        read.close();
     }
 }
