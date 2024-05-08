@@ -15,8 +15,9 @@ public abstract class Dot implements MapComponent {
     public abstract void render();
 
     public void collect() {
-        this.eaten = true;
         // Logica generica per raccogliere un punto
+        System.out.println("Collecting dot at position: " + position);
+        eaten = true;
     }
 
     @Override

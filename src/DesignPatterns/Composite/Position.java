@@ -16,4 +16,9 @@ public class Position {
     public Integer getCol() {
         return col;
     }
+
+    @Override
+    public String toString() {
+        return "(" + row + ", " + col + ")";
+    }
 }

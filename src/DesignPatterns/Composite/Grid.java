@@ -6,30 +6,21 @@ public class Grid {
     private MapComponent[][] grid;
 
     public Grid(int rows, int cols) {
-        this.grid = new MapComponent[rows][cols];
+        grid = new MapComponent[rows][cols];
     }
 
     public void addComponent(MapComponent component, Position position) {
-        // Implementazione per aggiungere un componente alla griglia nella posizione
-        // specificata
-        int row = position.getRow();
-        int col = position.getCol();
-        grid[row][col] = component;
+        // Logica per aggiungere un componente alla griglia nella posizione specificata
+        grid[position.getRow()][position.getCol()] = component;
     }
 
     public void removeComponent(Position position) {
-        // Implementazione per rimuovere un componente dalla griglia nella posizione
-        // specificata
-        int row = position.getRow();
-        int col = position.getCol();
-        grid[row][col] = null;
+        // Logica per rimuovere un componente dalla griglia nella posizione specificata
+        grid[position.getRow()][position.getCol()] = null;
     }
 
     public MapComponent getComponent(Position position) {
-        // Implementazione per ottenere un componente dalla griglia nella posizione
-        // specificata
-        int row = position.getRow();
-        int col = position.getCol();
-        return grid[row][col];
+        // Logica per ottenere un componente dalla griglia nella posizione specificata
+        return grid[position.getRow()][position.getCol()];
     }
 }

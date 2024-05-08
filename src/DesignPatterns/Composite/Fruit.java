@@ -15,12 +15,14 @@ public class Fruit implements MapComponent {
 
     @Override
     public void render() {
-        // Implementazione per disegnare il frutto sulla mappa di gioco
+        System.out.println("Rendering fruit (" + type + ") at position: " + position);
+        // Logica per disegnare il frutto sulla mappa di gioco
     }
 
     public void collect() {
-        this.eaten = true;
         // Logica per raccogliere il frutto
+        System.out.println("Collecting fruit (" + type + ") at position: " + position);
+        eaten = true;
     }
 
     @Override
