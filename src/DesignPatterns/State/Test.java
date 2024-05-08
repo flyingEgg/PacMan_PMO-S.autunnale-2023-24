@@ -12,18 +12,15 @@ import java.util.Scanner;
 public class Test {
 
     public static void main(String[] args) {
-        try {
-            Match partita = new Match();
-            mainMenu(partita);
-        } catch (IllegalStateException e) {
-            System.err.println(e);
-        }
 
+        Match partita = new Match();
+        Scanner reader = new Scanner(System.in);
+        mainMenu(partita, reader);
     }
 
-    private static void mainMenu(Match m) throws IllegalStateException {
+    private static void mainMenu(Match m, Scanner reader) throws IllegalStateException {
         int choice;
-        Scanner reader = new Scanner(System.in);
+
 
         do {
             System.out.println("Menu' principale");
@@ -36,10 +33,10 @@ public class Test {
 
             switch (choice) {
                 case 1:
-                    testGameOnGoing(m);
+                    testGameOnGoing(m, reader);
                     break;
                 case 2:
-                    testGamePause(m);
+                    testGamePause(m, reader);
                     break;
                 case 3:
                     testGameOver(m);
@@ -54,20 +51,18 @@ public class Test {
         reader.close();
     }
 
-    private static void testGameOnGoing(Match p) {
+    private static void testGameOnGoing(Match p, Scanner pad) {
         GameState stato = new GameOnGoing(p);
-        try (Scanner pad = new Scanner(System.in)) { // try perchè altrimenti il pad non viene mai chiuso e c'è una
-                                                     // resourse leak
-            stato.enterState();
-            while (Objects.equals(pad.next(), "p")) {
-                if (Objects.equals(pad.next(), "p")) {
-                    stato.exitState();
-                    testGamePause(p);
-                }
-            }
-            if ((Objects.equals(pad.next(), "x"))) {
-                testGameOver(p);
+        stato.enterState();
+        while(true){
+            if (pad.next().equals("p")){
                 stato.exitState();
+                testGamePause(p, pad);
+                break;
+            } else if((Objects.equals(pad.next(), "x"))){
+                stato.exitState();
+                testGameOver(p);
+                break;
             }
         }
     }
@@ -84,8 +79,7 @@ public class Test {
         state.exitState();
     }
 
-    private static void testGamePause(Match p) {
-        Scanner read = new Scanner(System.in);
+    private static void testGamePause(Match p, Scanner read) {
         GameState stato = new GamePause(p);
         int choice;
         stato.enterState();
@@ -99,16 +93,15 @@ public class Test {
             switch (choice) {
                 case 1 -> {
                     stato.exitState();
-                    testGameOnGoing(p);
+                    testGameOnGoing(p, read);
                 }
                 case 2 -> {
                     stato.exitState();
-                    mainMenu(p);
+                    mainMenu(p, read);
                 }
                 default ->
-                    System.out.println("Scelta inesistente");
+                        System.out.println("Scelta inesistente");
             }
         } while (choice != 2);
-        read.close();
     }
 }
