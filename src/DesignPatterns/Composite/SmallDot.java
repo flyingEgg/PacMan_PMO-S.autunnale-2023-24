@@ -1,11 +1,13 @@
 package DesignPatterns.Composite;
 
+import Main.Match;
+
 public class SmallDot extends Dot {
     private Position position;
     private boolean eaten;
 
     public SmallDot(Position position) {
-        super(position);
+        super(position, 10); // 10 punti per uno small dot
         this.eaten = false;
     }
 
@@ -16,9 +18,12 @@ public class SmallDot extends Dot {
     }
 
     @Override
-    public void collect() {
+    public void collect(Match match) {
+        // Logica generica per raccogliere un punto
+        System.out.println("Collecting small dot at position: " + getPosition());
+        match.incrementScore(points); // Incrementa il punteggio solo per uno small dot
+        System.out.println("Score updated: " + match.getScore()); // Stampa il punteggio aggiornato
         this.eaten = true;
-        // Logica per raccogliere un puntino piccolo
     }
 
     @Override

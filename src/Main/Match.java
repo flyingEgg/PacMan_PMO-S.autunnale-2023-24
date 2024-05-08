@@ -4,11 +4,13 @@ public class Match {
     private boolean onGoing;
     private boolean paused;
     private boolean gameOver;
+    private int score;
 
     public Match() {
         this.onGoing = false;
         this.paused = false;
         this.gameOver = false;
+        this.score = 0;
     }
 
     public void startStopGame(boolean onGoing) {
@@ -37,6 +39,14 @@ public class Match {
 
     public boolean isGameOver() {
         return gameOver;
+    }
+
+    public void incrementScore(int points) {
+        score += points;
+    }
+
+    public int getScore() {
+        return score;
     }
 
     public void displayMessage() {
