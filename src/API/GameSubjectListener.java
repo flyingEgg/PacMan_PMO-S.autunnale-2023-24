@@ -1,5 +1,7 @@
 package API;
 
+import Events.Event;
+
 public interface GameSubjectListener {
-    void update(GameState state); // onGameEvent
+    void onGameEvent(Event event); // onGameEvent
 }
