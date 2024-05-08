@@ -6,7 +6,7 @@ import API.GameSubjectListener;
 import Main.Match;
 
 public class GameOver implements GameState, GameSubject {
-    private Match partita;
+    private final Match partita;
 
     public GameOver(Match p) {
         this.partita = p;
@@ -14,14 +14,14 @@ public class GameOver implements GameState, GameSubject {
 
     @Override
     public void enterState() {
-        this.partita.gameOver(); // Imposta lo stato di gioco su "game over"
+        this.partita.setGameOver(true);
         System.out.println("Hai perso");
         this.partita.displayMessage();
     }
 
     @Override
     public void exitState() {
-        // Non è necessario alcun azione specifica all'uscita dallo stato di "game over"
+        this.partita.setGameOver(false);
     }
 
     @Override
