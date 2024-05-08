@@ -40,13 +40,13 @@ public class Test {
                     testGameOver(m);
                     break;
                 case 4:
-                    break;
+                    reader.close();
+                    System.exit(0);
                 default:
                     System.out.println("Scelta inesistente");
                     break;
             }
-        } while (choice != 4);
-        reader.close();
+        } while (true);
     }
 
     private static void testGameOnGoing(Match p, Scanner pad) {
