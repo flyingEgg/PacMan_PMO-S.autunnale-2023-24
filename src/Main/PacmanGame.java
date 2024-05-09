@@ -4,6 +4,7 @@ import API.GameState;
 import API.MapComponent;
 import API.MovementStrategy;
 import DesignPatterns.Composite.Grid;
+import DesignPatterns.Composite.PacmanGrid;
 
 public class PacmanGame {
     private GameState state;
@@ -30,6 +31,7 @@ public class PacmanGame {
     }
 
     private void start() {
-        // Logica per avviare il gioco
+        PacmanGrid grid = new PacmanGrid();
+        grid.printGrid();
     }
 }
