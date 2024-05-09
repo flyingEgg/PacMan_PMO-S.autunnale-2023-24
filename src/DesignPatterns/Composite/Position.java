@@ -1,24 +1,24 @@
 package DesignPatterns.Composite;
 
 public class Position {
-    private Integer y;
     private Integer x;
+    private Integer y;
 
-    public Position(Integer y, Integer x) {
-        this.y = y;
+    public Position(Integer x, Integer y) {
         this.x = x;
-    }
-
-    public Integer getY() {
-        return y;
+        this.y = y;
     }
 
     public Integer getX() {
         return x;
     }
 
+    public Integer getY() {
+        return y;
+    }
+
     @Override
     public String toString() {
-        return "(" + y + ", " + x + ")";
+        return "(" + x + ", " + y + ")";
     }
 }
