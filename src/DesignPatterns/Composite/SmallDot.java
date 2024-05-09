@@ -21,7 +21,7 @@ public class SmallDot extends Dot {
     public void collect(Match match) {
         // Logica generica per raccogliere un punto
         System.out.println("Collecting small dot at position: " + getPosition());
-        match.increaseScore(points); // Incrementa il punteggio solo per uno small dot
+        match.incrementScore(points); // Incrementa il punteggio solo per uno small dot
         System.out.println("Score updated: " + match.getScore()); // Stampa il punteggio aggiornato
         this.eaten = true;
     }

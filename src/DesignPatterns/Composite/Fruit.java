@@ -23,7 +23,7 @@ public class Fruit implements MapComponent {
     public void collect(Match match) {
         // Logica per raccogliere il frutto
         System.out.println("Collecting fruit (" + type + ") at position: " + position);
-        match.increaseScore(type.getPoints()); // Incrementa il punteggio in base ai punti della frutta
+        match.incrementScore(type.getPoints()); // Incrementa il punteggio in base ai punti della frutta
         System.out.println("Score updated: " + match.getScore()); // Stampa il punteggio aggiornato
         this.eaten = true;
     }

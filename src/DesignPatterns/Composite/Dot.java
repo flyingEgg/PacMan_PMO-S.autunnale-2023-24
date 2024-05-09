@@ -19,7 +19,7 @@ public abstract class Dot implements MapComponent {
 
     public void collect(Match match) {
         // Logica generica per raccogliere un punto
-        match.increaseScore(points);
+        match.incrementScore(points);
         System.out.println("Collecting dot at position: " + position);
         this.eaten = true;
     }

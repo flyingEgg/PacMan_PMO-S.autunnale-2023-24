@@ -42,7 +42,7 @@ public class Match {
         return gameOver;
     }
 
-    public void increaseScore(int points) {
+    public void incrementScore(int points) {
         score += points;
     }
 
