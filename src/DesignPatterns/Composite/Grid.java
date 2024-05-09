@@ -13,8 +13,8 @@ public class Grid {
     }
 
     public void addComponent(MapComponent component, Position position) {
-        int x = position.getY();
-        int y = position.getX();
+        int x = position.getX();
+        int y = position.getY();
         if (isValidPosition(x, y)) {
             grid[x][y] = component;
         } else {
@@ -23,8 +23,8 @@ public class Grid {
     }
 
     public void removeComponent(Position position) {
-        int x = position.getY();
-        int y = position.getX();
+        int x = position.getX();
+        int y = position.getY();
         if (isValidPosition(x, y)) {
             grid[x][y] = null;
         } else {
@@ -33,8 +33,8 @@ public class Grid {
     }
 
     public MapComponent getComponent(Position position) {
-        int x = position.getY();
-        int y = position.getX();
+        int x = position.getX();
+        int y = position.getY();
         if (isValidPosition(x, y)) {
             return grid[x][y];
         } else {
