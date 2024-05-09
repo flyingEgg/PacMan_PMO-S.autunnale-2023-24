@@ -5,11 +5,11 @@ import API.MapComponent;
 public class Grid {
     private MapComponent[][] grid;
 
-    public Grid(MapComponent[][] map) {
-        if (map == null || map.length == 0 || map[0].length == 0) {
-            throw new IllegalArgumentException("Invalid map dimensions");
+    public Grid(int columns, int rows) {
+        if (rows <= 0 || columns <= 0) {
+            throw new IllegalArgumentException("Invalid grid dimensions");
         }
-        this.grid = map;
+        this.grid = new MapComponent[columns][rows];
     }
 
     public void addComponent(MapComponent component, Position position) {
