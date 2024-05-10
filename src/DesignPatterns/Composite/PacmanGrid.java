@@ -52,13 +52,52 @@ public class PacmanGrid extends Grid {
         // Inizializza la griglia con spazi vuoti
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
+                Position currentPosition = new Position(j, i);
                 // Imposta uno spazio vuoto in ogni cella della griglia
-                addComponent(null, new Position(j, i));
+                addComponent(null, currentPosition);
+                // Escludi le posizioni specificate
+                if (!isExcludedPosition(currentPosition)) {
+                    addComponent(new SmallDot(currentPosition), currentPosition);
+                }
             }
         }
 
+        // Aggiungi i big dot alla griglia nelle posizioni specificate
+        addComponent(new BigDot(new Position(1, 1)), new Position(1, 1));
+        addComponent(new BigDot(new Position(19, 1)), new Position(19, 1));
+        addComponent(new BigDot(new Position(1, 17)), new Position(1, 17));
+        addComponent(new BigDot(new Position(19, 17)), new Position(19, 17));
+        // credo sia da fixare perchè addcomponent richiede una position ma i dot ne
+        // hanno anche una propria nel costruttore
+
         // Aggiungi muri alla griglia
         addWallsToGrid();
+    }
+
+    private boolean isExcludedPosition(Position position) {
+        int x = position.getX();
+        int y = position.getY();
+
+        // Check se la posizione è esclusa per essere vuota o per altre ragioni
+        // specifiche
+        if (x == 11 && y == 9) { // Escludi la posizione di partenza di Pac-Man
+            return true;
+        }
+
+        // Escludi altre posizioni specifiche
+        int[][] excludedPositions = {
+                { 9, 0 }, { 9, 1 }, { 9, 2 }, { 9, 3 }, { 9, 15 }, { 9, 16 }, { 9, 17 }, { 9, 18 }, // Posizioni muro
+                                                                                                    // fantasmi
+                { 9, 8 }, { 9, 9 }, { 9, 10 } // Posizioni di spawn dei fantasmi
+        };
+
+        for (int[] excluded : excludedPositions) {
+            if (x == excluded[0] && y == excluded[1]) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void addWallsToGrid() {
