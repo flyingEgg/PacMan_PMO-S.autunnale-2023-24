@@ -3,8 +3,8 @@ package DesignPatterns.Composite;
 import API.MapComponent;
 
 public class PacmanGrid extends Grid {
-    private static final int COLUMNS = 28; // Numero di colonne della griglia
-    private static final int ROWS = 22; // Numero di righe della griglia
+    private static final int COLUMNS = 21; // Numero di colonne della griglia
+    private static final int ROWS = 19; // Numero di righe della griglia
 
     // Posizioni dei muri
     private static final int[][] WALL_POSITIONS = {
@@ -38,8 +38,10 @@ public class PacmanGrid extends Grid {
             { 0, 17 }, { 6, 17 }, { 8, 17 }, { 10, 17 }, { 12, 17 }, { 16, 17 }, { 20, 17 },
             { 0, 18 }, { 1, 18 }, { 2, 18 }, { 3, 18 }, { 4, 18 }, { 5, 18 }, { 6, 18 }, { 7, 18 }, { 8, 18 },
             { 9, 18 }, { 10, 18 }, { 11, 18 }, { 12, 18 }, { 13, 18 }, { 14, 18 }, { 15, 18 }, { 16, 18 }, { 17, 18 },
-            { 18, 18 }, { 19, 18 }, { 20, 18 },
-    };
+            { 18, 18 }, { 19, 18 }, { 20, 18 }
+    }; // eventualmente togliere { 0, 9 } e { 18, 9 } ed effettuare il teletrasporto da
+       // unlato all'altro
+       // tocca liberare i fantasmi da { 9, 8 }
 
     public PacmanGrid() {
         super(COLUMNS, ROWS);
