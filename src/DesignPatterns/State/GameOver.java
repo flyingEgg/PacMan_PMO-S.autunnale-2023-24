@@ -38,6 +38,7 @@ public class GameOver implements GameState, GameSubject {
 
     public void showScore() {
         // Aggiungi qui la logica per mostrare il punteggio
+        // richiamo getScore() per mostrare il punteggio
         System.out.println("Il punteggio della partita e di: " + this.partita.getScore());
     }
 
