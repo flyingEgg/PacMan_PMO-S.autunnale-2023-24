@@ -27,6 +27,7 @@ public class GameOver implements GameState, GameSubject {
     @Override
     public void update() {
         // Non è necessario alcun aggiornamento nello stato di "game over"
+        
     }
 
     public void restart() {
@@ -35,6 +36,7 @@ public class GameOver implements GameState, GameSubject {
 
     public void showScore() {
         // Aggiungi qui la logica per mostrare il punteggio
+        System.out.println("Il punteggio della partita e di: " + this.partita.getScore());
     }
 
     @Override
