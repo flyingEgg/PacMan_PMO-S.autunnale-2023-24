@@ -4,12 +4,14 @@ public class Match {
     private boolean onGoing;
     private boolean paused;
     private boolean gameOver;
+    private boolean restart;
     private int score;
 
     public Match() {
         this.onGoing = false;
         this.paused = false;
         this.gameOver = false;
+        this.restart = false;
         this.score = 0;
     }
 
@@ -28,6 +30,14 @@ public class Match {
         this.onGoing = false;
         this.paused = false;
         this.gameOver = gameover;
+    }
+
+    public void setRestartMatch(boolean restart){
+        restartScore();
+        this.onGoing = false;
+        this.paused = false;
+        this.gameOver = false;
+        this.restart = restart;
     }
 
     public boolean isOnGoing() {
@@ -59,6 +69,8 @@ public class Match {
             System.out.println("Partita terminata");
         } else if (paused) {
             System.out.println("Partita in pausa");
+        } else if (restart) {
+            System.out.println("Partita ricominciata");
         } else {
             System.out.println("Partita in corso");
         }
