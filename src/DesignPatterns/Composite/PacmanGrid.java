@@ -41,7 +41,7 @@ public class PacmanGrid extends Grid {
             { 18, 18 }, { 19, 18 }, { 20, 18 }
     }; // eventualmente togliere { 0, 9 } e { 18, 9 } ed effettuare il teletrasporto da
        // unlato all'altro
-       // tocca liberare i fantasmi da { 9, 8 }
+       // tocca liberare i fantasmi da { 8, 9 }
 
     public PacmanGrid() {
         super(COLUMNS, ROWS);
@@ -103,12 +103,11 @@ public class PacmanGrid extends Grid {
     private void addWallsToGrid() {
         // Aggiungi i muri alla griglia
         for (int[] position : WALL_POSITIONS) {
-            addComponent(new Wall(), new Position(position[0], position[1]));
+            addComponent(new Wall(new Position(position[0], position[1])), new Position(position[0], position[1]));
         }
 
         // Posizione di partenza dei fantasmi
-        // addComponent(new GhostStartPoint(), new Position(14, 11)); // Invertito
-        // l'ordine dei parametri
+        // addComponent(new GhostStartPoint(), new Position(9, 9));
     }
 
     public void printGrid() {

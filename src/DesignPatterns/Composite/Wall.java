@@ -3,16 +3,20 @@ package DesignPatterns.Composite;
 import API.MapComponent;
 
 public class Wall implements MapComponent {
+    private Position position;
 
-    @Override
-    public void render() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'render'");
+    public Wall(Position position) {
+        this.position = position;
     }
 
     @Override
-    public Object getPosition() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPosition'");
+    public void render() {
+        // Logica di rendering per il muro (es. stampa a console o disegno su GUI)
+        System.out.print("#");
+    }
+
+    @Override
+    public Position getPosition() {
+        return this.position;
     }
 }
