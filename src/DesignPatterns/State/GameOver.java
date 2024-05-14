@@ -32,6 +32,8 @@ public class GameOver implements GameState, GameSubject {
 
     public void restart() {
         // Aggiungi qui la logica per riavviare la partita
+        this.partita.restartScore(); // richiamo metodo per settare score a 0
+        
     }
 
     public void showScore() {

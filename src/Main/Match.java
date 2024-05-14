@@ -50,6 +50,10 @@ public class Match {
         return score;
     }
 
+    public void restartScore(){
+        this.score = 0;
+    }
+
     public void displayMessage() {
         if (gameOver) {
             System.out.println("Partita terminata");
