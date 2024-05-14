@@ -30,6 +30,7 @@ public class GamePause implements GameState, GameSubject {
 
     public void quit() {
         // Aggiungi qui la logica per uscire dalla partita
+        
     }
 
     @Override
