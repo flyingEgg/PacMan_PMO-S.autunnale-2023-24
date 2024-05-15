@@ -60,7 +60,7 @@ public class Match {
         return score;
     }
 
-    public void restartScore(){
+    private void restartScore(){
         this.score = 0;
     }
 
