@@ -31,7 +31,7 @@ public class GameOver implements GameState, GameSubject {
     }
 
     public void restart() {
-        this.partita.restartMatch(true); // richiamo metodo per permettere il restart di un nuovo match
+        this.partita.setRestartMatch(true); // richiamo metodo per permettere il restart di un nuovo match
         System.out.println("Restart di un nuovo match");
         this.partita.displayMessage();
     }
