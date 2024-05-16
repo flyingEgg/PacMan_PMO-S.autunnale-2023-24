@@ -6,17 +6,10 @@
 
 package DesignPatterns.State;
 
-import API.GameState;
-import DesignPatterns.State.GameOnGoing;
-import DesignPatterns.State.GameOver;
-import DesignPatterns.State.GamePause;
 import Main.Match;
 
 import java.util.InputMismatchException;
-import java.util.Objects;
 import java.util.Scanner;
-import java.util.concurrent.Semaphore;
-import java.util.logging.ConsoleHandler;
 
 public class Test {
 
@@ -41,21 +34,14 @@ public class Test {
                 choice = reader.nextInt();
 
                 switch (choice) {
-                    case 1:
-                        testGameOnGoing(m, reader);
-                        break;
-                    case 2:
-                        testGamePause(m, reader);
-                        break;
-                    case 3:
-                        testGameOver(m, reader);
-                        break;
-                    case 4:
+                    case 1 -> testGameOnGoing(m, reader);
+                    case 2 -> testGamePause(m, reader);
+                    case 3 -> testGameOver(m, reader);
+                    case 4 -> {
                         onMenu = false;
                         System.exit(0);
-                    default:
-                        System.out.println("Scelta inesistente");
-                        break;
+                    }
+                    default -> System.out.println("Scelta inesistente");
                 }
             }catch (InputMismatchException e){
                 System.out.println("Scelta non valida");
