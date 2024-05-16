@@ -4,15 +4,13 @@ public class Match {
     private boolean onGoing;
     private boolean paused;
     private boolean gameOver;
-    private boolean restart;
     private int score;
 
     public Match() {
         this.onGoing = false;
         this.paused = false;
         this.gameOver = false;
-        this.restart = false;
-        this.score = 0;
+        this.score = 90;
     }
 
     public void startStopGame(boolean onGoing) {
@@ -30,14 +28,6 @@ public class Match {
         this.onGoing = false;
         this.paused = false;
         this.gameOver = gameover;
-    }
-
-    public void setRestartMatch(boolean restart){
-        restartScore();
-        this.onGoing = false;
-        this.paused = false;
-        this.gameOver = false;
-        this.restart = restart;
     }
 
     public boolean isOnGoing() {
@@ -60,17 +50,15 @@ public class Match {
         return score;
     }
 
-    private void restartScore(){
+    public void resetScore(){
         this.score = 0;
     }
 
     public void displayMessage() {
         if (gameOver) {
-            System.out.println("Partita terminata");
+            System.out.println("Hai perso! Riprovare?");
         } else if (paused) {
             System.out.println("Partita in pausa");
-        } else if (restart) {
-            System.out.println("Partita ricominciata");
         } else {
             System.out.println("Partita in corso");
         }
