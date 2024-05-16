@@ -15,25 +15,19 @@ public class GameOver implements GameState, GameSubject {
     @Override
     public void enterState() {
         this.partita.setGameOver(true);
-        System.out.println("Hai perso");
         this.partita.displayMessage();
     }
 
     @Override
     public void exitState() {
         this.partita.setGameOver(false);
+        this.partita.resetScore();
     }
 
     @Override
     public void update() {
         // Non è necessario alcun aggiornamento nello stato di "game over"
 
-    }
-
-    public void restart() {
-        this.partita.setRestartMatch(true); // richiamo metodo per permettere il restart di un nuovo match
-        System.out.println("Restart di un nuovo match");
-        this.partita.displayMessage();
     }
 
     public void showScore() {
