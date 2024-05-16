@@ -19,6 +19,7 @@ public class GameOnGoing implements GameState, GameSubject {
             this.partita.pauseUnpauseGame(false); // Riprende la partita se è in pausa
         }
         this.partita.displayMessage();
+        System.out.println("Punteggio: "+partita.getScore());
     }
 
     @Override
@@ -29,7 +30,6 @@ public class GameOnGoing implements GameState, GameSubject {
 
     @Override
     public void update() {
-        // Aggiungi qui la logica di aggiornamento per lo stato di "game on going"
     }
 
     @Override
