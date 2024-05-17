@@ -1,7 +1,7 @@
 package Game.Composite;
 
 import API.MapComponent;
-import Game.Match;
+import Game.Game;
 
 public abstract class Dot implements MapComponent {
     protected Position position;
@@ -17,9 +17,9 @@ public abstract class Dot implements MapComponent {
     @Override
     public abstract void render();
 
-    public void collect(Match match) {
+    public void collect(Game game) {
         // Logica generica per raccogliere un punto
-        match.incrementScore(points);
+        game.incrementScore(points);
         System.out.println("Collecting dot at position: " + position);
         this.eaten = true;
     }

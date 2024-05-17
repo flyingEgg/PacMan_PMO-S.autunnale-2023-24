@@ -1,8 +1,8 @@
 package API;
 
 import Event.Event;
-import Game.Match;
+import Game.Game;
 
 public interface GameSubjectListener {
-    void onGameEvent(Match m, Event event); // onGameEvent
+    void onGameEvent(Game m, Event event); // onGameEvent
 }

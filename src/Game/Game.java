@@ -1,12 +1,12 @@
 package Game;
 
-public class Match {
+public class Game {
     private boolean onGoing;
     private boolean paused;
     private boolean gameOver;
     private int score;
 
-    public Match() {
+    public Game() {
         this.onGoing = false;
         this.paused = false;
         this.gameOver = false;

@@ -1,6 +1,6 @@
 package Game.Composite;
 
-import Game.Match;
+import Game.Game;
 
 public class SmallDot extends Dot {
     private Position position;
@@ -18,11 +18,11 @@ public class SmallDot extends Dot {
     }
 
     @Override
-    public void collect(Match match) {
+    public void collect(Game game) {
         // Logica generica per raccogliere un punto
         System.out.println("Collecting small dot at position: " + getPosition());
-        match.incrementScore(points); // Incrementa il punteggio solo per uno small dot
-        System.out.println("Score updated: " + match.getScore()); // Stampa il punteggio aggiornato
+        game.incrementScore(points); // Incrementa il punteggio solo per uno small dot
+        System.out.println("Score updated: " + game.getScore()); // Stampa il punteggio aggiornato
         this.eaten = true;
     }
 

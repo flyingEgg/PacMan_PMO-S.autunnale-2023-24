@@ -1,7 +1,7 @@
 package Game.Composite;
 
 import API.MapComponent;
-import Game.Match;
+import Game.Game;
 
 public class Fruit implements MapComponent {
     private Position position;
@@ -20,11 +20,11 @@ public class Fruit implements MapComponent {
         // Logica per disegnare il frutto sulla mappa di gioco
     }
 
-    public void collect(Match match) {
+    public void collect(Game game) {
         // Logica per raccogliere il frutto
         System.out.println("Collecting fruit (" + type + ") at position: " + position);
-        match.incrementScore(type.getPoints()); // Incrementa il punteggio in base ai punti della frutta
-        System.out.println("Score updated: " + match.getScore()); // Stampa il punteggio aggiornato
+        game.incrementScore(type.getPoints()); // Incrementa il punteggio in base ai punti della frutta
+        System.out.println("Score updated: " + game.getScore()); // Stampa il punteggio aggiornato
         this.eaten = true;
     }
 

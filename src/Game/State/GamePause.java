@@ -3,12 +3,12 @@ package Game.State;
 import API.GameState;
 import API.GameSubject;
 import API.GameSubjectListener;
-import Game.Match;
+import Game.Game;
 
 public class GamePause implements GameState, GameSubject {
-    private final Match partita;
+    private final Game partita;
 
-    public GamePause(Match p) {
+    public GamePause(Game p) {
         this.partita = p;
     }
 

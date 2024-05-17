@@ -6,7 +6,7 @@
 
 package Game.State;
 
-import Game.Match;
+import Game.Game;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -14,12 +14,12 @@ import java.util.Scanner;
 public class Test {
 
     public static void main(String[] args) {
-        Match partita = new Match();
+        Game partita = new Game();
         Scanner reader = new Scanner(System.in);
         mainMenu(partita, reader);
     }
 
-    private static void mainMenu(Match m, Scanner reader) throws IllegalStateException {
+    private static void mainMenu(Game m, Scanner reader) throws IllegalStateException {
         int choice;
         boolean onMenu = true;
 
@@ -52,7 +52,7 @@ public class Test {
         } while (onMenu);
     }
 
-    private static void testGameOnGoing(Match p, Scanner pad) {
+    private static void testGameOnGoing(Game p, Scanner pad) {
         GameOnGoing state = new GameOnGoing(p);
         String command;
 
@@ -71,7 +71,7 @@ public class Test {
         }
     }
 
-    private static void testGameOver(Match p, Scanner read) {
+    private static void testGameOver(Game p, Scanner read) {
         GameOver state = new GameOver(p);
         int choice;
 
@@ -93,10 +93,9 @@ public class Test {
                 }
             }
         }while (choice != 2);
-
     }
 
-    private static void testGamePause(Match p, Scanner read) {
+    private static void testGamePause(Game p, Scanner read) {
         GamePause state = new GamePause(p);
         int choice;
         state.enterState();

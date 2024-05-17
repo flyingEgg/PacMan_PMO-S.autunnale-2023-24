@@ -1,6 +1,6 @@
 package Game.Composite;
 
-import Game.Match;
+import Game.Game;
 
 public class BigDot extends Dot {
     private Position position;
@@ -18,7 +18,7 @@ public class BigDot extends Dot {
     }
 
     @Override
-    public void collect(Match match) {
+    public void collect(Game game) {
         // Aggiorna lo stato di Pac-Man per consentire di mangiare i fantasmi
         // DA SCOMMENTARE player.setSuperMode(true);
         System.out.println("Collecting big dot at position: " + getPosition());

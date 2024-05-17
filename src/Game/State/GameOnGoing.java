@@ -3,12 +3,12 @@ package Game.State;
 import API.GameState;
 import API.GameSubject;
 import API.GameSubjectListener;
-import Game.Match;
+import Game.Game;
 
 public class GameOnGoing implements GameState, GameSubject {
-    private final Match partita;
+    private final Game partita;
 
-    public GameOnGoing(Match p) {
+    public GameOnGoing(Game p) {
         this.partita = p;
     }
 
