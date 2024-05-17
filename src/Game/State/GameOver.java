@@ -5,7 +5,7 @@ import API.GameSubject;
 import API.GameSubjectListener;
 import Game.Game;
 
-public class GameOver implements GameState, GameSubject {
+public class GameOver implements GameState {
     private final Game partita;
 
     public GameOver(Game p) {
@@ -26,7 +26,6 @@ public class GameOver implements GameState, GameSubject {
 
     @Override
     public void update() {
-        // Non è necessario alcun aggiornamento nello stato di "game over"
 
     }
 
@@ -34,20 +33,5 @@ public class GameOver implements GameState, GameSubject {
         // Aggiungi qui la logica per mostrare il punteggio
         // metodo per tornare il punteggio della partita
         System.out.println("Il punteggio della partita e di: " + this.partita.getScore());
-    }
-
-    @Override
-    public void attach(GameSubjectListener observer) {
-
-    }
-
-    @Override
-    public void detach(GameSubjectListener observer) {
-
-    }
-
-    @Override
-    public void notifyObservers() {
-
     }
 }

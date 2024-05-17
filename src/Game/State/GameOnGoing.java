@@ -5,7 +5,7 @@ import API.GameSubject;
 import API.GameSubjectListener;
 import Game.Game;
 
-public class GameOnGoing implements GameState, GameSubject {
+public class GameOnGoing implements GameState{
     private final Game partita;
 
     public GameOnGoing(Game p) {
@@ -30,21 +30,8 @@ public class GameOnGoing implements GameState, GameSubject {
 
     @Override
     public void update() {
-
-    }
-
-    @Override
-    public void attach(GameSubjectListener observer) {
-
-    }
-
-    @Override
-    public void detach(GameSubjectListener observer) {
-
-    }
-
-    @Override
-    public void notifyObservers() {
-
+        if(!partita.isOnGoing() || partita.isGameOver()){
+            exitState();
+        }
     }
 }

@@ -5,7 +5,7 @@ import API.GameSubject;
 import API.GameSubjectListener;
 import Game.Game;
 
-public class GamePause implements GameState, GameSubject {
+public class GamePause implements GameState {
     private final Game partita;
 
     public GamePause(Game p) {
@@ -31,20 +31,5 @@ public class GamePause implements GameState, GameSubject {
     public void quit() {
        exitState();
        this.partita.resetScore();
-    }
-
-    @Override
-    public void attach(GameSubjectListener observer) {
-
-    }
-
-    @Override
-    public void detach(GameSubjectListener observer) {
-
-    }
-
-    @Override
-    public void notifyObservers() {
-
     }
 }
