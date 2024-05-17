@@ -37,19 +37,17 @@ public class Test {
                     case 1 -> testGameOnGoing(m, reader);
                     case 2 -> testGamePause(m, reader);
                     case 3 -> testGameOver(m, reader);
-                    case 4 -> {
-                        onMenu = false;
-                        System.exit(0);
-                    }
+                    case 4 -> onMenu = false;
+
                     default -> System.out.println("Scelta inesistente");
                 }
-            }catch (InputMismatchException e){
+            }catch (InputMismatchException incorrect){
                 System.out.println("Scelta non valida");
-                reader.next();
-            }finally {
-                reader.close();
+                reader.nextLine();
             }
         } while (onMenu);
+        reader.close();
+        System.exit(0);
     }
 
     private static void testGameOnGoing(Game p, Scanner pad) {
@@ -58,16 +56,15 @@ public class Test {
 
         state.enterState();
         command = pad.next();
-        while (true) {
-            if (command.equals("p")) {
-                state.exitState();
-                testGamePause(p, pad);
-                break;
-            } else if (command.equals("x")) {
-                state.exitState();
-                testGameOver(p, pad);
-                break;
-            }
+        while (!command.equals("p") && !command.equals("x")) {
+            command = pad.next();
+        }
+        if (command.equals("p")) {
+            state.exitState();
+            testGamePause(p, pad);
+        } else{
+            state.exitState();
+            testGameOver(p, pad);
         }
     }
 
@@ -91,6 +88,7 @@ public class Test {
                     state.exitState();
                     mainMenu(p, read);
                 }
+                default -> System.out.println("Scelta inesistente");
             }
         }while (choice != 2);
     }
