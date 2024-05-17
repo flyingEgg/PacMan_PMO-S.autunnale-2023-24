@@ -1,5 +1,7 @@
 package Entities;
 
+import Game.Composite.Position;
+
 public class Pacman extends AbstractEntity {
 
     public Pacman(int x, int y){
@@ -13,7 +15,17 @@ public class Pacman extends AbstractEntity {
     }
 
     @Override
-    protected void draw() {
+    public void draw() {
+        System.out.println("Pacman disegnato alla posizione: "+x+", "+y);
+    }
+
+    public Position getPosition() {
+        return new Position(getX(), getY());
+    }
+
+    public void setPosition(Position position){
+        this.x = position.getX();
+        this.y = position.getY();
 
     }
 }
