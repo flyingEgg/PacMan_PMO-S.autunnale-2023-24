@@ -112,7 +112,7 @@ public class Test {
                     testGameOnGoing(p, read);
                 }
                 case 2 -> {
-                    state.exitState();
+                    state.quit();
                     mainMenu(p, read);
                 }
                 default ->
