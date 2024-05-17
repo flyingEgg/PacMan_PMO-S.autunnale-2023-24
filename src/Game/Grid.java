@@ -1,9 +1,10 @@
-package Game.Composite;
+package Game;
 
 import API.MapComponent;
+import Game.Composite.Position;
 
 public class Grid {
-    private MapComponent[][] grid;
+    private final MapComponent[][] grid;
 
     public Grid(int columns, int rows) { // Cambiato l'ordine dei parametri
         if (rows <= 0 || columns <= 0) {
@@ -41,6 +42,14 @@ public class Grid {
             System.out.println("Invalid position: (" + x + ", " + y + ")");
             return null;
         }
+    }
+
+    public int getColumns() {
+        return grid[0].length;
+    }
+
+    public int getRows(){
+        return grid.length;
     }
 
     private boolean isValidPosition(int x, int y) {
