@@ -3,17 +3,13 @@ package Game;
 import API.GameState;
 import API.MapComponent;
 import API.MovementStrategy;
+import Entities.AbstractEntity;
 import Game.Composite.Grid;
 import Game.Composite.PacmanGrid;
 
 public class PacmanGame {
     private GameState state;
     private Grid grid;
-    private MovementStrategy pacman;
-    private MovementStrategy ghostRed;
-    private MovementStrategy ghostOrange;
-    private MovementStrategy ghostPink;
-    private MovementStrategy ghostBlue;
     private MapComponent component;
 
     public PacmanGame() {
