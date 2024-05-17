@@ -1,7 +1,12 @@
 package Game.Strategies;
 
-public class PacmanMovementStrategy {
-    public void move(Direction direction) {
-        // Implementazione del movimento di Pacman
+import API.MovementStrategy;
+import Entities.Pacman;
+
+public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
+
+    @Override
+    public void move(Object direction) {
+
     }
 }
