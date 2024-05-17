@@ -2,9 +2,6 @@ package Game;
 
 import API.GameState;
 import API.MapComponent;
-import API.MovementStrategy;
-import Entities.AbstractEntity;
-import Game.Composite.Grid;
 import Game.Composite.PacmanGrid;
 
 public class PacmanGame {
