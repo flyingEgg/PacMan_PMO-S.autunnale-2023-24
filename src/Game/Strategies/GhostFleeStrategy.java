@@ -1,9 +1,15 @@
 package Game.Strategies;
 
+import Entities.Ghost;
+import Game.Grid;
+
 public class GhostFleeStrategy extends GhostMovementStrategy {
+    public GhostFleeStrategy(Ghost ghost, Grid grid) {
+        super(ghost, grid);
+    }
+
     @Override
-    public Direction calculateNextMove() {
-        // Logica per calcolare il prossimo movimento quando il fantasma è in fuga
-        return Direction.RIGHT; // Esempio di direzione
+    public void move(Direction direction) {
+        // Logica di fuga
     }
 }

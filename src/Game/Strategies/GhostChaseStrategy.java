@@ -1,10 +1,15 @@
 package Game.Strategies;
 
+import Entities.Ghost;
+import Game.Grid;
+
 public class GhostChaseStrategy extends GhostMovementStrategy {
+    public GhostChaseStrategy(Ghost ghost, Grid grid) {
+        super(ghost, grid);
+    }
+
     @Override
-    public Direction calculateNextMove() {
-        // Logica per calcolare il prossimo movimento quando il fantasma è in fase di
-        // inseguimento
-        return Direction.UP; // Esempio di direzione
+    public void move(Direction direction) {
+        // Logica di inseguimento
     }
 }
