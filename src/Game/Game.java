@@ -1,10 +1,16 @@
 package Game;
 
+import Entities.Ghost;
+import Entities.Pacman;
+
 public class Game {
     private boolean onGoing;
     private boolean paused;
     private boolean gameOver;
     private int score;
+    private Pacman pacman;
+    private Ghost ghost1, ghost2, ghost3, ghost4;
+
 
     public Game() {
         this.onGoing = false;
