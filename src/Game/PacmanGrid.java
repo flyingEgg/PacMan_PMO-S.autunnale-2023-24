@@ -57,19 +57,19 @@ public class PacmanGrid extends Grid {
             for (int j = 0; j < COLUMNS; j++) {
                 Position currentPosition = new Position(j, i);
                 // Imposta uno spazio vuoto in ogni cella della griglia
-                addComponent(null, currentPosition);
+                addComponent(null);
                 // Escludi le posizioni specificate
                 if (!isExcludedPosition(currentPosition)) {
-                    addComponent(new SmallDot(currentPosition), currentPosition);
+                    addComponent(new SmallDot(currentPosition));
                 }
             }
         }
 
         // Aggiungi i big dot alla griglia nelle posizioni specificate
-        addComponent(new BigDot(new Position(1, 1)), new Position(1, 1));
-        addComponent(new BigDot(new Position(19, 1)), new Position(19, 1));
-        addComponent(new BigDot(new Position(1, 17)), new Position(1, 17));
-        addComponent(new BigDot(new Position(19, 17)), new Position(19, 17));
+        addComponent(new BigDot(new Position(1, 1)));
+        addComponent(new BigDot(new Position(19, 1)));
+        addComponent(new BigDot(new Position(1, 17)));
+        addComponent(new BigDot(new Position(19, 17)));
         // credo sia da fixare perchè addcomponent richiede una position ma i dot ne
         // hanno anche una propria nel costruttore
 
@@ -106,7 +106,7 @@ public class PacmanGrid extends Grid {
     private void addWallsToGrid() {
         // Aggiungi i muri alla griglia
         for (int[] position : WALL_POSITIONS) {
-            addComponent(new Wall(new Position(position[0], position[1])), new Position(position[0], position[1]));
+            addComponent(new Wall(new Position(position[0], position[1])));
         }
 
         // Posizione di partenza dei fantasmi
@@ -116,12 +116,12 @@ public class PacmanGrid extends Grid {
     public void printGrid() {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
-                MapComponent component = getComponent(new Position(j, i));
+                MapComponent component = getComponentByPosition(new Position(j, i));
                 if (component instanceof Wall) {
                     System.out.print("#"); // Muro
                 } else if (component instanceof BigDot) {
                     System.out.print("O"); // Pallino grande
-                }else if (component instanceof SmallDot) {
+                } else if (component instanceof SmallDot) {
                     System.out.print("."); // Pallino piccolo
                 } else {
                     System.out.print(" "); // Spazio vuoto
