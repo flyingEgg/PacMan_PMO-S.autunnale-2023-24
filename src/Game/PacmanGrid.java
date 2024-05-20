@@ -119,8 +119,12 @@ public class PacmanGrid extends Grid {
                 MapComponent component = getComponent(new Position(j, i));
                 if (component instanceof Wall) {
                     System.out.print("#"); // Muro
+                } else if (component instanceof BigDot) {
+                    System.out.print("O"); // Pallino grande
+                }else if (component instanceof SmallDot) {
+                    System.out.print("."); // Pallino piccolo
                 } else {
-                    System.out.print("+"); // Spazio vuoto
+                    System.out.print(" "); // Spazio vuoto
                 }
             }
             System.out.println(); // Vai a capo alla fine di ogni riga
