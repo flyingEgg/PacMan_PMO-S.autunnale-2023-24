@@ -2,7 +2,6 @@ package Game;
 
 import API.GameState;
 import API.MapComponent;
-import Game.Composite.PacmanGrid;
 
 public class PacmanGame {
     private GameState state;

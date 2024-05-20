@@ -1,7 +1,10 @@
-package Game.Composite;
+package Game;
 
 import API.MapComponent;
-import Game.Grid;
+import Game.Composite.BigDot;
+import Game.Composite.Position;
+import Game.Composite.SmallDot;
+import Game.Composite.Wall;
 
 public class PacmanGrid extends Grid {
     private static final int COLUMNS = 21; // Numero di colonne della griglia
