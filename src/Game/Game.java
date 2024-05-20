@@ -7,7 +7,7 @@ public class Game {
     private boolean onGoing;
     private boolean paused;
     private boolean gameOver;
-    private int score;
+    private int score, lives;
     private Pacman pacman;
     private Ghost ghost1, ghost2, ghost3, ghost4;
 
@@ -16,7 +16,7 @@ public class Game {
         this.onGoing = false;
         this.paused = false;
         this.gameOver = false;
-        this.score = 90;
+        this.lives = 3;
     }
 
     public void startStopGame(boolean onGoing) {

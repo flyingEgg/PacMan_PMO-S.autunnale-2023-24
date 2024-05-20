@@ -27,6 +27,5 @@ public class Pacman extends AbstractEntity {
     public void setPosition(Position position){
         this.x = position.getX();
         this.y = position.getY();
-
     }
 }
