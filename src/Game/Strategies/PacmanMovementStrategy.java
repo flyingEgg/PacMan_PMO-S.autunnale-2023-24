@@ -2,7 +2,7 @@ package Game.Strategies;
 
 import API.MovementStrategy;
 import Entities.Pacman;
-import Game.Composite.Position;
+import Game.Position;
 import Game.Grid;
 
 public class PacmanMovementStrategy implements MovementStrategy<Pacman> {

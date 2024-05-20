@@ -2,6 +2,7 @@ package Game.Composite;
 
 import API.MapComponent;
 import Game.Game;
+import Game.Position;
 
 public class Fruit implements MapComponent {
     private Position position;

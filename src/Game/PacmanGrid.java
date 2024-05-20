@@ -2,7 +2,6 @@ package Game;
 
 import API.MapComponent;
 import Game.Composite.BigDot;
-import Game.Composite.Position;
 import Game.Composite.SmallDot;
 import Game.Composite.Wall;
 

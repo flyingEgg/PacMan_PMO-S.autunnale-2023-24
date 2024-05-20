@@ -2,7 +2,7 @@ package Game.Strategies;
 
 import API.MovementStrategy;
 import Entities.Ghost;
-import Game.Composite.Position;
+import Game.Position;
 import Game.Grid;
 
 public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {

@@ -1,4 +1,4 @@
-package Game.Composite;
+package Game;
 
 public class Position {
     private int x;

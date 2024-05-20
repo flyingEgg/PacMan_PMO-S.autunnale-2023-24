@@ -1,6 +1,7 @@
 package Game.Composite;
 
 import API.MapComponent;
+import Game.Position;
 
 public class Wall implements MapComponent {
     private Position position;

@@ -1,6 +1,6 @@
 package Entities;
 
-import Game.Composite.Position;
+import Game.Position;
 
 public class Pacman extends AbstractEntity {
 

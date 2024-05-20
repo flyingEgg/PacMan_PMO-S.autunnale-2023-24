@@ -2,6 +2,7 @@ package Game.Composite;
 
 import API.MapComponent;
 import Game.Game;
+import Game.Position;
 
 public abstract class Dot implements MapComponent {
     protected Position position;

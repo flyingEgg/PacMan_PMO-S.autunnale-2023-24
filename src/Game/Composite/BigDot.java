@@ -1,9 +1,9 @@
 package Game.Composite;
 
 import Game.Game;
+import Game.Position;
 
 public class BigDot extends Dot {
-    private Position position;
     private boolean eaten;
 
     public BigDot(Position position) {

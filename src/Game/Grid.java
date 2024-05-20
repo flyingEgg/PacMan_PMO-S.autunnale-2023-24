@@ -1,7 +1,6 @@
 package Game;
 
 import API.MapComponent;
-import Game.Composite.Position;
 
 public class Grid {
     private final MapComponent[][] grid;
