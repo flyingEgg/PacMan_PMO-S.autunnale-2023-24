@@ -18,6 +18,6 @@ public class Wall implements MapComponent {
 
     @Override
     public Position getPosition() {
-        return this.position;
+        return position;
     }
 }
