@@ -12,7 +12,7 @@ public class SmallDot extends Dot {
     }
 
     @Override
-    public void render() {
+    public void draw() {
         // Logica specifica per disegnare un puntino piccolo sulla mappa di gioco
         System.out.println("Rendering small dot at position: " + getPosition());
     }

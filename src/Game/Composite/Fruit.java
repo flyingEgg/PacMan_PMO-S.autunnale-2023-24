@@ -16,7 +16,7 @@ public class Fruit implements MapComponent {
     }
 
     @Override
-    public void render() {
+    public void draw() {
         System.out.println("Rendering fruit (" + type + ") at position: " + position);
         // Logica per disegnare il frutto sulla mappa di gioco
     }

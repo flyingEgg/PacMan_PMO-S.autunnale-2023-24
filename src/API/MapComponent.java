@@ -3,7 +3,7 @@ package API;
 import Game.Position;
 
 public interface MapComponent {
-    void render();
+    void draw();
 
     Position getPosition();
 }

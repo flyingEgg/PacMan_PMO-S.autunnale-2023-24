@@ -16,7 +16,7 @@ public abstract class Dot implements MapComponent {
     }
 
     @Override
-    public abstract void render();
+    public abstract void draw();
 
     public void collect(Game game) {
         // Logica generica per raccogliere un punto
