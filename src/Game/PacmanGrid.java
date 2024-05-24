@@ -2,6 +2,7 @@ package Game;
 
 import API.MapComponent;
 import Game.Composite.BigDot;
+import Game.Composite.EmptySpace;
 import Game.Composite.SmallDot;
 import Game.Composite.Wall;
 
@@ -57,7 +58,7 @@ public class PacmanGrid extends Grid {
             for (int j = 0; j < COLUMNS; j++) {
                 Position currentPosition = new Position(j, i);
                 // Imposta uno spazio vuoto in ogni cella della griglia
-                addComponent(null);
+                /*addComponent(new EmptySpace());*/
                 // Escludi le posizioni specificate
                 if (!isExcludedPosition(currentPosition)) {
                     addComponent(new SmallDot(currentPosition));
