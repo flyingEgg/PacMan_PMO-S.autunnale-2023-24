@@ -19,6 +19,7 @@ public class Pacman extends AbstractEntity {
         System.out.println("Pacman disegnato alla posizione: "+x+", "+y);
     }
 
+    @Override
     public Position getPosition() {
         return new Position(getX(), getY());
     }

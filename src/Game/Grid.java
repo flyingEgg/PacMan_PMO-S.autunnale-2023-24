@@ -23,6 +23,7 @@ public class Grid {
         }
     }
 
+    // Questo metodo rimuove i componenti e le entities
     public void removeComponent(MapComponent component) {
         Position position = component.getPosition();
         int x = position.getX();

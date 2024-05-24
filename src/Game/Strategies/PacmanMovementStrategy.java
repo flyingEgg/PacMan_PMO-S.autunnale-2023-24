@@ -28,7 +28,7 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
         Position newPosition = new Position(newX, newY);
 
         if (isValidPosition(newPosition)) {
-            grid.removeComponent(pacman.getPosition()); // rimuove pacman dalla posizione attuale
+            grid.removeComponent(pacman); // rimuove pacman dalla posizione attuale
             pacman.setPosition(newPosition); // registra una nuova posizione per pacman
 
             pacman.draw(); // disegna pacman nella nuova posizione

@@ -1,7 +1,9 @@
 package Entities;
 
 
-public abstract class AbstractEntity {
+import API.MapComponent;
+
+public abstract class AbstractEntity implements MapComponent {
     protected int x;
     protected int y;
 
@@ -27,5 +29,5 @@ public abstract class AbstractEntity {
     }
 
     protected abstract void move(int dx, int dy);
-    protected abstract void draw();
+    public abstract void draw();
 }
