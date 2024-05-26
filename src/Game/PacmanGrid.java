@@ -1,10 +1,13 @@
 package Game;
 
 import API.MapComponent;
+import Entities.Pacman;
 import Game.Composite.BigDot;
 import Game.Composite.EmptySpace;
 import Game.Composite.SmallDot;
 import Game.Composite.Wall;
+
+import java.util.Arrays;
 
 public class PacmanGrid extends Grid {
     private static final int COLUMNS = 21; // Numero di colonne della griglia
@@ -58,7 +61,7 @@ public class PacmanGrid extends Grid {
             for (int j = 0; j < COLUMNS; j++) {
                 Position currentPosition = new Position(j, i);
                 // Imposta uno spazio vuoto in ogni cella della griglia
-                /*addComponent(new EmptySpace());*/
+                addComponent(new EmptySpace(currentPosition));
                 // Escludi le posizioni specificate
                 if (!isExcludedPosition(currentPosition)) {
                     addComponent(new SmallDot(currentPosition));
@@ -76,6 +79,10 @@ public class PacmanGrid extends Grid {
 
         // Aggiungi muri alla griglia
         addWallsToGrid();
+
+        // Aggiungi PacMan alla griglia
+        Pacman pacman = new Pacman(11, 9);
+        addComponent(pacman);
     }
 
     private boolean isExcludedPosition(Position position) {
@@ -106,9 +113,8 @@ public class PacmanGrid extends Grid {
 
     private void addWallsToGrid() {
         // Aggiungi i muri alla griglia
-        for (int[] position : WALL_POSITIONS) {
-            addComponent(new Wall(new Position(position[0], position[1])));
-        }
+        Arrays.stream(WALL_POSITIONS).forEach(position ->
+                                      addComponent(new Wall(new Position(position[0], position[1]))));
 
         // Posizione di partenza dei fantasmi
         // addComponent(new GhostStartPoint(), new Position(9, 9));
@@ -118,15 +124,7 @@ public class PacmanGrid extends Grid {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 MapComponent component = getComponentByPosition(new Position(j, i));
-                if (component instanceof Wall) {
-                    System.out.print("#"); // Muro
-                } else if (component instanceof BigDot) {
-                    System.out.print("O"); // Pallino grande
-                } else if (component instanceof SmallDot) {
-                    System.out.print("."); // Pallino piccolo
-                } else {
-                    System.out.print(" "); // Spazio vuoto
-                }
+                component.draw();
             }
             System.out.println(); // Vai a capo alla fine di ogni riga
         }
