@@ -17,7 +17,7 @@ public class Grid {
         int x = position.getX();
         int y = position.getY();
         if (isValidPosition(x, y)) {
-            grid[x][y] = component;
+            grid[y][x] = component;
         } else {
             System.out.println("Invalid position: (" + x + ", " + y + ")");
         }
@@ -29,21 +29,9 @@ public class Grid {
         int x = position.getX();
         int y = position.getY();
         if (isValidPosition(x, y)) {
-            grid[x][y] = null;
+            grid[y][x] = null;
         } else {
             System.out.println("Invalid position: (" + x + ", " + y + ")");
-        }
-    }
-
-    public MapComponent getComponent(MapComponent component) {
-        Position position = component.getPosition();
-        int x = position.getX();
-        int y = position.getY();
-        if (isValidPosition(x, y)) {
-            return grid[x][y];
-        } else {
-            System.out.println("Invalid position: (" + x + ", " + y + ")");
-            return null;
         }
     }
 

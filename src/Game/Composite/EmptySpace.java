@@ -12,7 +12,6 @@ public class EmptySpace implements MapComponent {
 
     @Override
     public void draw() {
-        // Logica di rendering per il muro (es. stampa a console o disegno su GUI)
         System.out.print(" ");
     }
 
