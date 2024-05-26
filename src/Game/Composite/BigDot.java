@@ -1,5 +1,7 @@
 package Game.Composite;
 
+import Entities.Ghost;
+import Entities.Pacman;
 import Game.Game;
 import Game.Position;
 
@@ -19,11 +21,16 @@ public class BigDot extends Dot {
 
     @Override
     public void collect(Game game) {
-        // Aggiorna lo stato di Pac-Man per consentire di mangiare i fantasmi
-        // DA SCOMMENTARE player.setSuperMode(true);
+        // Imposta Pacman in modalità super
+        Pacman pacman = game.getPacman();
+        pacman.setSuperMode(true);
+
+        // Fai scappare i fantasmi
+        for (Ghost ghost : game.getGhosts()) {
+            ghost.runAway();
+        }
+
         System.out.println("Collecting big dot at position: " + getPosition());
-        // Altra logica specifica per la raccolta di un puntino grande dalla mappa di
-        // gioco
         this.eaten = true;
     }
 

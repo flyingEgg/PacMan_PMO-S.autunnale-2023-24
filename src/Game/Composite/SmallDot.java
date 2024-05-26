@@ -19,10 +19,14 @@ public class SmallDot extends Dot {
 
     @Override
     public void collect(Game game) {
+        if (game == null) {
+            throw new IllegalArgumentException("Game cannot be null");
+        }
         // Logica generica per raccogliere un punto
         System.out.println("Collecting small dot at position: " + getPosition());
         game.incrementScore(points); // Incrementa il punteggio solo per uno small dot
-        System.out.println("Score updated: " + game.getScore()); // Stampa il punteggio aggiornato
+        System.out.println(
+                "Score updated to: " + game.getScore() + " after collecting small dot at position: " + getPosition());
         this.eaten = true;
     }
 
@@ -34,5 +38,10 @@ public class SmallDot extends Dot {
     @Override
     public boolean isEaten() {
         return eaten;
+    }
+
+    @Override
+    public String toString() {
+        return "SmallDot at " + position + " [eaten=" + eaten + "]";
     }
 }

@@ -1,5 +1,7 @@
 package Game;
 
+import java.util.List;
+
 import Entities.Ghost;
 import Entities.Pacman;
 
@@ -9,14 +11,16 @@ public class Game {
     private boolean gameOver;
     private int score, lives;
     private Pacman pacman;
-    private Ghost ghost1, ghost2, ghost3, ghost4;
+    private List<Ghost> ghosts;
 
-
-    public Game() {
+    public Game(Pacman pacman, List<Ghost> ghosts) {
         this.onGoing = false;
         this.paused = false;
         this.gameOver = false;
         this.lives = 3;
+        this.pacman = pacman;
+        this.ghosts = ghosts;
+        this.score = 0;
     }
 
     public void startStopGame(boolean onGoing) {
@@ -30,10 +34,10 @@ public class Game {
         this.onGoing = !paused;
     }
 
-    public void setGameOver(boolean gameover) {
+    public void setGameOver(boolean gameOver) {
         this.onGoing = false;
         this.paused = false;
-        this.gameOver = gameover;
+        this.gameOver = gameOver;
     }
 
     public boolean isOnGoing() {
@@ -56,8 +60,19 @@ public class Game {
         return score;
     }
 
-    public void resetScore(){
+    public void resetScore() {
         this.score = 0;
+    }
+
+    public void loseLife() {
+        lives--;
+        if (lives <= 0) {
+            setGameOver(true);
+        }
+    }
+
+    public int getLives() {
+        return lives;
     }
 
     public void displayMessage() {
@@ -67,6 +82,23 @@ public class Game {
             System.out.println("Partita in pausa");
         } else {
             System.out.println("Partita in corso");
+        }
+    }
+
+    public Pacman getPacman() {
+        return pacman;
+    }
+
+    public List<Ghost> getGhosts() {
+        return ghosts;
+    }
+
+    public Ghost getGhost(int index) {
+        if (index >= 0 && index < ghosts.size()) {
+            return ghosts.get(index);
+        } else {
+            System.out.println("Indice fantasma non valido: " + index);
+            return null;
         }
     }
 }

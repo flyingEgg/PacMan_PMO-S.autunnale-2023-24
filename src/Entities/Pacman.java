@@ -1,11 +1,11 @@
 package Entities;
 
-import Game.Position;
-
 public class Pacman extends AbstractEntity {
+    private boolean superMode;
 
-    public Pacman(int x, int y){
+    public Pacman(int x, int y) {
         super(x, y);
+        this.superMode = false;
     }
 
     @Override
@@ -16,16 +16,15 @@ public class Pacman extends AbstractEntity {
 
     @Override
     public void draw() {
-        System.out.println("Pacman disegnato alla posizione: "+x+", "+y);
+        System.out.println("Pacman disegnato alla posizione: " + x + ", " + y);
     }
 
-    @Override
-    public Position getPosition() {
-        return new Position(getX(), getY());
+    public void setSuperMode(boolean superMode) {
+        this.superMode = superMode;
+        // Puoi aggiungere logica per impostare un timer per il superMode se necessario
     }
 
-    public void setPosition(Position position){
-        this.x = position.getX();
-        this.y = position.getY();
+    public boolean isSuperMode() {
+        return superMode;
     }
 }

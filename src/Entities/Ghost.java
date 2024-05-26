@@ -1,9 +1,7 @@
 package Entities;
 
-import Game.Position;
-
-public class Ghost extends AbstractEntity{
-    public Ghost(int x, int y){
+public class Ghost extends AbstractEntity {
+    public Ghost(int x, int y) {
         super(x, y);
     }
 
@@ -15,16 +13,12 @@ public class Ghost extends AbstractEntity{
 
     @Override
     public void draw() {
-        System.out.println("Fantasma disegnato alla posizione: "+x+", "+y);
+        System.out.println("Fantasma disegnato alla posizione: " + x + ", " + y);
     }
 
-    public Position getPosition() {
-        return new Position(getX(), getY());
-    }
-
-    public void setPosition(Position position){
-        this.x = position.getX();
-        this.y = position.getY();
-
+    public void runAway() {
+        // Logica per far scappare il fantasma
+        System.out.println("Fantasma alla posizione " + getPosition() + " sta scappando!");
+        // Aggiungere logica per determinare come il fantasma scappa
     }
 }

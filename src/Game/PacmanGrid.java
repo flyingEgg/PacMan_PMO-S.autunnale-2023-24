@@ -113,8 +113,8 @@ public class PacmanGrid extends Grid {
 
     private void addWallsToGrid() {
         // Aggiungi i muri alla griglia
-        Arrays.stream(WALL_POSITIONS).forEach(position ->
-                                      addComponent(new Wall(new Position(position[0], position[1]))));
+        Arrays.stream(WALL_POSITIONS)
+                .forEach(position -> addComponent(new Wall(new Position(position[0], position[1]))));
 
         // Posizione di partenza dei fantasmi
         // addComponent(new GhostStartPoint(), new Position(9, 9));
