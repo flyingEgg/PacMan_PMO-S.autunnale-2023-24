@@ -30,7 +30,7 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
         if (isValidPosition(newPosition)) {
             grid.removeComponent(pacman); // rimuove pacman dalla posizione attuale
             pacman.setPosition(newPosition); // registra una nuova posizione per pacman
-
+            grid.addComponent(pacman);
             pacman.draw(); // disegna pacman nella nuova posizione
         } else {
             System.out.println("Movimento non valido");
