@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class Test {
 
     public static void main(String[] args) {
-        Game partita = new Game();
+        Game partita = new Game(null, null);
         Scanner reader = new Scanner(System.in);
         mainMenu(partita, reader);
     }
@@ -30,7 +30,7 @@ public class Test {
             System.out.println("3. Test Gameover");
             System.out.println("4. Chiudere");
 
-            try{
+            try {
                 choice = reader.nextInt();
 
                 switch (choice) {
@@ -41,7 +41,7 @@ public class Test {
 
                     default -> System.out.println("Scelta inesistente");
                 }
-            }catch (InputMismatchException incorrect){
+            } catch (InputMismatchException incorrect) {
                 System.out.println("Scelta non valida");
                 reader.nextLine();
             }
@@ -55,6 +55,7 @@ public class Test {
         String command;
 
         state.enterState();
+        System.out.println("Inserire x per terminare la partita");
         command = pad.next();
         while (!command.equals("p") && !command.equals("x")) {
             command = pad.next();
@@ -62,7 +63,7 @@ public class Test {
         if (command.equals("p")) {
             state.exitState();
             testGamePause(p, pad);
-        } else{
+        } else {
             state.exitState();
             testGameOver(p, pad);
         }
@@ -74,12 +75,12 @@ public class Test {
 
         // Entrata nello stato di Game Over
         state.enterState();
-        do{
-            System.out.println("1. Si");          // riprova
-            System.out.println("2. Menu (no)");   // vai al menu
+        do {
+            System.out.println("1. Si"); // riprova
+            System.out.println("2. Menu (no)"); // vai al menu
 
             choice = read.nextInt();
-            switch (choice){
+            switch (choice) {
                 case 1 -> {
                     state.exitState();
                     testGameOnGoing(p, read);
@@ -90,7 +91,7 @@ public class Test {
                 }
                 default -> System.out.println("Scelta inesistente");
             }
-        }while (choice != 2);
+        } while (choice != 2);
     }
 
     private static void testGamePause(Game p, Scanner read) {

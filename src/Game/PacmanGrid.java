@@ -1,6 +1,6 @@
 package Game;
 
-import API.MapComponent;
+import Entities.Ghost;
 import Entities.Pacman;
 import Game.Composite.BigDot;
 import Game.Composite.EmptySpace;
@@ -8,6 +8,8 @@ import Game.Composite.SmallDot;
 import Game.Composite.Wall;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PacmanGrid extends Grid {
     private static final int COLUMNS = 21; // Numero di colonne della griglia
@@ -50,83 +52,103 @@ public class PacmanGrid extends Grid {
        // unlato all'altro
        // tocca liberare i fantasmi da { 8, 9 }
 
+    // Posizioni dei Big Dot
+    private static final int[][] BIG_DOT_POSITIONS = {
+            { 1, 1 }, { 19, 1 }, { 1, 17 }, { 19, 17 }
+    };
+
+    // Posizione di partenza di Pac-Man
+    private static final Position PACMAN_START_POSITION = new Position(11, 9);
+
+    // Posizioni di spawn dei fantasmi
+    private static final Position[] GHOST_SPAWN_POSITIONS = {
+            new Position(9, 9), new Position(9, 8), new Position(9, 10)
+    };
+
+    // Altre posizioni escluse
+    private static final int[][] OTHER_EXCLUDED_POSITIONS = {
+            { 9, 1 }, { 9, 2 }, { 9, 3 }, { 9, 15 }, { 9, 16 }, { 9, 17 }
+    };
+
+    private Set<Position> excludedPositions;
+
     public PacmanGrid() {
         super(COLUMNS, ROWS);
+        initializeExcludedPositions();
         initializeMap();
     }
 
+    private void initializeExcludedPositions() {
+        excludedPositions = new HashSet<>();
+
+        // Aggiungi posizioni dei muri
+        for (int[] pos : WALL_POSITIONS) {
+            excludedPositions.add(new Position(pos[0], pos[1]));
+        }
+
+        // Aggiungi posizioni dei Big Dot
+        for (int[] pos : BIG_DOT_POSITIONS) {
+            excludedPositions.add(new Position(pos[0], pos[1]));
+        }
+
+        // Aggiungi posizione di Pac-Man
+        excludedPositions.add(PACMAN_START_POSITION);
+
+        // Aggiungi posizioni di spawn dei fantasmi
+        excludedPositions.addAll(Arrays.asList(GHOST_SPAWN_POSITIONS));
+
+        // Aggiungi altre posizioni escluse
+        for (int[] pos : OTHER_EXCLUDED_POSITIONS) {
+            excludedPositions.add(new Position(pos[0], pos[1]));
+        }
+    }
+
     private void initializeMap() {
-        // Inizializza la griglia con spazi vuoti
+        // Inizializza la griglia con spazi vuoti e Small Dot
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 Position currentPosition = new Position(j, i);
-                // Imposta uno spazio vuoto in ogni cella della griglia
                 addComponent(new EmptySpace(currentPosition));
-                // Escludi le posizioni specificate
-                if (!isExcludedPosition(currentPosition)) {
+                if (!excludedPositions.contains(currentPosition)) {
                     addComponent(new SmallDot(currentPosition));
                 }
             }
         }
 
-        // Aggiungi i big dot alla griglia nelle posizioni specificate
-        addComponent(new BigDot(new Position(1, 1)));
-        addComponent(new BigDot(new Position(19, 1)));
-        addComponent(new BigDot(new Position(1, 17)));
-        addComponent(new BigDot(new Position(19, 17)));
-        // credo sia da fixare perchè addcomponent richiede una position ma i dot ne
-        // hanno anche una propria nel costruttore
-
-        // Aggiungi muri alla griglia
         addWallsToGrid();
-
-        // Aggiungi PacMan alla griglia
-        Pacman pacman = new Pacman(11, 9);
-        addComponent(pacman);
-    }
-
-    private boolean isExcludedPosition(Position position) {
-        int x = position.getX();
-        int y = position.getY();
-
-        // Check se la posizione è esclusa per essere vuota o per altre ragioni
-        // specifiche
-        if (x == 11 && y == 9) { // Escludi la posizione di partenza di Pac-Man
-            return true;
-        }
-
-        // Escludi altre posizioni specifiche
-        int[][] excludedPositions = {
-                { 9, 0 }, { 9, 1 }, { 9, 2 }, { 9, 3 }, { 9, 15 }, { 9, 16 }, { 9, 17 }, { 9, 18 }, // Posizioni muro
-                                                                                                    // fantasmi
-                { 9, 8 }, { 9, 9 }, { 9, 10 } // Posizioni di spawn dei fantasmi
-        };
-
-        for (int[] excluded : excludedPositions) {
-            if (x == excluded[0] && y == excluded[1]) {
-                return true;
-            }
-        }
-
-        return false;
+        addPacmanToGrid();
+        addGhostsToGrid();
+        addBigDotsToGrid();
     }
 
     private void addWallsToGrid() {
-        // Aggiungi i muri alla griglia
         Arrays.stream(WALL_POSITIONS)
-                .forEach(position -> addComponent(new Wall(new Position(position[0], position[1]))));
+                .map(pos -> new Wall(new Position(pos[0], pos[1])))
+                .forEach(this::addComponent);
+    }
 
-        // Posizione di partenza dei fantasmi
-        // addComponent(new GhostStartPoint(), new Position(9, 9));
+    private void addPacmanToGrid() {
+        addComponent(new Pacman(PACMAN_START_POSITION.getX(), PACMAN_START_POSITION.getY()));
+    }
+
+    private void addGhostsToGrid() {
+        Arrays.stream(GHOST_SPAWN_POSITIONS)
+                .map(pos -> new Ghost(pos.getX(), pos.getY()))
+                .forEach(this::addComponent);
+    }
+
+    private void addBigDotsToGrid() {
+        Arrays.stream(BIG_DOT_POSITIONS)
+                .map(pos -> new BigDot(new Position(pos[0], pos[1])))
+                .forEach(this::addComponent);
     }
 
     public void printGrid() {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
-                MapComponent component = getComponentByPosition(new Position(j, i));
-                component.draw();
+                getComponentByPosition(new Position(j, i)).draw();
             }
-            System.out.println(); // Vai a capo alla fine di ogni riga
+            System.out.println(); // A capo alla fine di ogni riga
         }
     }
 }
