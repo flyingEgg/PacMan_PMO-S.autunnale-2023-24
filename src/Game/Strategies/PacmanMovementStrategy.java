@@ -2,6 +2,7 @@ package Game.Strategies;
 
 import API.MovementStrategy;
 import Entities.Pacman;
+import Exceptions.IllegalEntityMovementException;
 import Game.Position;
 import Game.Grid;
 
@@ -15,7 +16,7 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
     }
 
     @Override
-    public void move(Direction direction) {
+    public void move(Direction direction){
         int newX = pacman.getX(),
                 newY = pacman.getY();
         switch (direction) {
@@ -33,7 +34,7 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
             grid.addComponent(pacman);
             pacman.draw(); // disegna pacman nella nuova posizione
         } else {
-            System.out.println("Movimento non valido");
+            throw new IllegalEntityMovementException("Invalid movement for Pacman");
         }
     }
 
