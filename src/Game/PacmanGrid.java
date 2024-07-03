@@ -14,6 +14,7 @@ import java.util.Set;
 public class PacmanGrid extends Grid {
     private static final int COLUMNS = 21; // Numero di colonne della griglia
     private static final int ROWS = 19; // Numero di righe della griglia
+    private Set<Position> excludedPositions;
 
     // Posizioni dei muri
     private static final int[][] WALL_POSITIONS = {
@@ -70,8 +71,6 @@ public class PacmanGrid extends Grid {
             { 9, 1 }, { 9, 2 }, { 9, 3 }, { 9, 15 }, { 9, 16 }, { 9, 17 }
     };
 
-    private Set<Position> excludedPositions;
-
     public PacmanGrid() {
         super(COLUMNS, ROWS);
         initializeExcludedPositions();
@@ -82,14 +81,12 @@ public class PacmanGrid extends Grid {
         excludedPositions = new HashSet<>();
 
         // Aggiungi posizioni dei muri
-        for (int[] pos : WALL_POSITIONS) {
-            excludedPositions.add(new Position(pos[0], pos[1]));
-        }
+        addPositions(WALL_POSITIONS);
+
 
         // Aggiungi posizioni dei Big Dot
-        for (int[] pos : BIG_DOT_POSITIONS) {
-            excludedPositions.add(new Position(pos[0], pos[1]));
-        }
+        addPositions(BIG_DOT_POSITIONS);
+
 
         // Aggiungi posizione di Pac-Man
         excludedPositions.add(PACMAN_START_POSITION);
@@ -98,9 +95,8 @@ public class PacmanGrid extends Grid {
         excludedPositions.addAll(Arrays.asList(GHOST_SPAWN_POSITIONS));
 
         // Aggiungi altre posizioni escluse
-        for (int[] pos : OTHER_EXCLUDED_POSITIONS) {
-            excludedPositions.add(new Position(pos[0], pos[1]));
-        }
+        addPositions(OTHER_EXCLUDED_POSITIONS);
+
     }
 
     private void initializeMap() {
@@ -150,5 +146,9 @@ public class PacmanGrid extends Grid {
             }
             System.out.println(); // A capo alla fine di ogni riga
         }
+    }
+
+    private void addPositions(int[][] positionsArray){
+        Arrays.stream(positionsArray).forEach(pos -> excludedPositions.add(new Position(pos[0], pos[1])));
     }
 }
