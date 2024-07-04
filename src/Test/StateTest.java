@@ -4,14 +4,17 @@
 *   tre stati di gioco a seconda della scelta.
 */
 
-package Game.State;
+package Test;
 
 import Game.Game;
+import Game.State.GameOnGoing;
+import Game.State.GameOver;
+import Game.State.GamePause;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Test {
+public class StateTest {
 
     public static void main(String[] args) {
         Game partita = new Game(null, null);
