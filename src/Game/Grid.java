@@ -28,6 +28,7 @@ public class Grid {
         Position position = component.getPosition();
         int x = position.getX();
         int y = position.getY();
+
         if (isValidPosition(x, y)) {
             grid[y][x] = null;
         } else {
@@ -38,8 +39,9 @@ public class Grid {
     public MapComponent getComponentByPosition(Position position) {
         int x = position.getX();
         int y = position.getY();
+
         if (isValidPosition(x, y)) {
-            return grid[x][y];
+            return grid[y][x];
         } else {
             System.out.println("Invalid position: (" + x + ", " + y + ")");
             return null;
