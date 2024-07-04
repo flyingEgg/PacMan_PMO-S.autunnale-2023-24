@@ -1,5 +1,6 @@
 package Game;
 
+import API.MapComponent;
 import Entities.Ghost;
 import Entities.Pacman;
 import Game.Composite.BigDot;
@@ -140,9 +141,15 @@ public class PacmanGrid extends Grid {
     }
 
     public void printGrid() {
+        MapComponent component;
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
-                getComponentByPosition(new Position(j, i)).draw();
+                component = getComponentByPosition(new Position(j, i));
+                if(component != null){
+                    component.draw();
+                }else{
+                    System.out.println(" ");
+                }
             }
             System.out.println(); // A capo alla fine di ogni riga
         }
