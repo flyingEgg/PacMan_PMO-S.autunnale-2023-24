@@ -5,7 +5,7 @@ import Game.Game;
 import Game.Position;
 
 public abstract class Dot implements MapComponent {
-    protected Position position;
+    protected final Position position;
     protected boolean eaten;
     protected int points;
 
