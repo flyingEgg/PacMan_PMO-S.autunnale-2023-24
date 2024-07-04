@@ -16,7 +16,7 @@ public class Pacman extends AbstractEntity {
 
     @Override
     public void draw() {
-        System.out.println("Pacman disegnato alla posizione: " + x + ", " + y);
+        System.out.println("PACMAN: " + getPosition());
     }
 
     public void setSuperMode(boolean superMode) {

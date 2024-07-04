@@ -4,7 +4,7 @@ import API.MapComponent;
 import Game.Position;
 
 public class Wall implements MapComponent {
-    private Position position;
+    private final Position position;
 
     public Wall(Position position) {
         this.position = position;
@@ -13,7 +13,7 @@ public class Wall implements MapComponent {
     @Override
     public void draw() {
         // Logica di rendering per il muro (es. stampa a console o disegno su GUI)
-        System.out.print("#");
+        System.out.println("WALL: " + getPosition());
     }
 
     @Override

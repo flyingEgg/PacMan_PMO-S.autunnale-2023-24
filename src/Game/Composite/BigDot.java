@@ -16,7 +16,7 @@ public class BigDot extends Dot {
     @Override
     public void draw() {
         // Logica specifica per disegnare un puntino grande sulla mappa di gioco
-        System.out.println("Rendering big dot at position: " + getPosition());
+        System.out.println("BIG_DOT: " + getPosition());
     }
 
     @Override
