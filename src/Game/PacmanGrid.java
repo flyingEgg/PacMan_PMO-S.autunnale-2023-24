@@ -10,6 +10,7 @@ import Game.Composite.Wall;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public class PacmanGrid extends Grid {
@@ -141,12 +142,13 @@ public class PacmanGrid extends Grid {
     }
 
     public void printGrid() {
-        MapComponent component;
+        Optional<MapComponent> component;
+
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 component = getComponentByPosition(new Position(j, i));
-                if(component != null){
-                    component.draw();
+                if(component.isPresent()){
+                    component.get().draw();
                 }else{
                     System.out.println(" ");
                 }

@@ -9,14 +9,14 @@ import Game.PacmanGrid;
 import Game.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
-import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JUnitGridTest {
     private PacmanGrid pacmanGrid;
+
 
     @BeforeEach
     public void setUp(){
@@ -33,8 +33,10 @@ public class JUnitGridTest {
     @Test
     public void testPacmanPosition(){
         Position pacmanStartPosition = new Position(11, 9);
-        MapComponent component = pacmanGrid.getComponentByPosition(pacmanStartPosition);
-        assertTrue(component instanceof Pacman, "Expected Pacman at position "+pacmanStartPosition);
+        Optional<MapComponent> component = pacmanGrid.getComponentByPosition(pacmanStartPosition);
+
+        assertTrue(component.isPresent());
+        assertTrue(component.get() instanceof Pacman, "Expected Pacman at position "+pacmanStartPosition);
     }
 
     @Test
@@ -44,8 +46,10 @@ public class JUnitGridTest {
         };
 
         Arrays.stream(wallPositions).forEach(pos -> {
-            MapComponent component = pacmanGrid.getComponentByPosition(new Position(pos[0], pos[1]));
-            assertTrue(component instanceof Wall, "Expected a Wall at position " + pos[0]+", "+pos[1]);
+            Optional<MapComponent> component = pacmanGrid.getComponentByPosition(new Position(pos[0], pos[1]));
+
+            assertTrue(component.isPresent());
+            assertTrue(component.get() instanceof Wall, "Expected a Wall at position " + pos[0]+", "+pos[1]);
         });
     }
 
@@ -56,16 +60,20 @@ public class JUnitGridTest {
         };
 
         Arrays.stream(bigDotPositions).forEach(pos -> {
-            MapComponent component = pacmanGrid.getComponentByPosition(new Position(pos[0], pos[1]));
-            assertTrue(component instanceof BigDot, "Expected a BigDot at position " + pos[0]+", "+pos[1]);
+            Optional<MapComponent> component = pacmanGrid.getComponentByPosition(new Position(pos[0], pos[1]));
+
+            assertTrue(component.isPresent());
+            assertTrue(component.get() instanceof BigDot, "Expected a BigDot at position " + pos[0]+", "+pos[1]);
         });
     }
 
     @Test
     public void testSmallDotPosition(){
         Position smallDotPosition = new Position(3, 17);
-        MapComponent component = pacmanGrid.getComponentByPosition(smallDotPosition);
-        assertTrue(component instanceof SmallDot, "Expected a BigDot at position" + smallDotPosition);
+        Optional<MapComponent> component = pacmanGrid.getComponentByPosition(smallDotPosition);
+
+        assertTrue(component.isPresent());
+        assertTrue(component.get() instanceof SmallDot, "Expected a BigDot at position" + smallDotPosition);
 
 
     }
