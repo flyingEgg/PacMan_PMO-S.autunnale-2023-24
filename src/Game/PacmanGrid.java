@@ -8,10 +8,7 @@ import Game.Composite.EmptySpace;
 import Game.Composite.SmallDot;
 import Game.Composite.Wall;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class PacmanGrid extends Grid {
     private static final int COLUMNS = 21; // Numero di colonne della griglia
