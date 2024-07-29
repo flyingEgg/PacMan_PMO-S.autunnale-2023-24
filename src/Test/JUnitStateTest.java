@@ -8,7 +8,7 @@ import Game.State.GameOnGoing;
 import Game.State.GameOver;
 import Game.State.GamePause;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 public class JUnitStateTest {
     private Game game;
