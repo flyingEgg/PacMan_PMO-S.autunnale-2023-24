@@ -3,16 +3,19 @@ package Game.Strategies;
 import API.MovementStrategy;
 import Entities.Pacman;
 import Exceptions.IllegalEntityMovementException;
+import Game.Game;
 import Game.Position;
 import Game.Grid;
 
 public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
     private final Pacman pacman;
     private final Grid grid;
+    private final Game game;
 
-    public PacmanMovementStrategy(Pacman p, Grid g) {
+    public PacmanMovementStrategy(Pacman p, Grid g, Game gam) {
         this.pacman = p;
         this.grid = g;
+        this.game = gam;
     }
 
     @Override
@@ -40,8 +43,18 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
 
     // Verifica che la posizione all'interno della griglia sia valida
     private boolean isValidPosition(Position position) {
-        int x = position.getX();
-        int y = position.getY();
+        int x = position.getX(), y = position.getY();
         return x >= 0 && x < grid.getColumns() && y >= 0 && y < grid.getRows(); // serve controllo per i muri
     }
+
+    private boolean isPacmanHitByGhost(Position pacPos){
+        return this.game.getGhosts().
+                stream().
+                anyMatch(ghost -> pacPos.equals(ghost.getPosition()));
+    }
+
+    private boolean isPacmanBumpingWall(Position pacPos){
+        return this.game.getGrid().getWallPositions().contains(pacPos);
+    }
+
 }

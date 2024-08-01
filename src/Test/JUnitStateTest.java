@@ -8,14 +8,14 @@ import Game.State.GameOnGoing;
 import Game.State.GameOver;
 import Game.State.GamePause;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class JUnitStateTest {
     private Game game;
 
     @BeforeEach
     public void setUp(){
-        game = new Game(null, null);
+        game = new Game();
     }
 
     @Test

@@ -8,7 +8,8 @@ import Game.Composite.Wall;
 import Game.PacmanGrid;
 import Game.Position;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -73,7 +74,7 @@ public class JUnitGridTest {
         Optional<MapComponent> component = pacmanGrid.getComponentByPosition(smallDotPosition);
 
         assertTrue(component.isPresent());
-        assertInstanceOf(SmallDot.class, component.get(), "Expected a BigDot at position" + smallDotPosition);
+        assertInstanceOf(SmallDot.class, component.get(), "Expected a SmallDot at position" + smallDotPosition);
 
 
     }
