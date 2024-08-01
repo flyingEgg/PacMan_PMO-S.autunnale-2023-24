@@ -1,7 +1,8 @@
 package Game;
 
 import API.MapComponent;
-import Entities.Ghost;
+import Entities.Ghost.Color;
+import Entities.Ghost.Ghost;
 import Entities.Pacman;
 import Game.Composite.BigDot;
 import Game.Composite.EmptySpace;
@@ -9,6 +10,8 @@ import Game.Composite.SmallDot;
 import Game.Composite.Wall;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class PacmanGrid extends Grid {
     private static final int COLUMNS = 21; // Numero di colonne della griglia
@@ -54,7 +57,7 @@ public class PacmanGrid extends Grid {
 
     // Posizioni dei Big Dot
     private static final int[][] BIG_DOT_POSITIONS = {
-            { 1, 1 }, { 19, 1 }, { 1, 17 }, { 19, 17 }
+            { 1, 1  }, { 19, 1 }, { 1, 17 }, { 19, 17 }
     };
 
     // Posizione di partenza di Pac-Man
@@ -74,6 +77,12 @@ public class PacmanGrid extends Grid {
         super(COLUMNS, ROWS);
         initializeExcludedPositions();
         initializeMap();
+    }
+
+    public Set<Position> getWallPositions(){
+        return Arrays.stream(WALL_POSITIONS).
+                map(p -> new Position(p[0], p[1])).
+                collect(Collectors.toSet());
     }
 
     private void initializeExcludedPositions() {
@@ -127,9 +136,11 @@ public class PacmanGrid extends Grid {
     }
 
     private void addGhostsToGrid() {
-        Arrays.stream(GHOST_SPAWN_POSITIONS)
-                .map(pos -> new Ghost(pos.getX(), pos.getY()))
-                .forEach(this::addComponent);
+        IntStream.range(0, GHOST_SPAWN_POSITIONS.length).mapToObj(i -> {
+            Position pos = GHOST_SPAWN_POSITIONS[i];
+            Color color = Color.values()[i % Color.values().length];
+            return new Ghost(pos.getX(), pos.getY(), color);
+        }).forEach(this::addComponent);
     }
 
     private void addBigDotsToGrid() {
