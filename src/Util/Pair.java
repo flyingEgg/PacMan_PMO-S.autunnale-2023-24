@@ -1,27 +1,27 @@
 package Util;
 
-public class Pair<X,Y> {
+public class Pair<A, B> {
 
-    private final X x;
-    private final Y y;
+    private final A a;
+    private final B b;
 
-    public Pair(X x, Y y) {
+    public Pair(A a, B b) {
         super();
-        this.x = x;
-        this.y = y;
+        this.a = a;
+        this.b = b;
     }
 
-    public X getX() {
-        return x;
+    public A getA() {
+        return a;
     }
 
-    public Y getY() {
-        return y;
+    public B getB() {
+        return b;
     }
 
     @Override
     public String toString() {
-        return "Utilities.Pair [x=" + x + ", y=" + y + "]";
+        return "Utilities.Pair [x=" + a + ", y=" + b + "]";
     }
 
 
