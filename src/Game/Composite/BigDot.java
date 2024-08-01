@@ -1,6 +1,6 @@
 package Game.Composite;
 
-import Entities.Ghost;
+import Entities.Ghost.Ghost;
 import Entities.Pacman;
 import Game.Game;
 import Game.Position;
