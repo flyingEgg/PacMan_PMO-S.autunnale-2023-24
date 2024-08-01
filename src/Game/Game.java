@@ -1,25 +1,30 @@
 package Game;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import Entities.Ghost;
+import Entities.Ghost.Ghost;
 import Entities.Pacman;
+
+import static Entities.Ghost.Color.*;
 
 public class Game {
     private boolean onGoing;
     private boolean paused;
     private boolean gameOver;
     private int score, lives;
+    private PacmanGrid grid;
     private Pacman pacman;
     private List<Ghost> ghosts;
 
-    public Game(Pacman pacman, List<Ghost> ghosts) {
+    public Game() {
         this.onGoing = false;
         this.paused = false;
         this.gameOver = false;
         this.lives = 3;
-        this.pacman = pacman;
-        this.ghosts = ghosts;
+        this.grid = new PacmanGrid();
+        this.pacman = new Pacman(11, 9);
+        this.ghosts = new ArrayList<>();
         this.score = 0;
     }
 
@@ -85,6 +90,10 @@ public class Game {
         }
     }
 
+    public PacmanGrid getGrid(){
+        return this.grid;
+    }
+
     public Pacman getPacman() {
         return pacman;
     }
@@ -100,5 +109,13 @@ public class Game {
             System.out.println("Indice fantasma non valido: " + index);
             return null;
         }
+    }
+
+    private void initialiseGhosts(){
+        this.ghosts.add(new Ghost(9, 8, RED));
+        this.ghosts.add(new Ghost(9, 9, ORANGE));
+        this.ghosts.add(new Ghost(9, 10, PINK));
+        this.ghosts.add(new Ghost(8, 9, BLUE));
+
     }
 }
