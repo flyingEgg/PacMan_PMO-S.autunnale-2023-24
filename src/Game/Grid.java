@@ -5,7 +5,7 @@ import API.MapComponent;
 import java.util.Optional;
 import Util.Pair;
 
-public class Grid {
+public abstract class Grid {
     private final MapComponent[][] grid;
 
     public Grid(int columns, int rows) {
@@ -20,7 +20,7 @@ public class Grid {
         Pair<Integer, Integer> coordinates = new Pair<>(position.getX(), position.getY());
 
         if (isValidPosition(coordinates)) {
-            grid[coordinates.getY()][coordinates.getX()] = component;
+            grid[coordinates.getB()][coordinates.getA()] = component;
         } else {
             System.out.println("Invalid position: ("+coordinates+")");
         }
@@ -35,7 +35,7 @@ public class Grid {
         int y = position.getY();
 
         if (isValidPosition(coordinates)) {
-            grid[coordinates.getY()][coordinates.getX()] = null;
+            grid[coordinates.getB()][coordinates.getA()] = null;
         } else {
             System.out.println("Invalid position: ("+coordinates+")");
         }
@@ -45,7 +45,7 @@ public class Grid {
         Pair<Integer, Integer> coordinates = new Pair<>(position.getX(), position.getY());
 
         if (isValidPosition(coordinates)) {
-            return Optional.ofNullable(grid[coordinates.getY()][coordinates.getX()]);
+            return Optional.ofNullable(grid[coordinates.getB()][coordinates.getA()]);
         } else {
             System.out.println("Invalid position: (" +coordinates+")");
             return Optional.empty();
@@ -61,6 +61,6 @@ public class Grid {
     }
 
     private boolean isValidPosition(Pair<Integer, Integer> coord) {
-        return coord.getX() >= 0 && coord.getX() < grid[0].length && coord.getY() >= 0 && coord.getY() < grid.length;
+        return coord.getA() >= 0 && coord.getA() < grid[0].length && coord.getB() >= 0 && coord.getB() < grid.length;
     }
 }
