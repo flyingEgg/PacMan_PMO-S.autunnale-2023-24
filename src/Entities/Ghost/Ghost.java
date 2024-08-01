@@ -1,8 +1,12 @@
-package Entities;
+package Entities.Ghost;
+import Entities.AbstractEntity;
 
 public class Ghost extends AbstractEntity {
-    public Ghost(int x, int y) {
+    private Color color;
+
+    public Ghost(int x, int y, Color c) {
         super(x, y);
+        this.color = c;
     }
 
     @Override
@@ -20,5 +24,9 @@ public class Ghost extends AbstractEntity {
         // Logica per far scappare il fantasma
         System.out.println("Fantasma alla posizione " + getPosition() + " sta scappando!");
         // Aggiungere logica per determinare come il fantasma scappa
+    }
+
+    public Color getColor() {
+        return color;
     }
 }
