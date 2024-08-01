@@ -1,7 +1,7 @@
 package Game.Strategies;
 
 import API.MovementStrategy;
-import Entities.Ghost;
+import Entities.Ghost.Ghost;
 import Game.Position;
 import Game.Grid;
 

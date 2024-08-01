@@ -1,6 +1,6 @@
 package Game.Strategies;
 
-import Entities.Ghost;
+import Entities.Ghost.Ghost;
 import Game.Grid;
 
 public class GhostFleeStrategy extends GhostMovementStrategy {
