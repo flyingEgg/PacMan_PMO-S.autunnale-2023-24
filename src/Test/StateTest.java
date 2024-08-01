@@ -17,7 +17,7 @@ import java.util.Scanner;
 public class StateTest {
 
     public static void main(String[] args) {
-        Game partita = new Game(null, null);
+        Game partita = new Game();
         Scanner reader = new Scanner(System.in);
         mainMenu(partita, reader);
     }
