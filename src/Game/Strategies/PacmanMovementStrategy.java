@@ -11,15 +11,17 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
     private final Pacman pacman;
     private final Grid grid;
     private final Game game;
+    private Direction currentDirection;
 
     public PacmanMovementStrategy(Pacman p, Grid g, Game gam) {
         this.pacman = p;
         this.grid = g;
         this.game = gam;
+        this.currentDirection = null; // inizialmente fermo
     }
 
     @Override
-    public void move(Direction direction){
+    public void move(Direction direction) {
         int newX = pacman.getX(),
                 newY = pacman.getY();
         switch (direction) {
@@ -36,6 +38,12 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
             pacman.setPosition(newPosition); // registra una nuova posizione per pacman
             grid.addComponent(pacman);
             pacman.draw(); // disegna pacman nella nuova posizione
+
+            // Gestire la collisione con i fantasmi
+            if (isPacmanHitByGhost(newPosition)) {
+                game.handlePacmanHit(); // Implementare questa logica per gestire la collisione con relativa perdita di
+                                        // vita
+            }
         } else {
             throw new IllegalEntityMovementException("Invalid movement for Pacman");
         }
@@ -43,17 +51,29 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
 
     // Verifica che la posizione all'interno della griglia sia valida
     private boolean isValidPosition(Position position) {
-        int x = position.getX(), y = position.getY();
-        return x >= 0 && x < grid.getColumns() && y >= 0 && y < grid.getRows(); // serve controllo per i muri
+        int x = position.getX();
+        int y = position.getY();
+
+        // Verifica se la posizione è all'interno dei limiti della griglia
+        if (x < 0 || x >= grid.getColumns() || y < 0 || y >= grid.getRows()) {
+            return false;
+        }
+
+        // Verifica se la posizione non è occupata da un muro
+        if (isPacmanBumpingWall(position)) {
+            return false;
+        }
+
+        return true; // controllata la posizione e i muri
     }
 
-    private boolean isPacmanHitByGhost(Position pacPos){
-        return this.game.getGhosts().
-                stream().
-                anyMatch(ghost -> pacPos.equals(ghost.getPosition()));
+    private boolean isPacmanHitByGhost(Position pacPos) {
+        return this.game.getGhosts()
+                .stream()
+                .anyMatch(ghost -> pacPos.equals(ghost.getPosition()));
     }
 
-    private boolean isPacmanBumpingWall(Position pacPos){
+    private boolean isPacmanBumpingWall(Position pacPos) {
         return this.game.getGrid().getWallPositions().contains(pacPos);
     }
 
