@@ -60,6 +60,10 @@ public class PacmanGrid extends Grid {
             { 1, 1  }, { 19, 1 }, { 1, 17 }, { 19, 17 }
     };
 
+    private static final int[][] MAGIC_COORDS = {
+            { 0, 9 }, { 18, 9 }
+    };
+
     // Posizione di partenza di Pac-Man
     private static final Position PACMAN_START_POSITION = new Position(11, 9);
 
@@ -80,9 +84,11 @@ public class PacmanGrid extends Grid {
     }
 
     public Set<Position> getWallPositions(){
-        return Arrays.stream(WALL_POSITIONS).
-                map(p -> new Position(p[0], p[1])).
-                collect(Collectors.toSet());
+        return getArray(WALL_POSITIONS);
+    }
+
+    public Set<Position> getMagicCoords(){
+        return getArray(MAGIC_COORDS);
     }
 
     private void initializeExcludedPositions() {
@@ -167,5 +173,11 @@ public class PacmanGrid extends Grid {
 
     private void addPositions(int[][] positionsArray){
         Arrays.stream(positionsArray).forEach(pos -> excludedPositions.add(new Position(pos[0], pos[1])));
+    }
+
+    private Set<Position> getArray(int[][] ARR){
+        return Arrays.stream(ARR).
+                map(p -> new Position(p[0], p[1])).
+                collect(Collectors.toSet());
     }
 }

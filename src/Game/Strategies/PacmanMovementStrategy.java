@@ -77,4 +77,8 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
         return this.game.getGrid().getWallPositions().contains(pacPos);
     }
 
+    private boolean isOnMagicCoord(Position pacPos){
+        return this.game.getGrid().getMagicCoords().contains(pacPos);
+    }
+
 }
