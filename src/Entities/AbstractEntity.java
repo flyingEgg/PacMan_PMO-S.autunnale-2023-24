@@ -1,5 +1,9 @@
 package Entities;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Map;
+
 import API.MapComponent;
 import Game.Position;
 
@@ -31,7 +35,7 @@ public abstract class AbstractEntity implements MapComponent {
     protected abstract void move(int dx, int dy);
 
     @Override
-    public abstract void draw();
+    public abstract void draw(Graphics2D g2d, Map<String, BufferedImage> images);
 
     @Override
     public Position getPosition() {

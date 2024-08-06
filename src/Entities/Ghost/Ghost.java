@@ -1,5 +1,10 @@
 package Entities.Ghost;
+
 import Entities.AbstractEntity;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Map;
 
 public class Ghost extends AbstractEntity {
     private Color color;
@@ -16,14 +21,12 @@ public class Ghost extends AbstractEntity {
     }
 
     @Override
-    public void draw() {
-        System.out.println("Fantasma disegnato alla posizione: " + x + ", " + y);
+    public void draw(Graphics2D g2d, Map<String, BufferedImage> images) {
+        g2d.drawImage(images.get("ghost"), x * 20, y * 20, null);
     }
 
     public void runAway() {
-        // Logica per far scappare il fantasma
         System.out.println("Fantasma alla posizione " + getPosition() + " sta scappando!");
-        // Aggiungere logica per determinare come il fantasma scappa
     }
 
     public Color getColor() {

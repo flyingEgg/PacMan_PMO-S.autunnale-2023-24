@@ -1,5 +1,12 @@
 package Entities;
 
+import API.MapComponent;
+import Game.Position;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Map;
+
 public class Pacman extends AbstractEntity {
     private boolean superMode;
 
@@ -15,13 +22,12 @@ public class Pacman extends AbstractEntity {
     }
 
     @Override
-    public void draw() {
-        System.out.println("PACMAN: " + getPosition());
+    public void draw(Graphics2D g2d, Map<String, BufferedImage> images) {
+        g2d.drawImage(images.get("pacman"), x * 20, y * 20, null);
     }
 
     public void setSuperMode(boolean superMode) {
         this.superMode = superMode;
-        // Puoi aggiungere logica per impostare un timer per il superMode se necessario
     }
 
     public boolean isSuperMode() {

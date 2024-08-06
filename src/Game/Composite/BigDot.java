@@ -1,31 +1,34 @@
 package Game.Composite;
 
-import Entities.Ghost.Ghost;
-import Entities.Pacman;
 import Game.Game;
 import Game.Position;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Map;
+
+import Entities.Pacman;
+import Entities.Ghost.Ghost;
 
 public class BigDot extends Dot {
     private boolean eaten;
 
     public BigDot(Position position) {
-        super(position, 0); // 0 punti per un big dot
+        super(position, 0); // 0 points for a big dot
         this.eaten = false;
     }
 
     @Override
-    public void draw() {
-        // Logica specifica per disegnare un puntino grande sulla mappa di gioco
-        System.out.println("BIG_DOT: " + getPosition());
+    public void draw(Graphics2D g2d, Map<String, BufferedImage> images) {
+        g2d.setColor(Color.YELLOW);
+        g2d.fillOval(position.getX() * 20, position.getY() * 20, 20, 20);
     }
 
     @Override
     public void collect(Game game) {
-        // Imposta Pacman in modalità super
         Pacman pacman = game.getPacman();
         pacman.setSuperMode(true);
 
-        // Fai scappare i fantasmi
         for (Ghost ghost : game.getGhosts()) {
             ghost.runAway();
         }

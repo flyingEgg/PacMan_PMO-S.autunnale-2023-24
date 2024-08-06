@@ -2,17 +2,20 @@ package Game;
 
 import API.MapComponent;
 import Entities.Pacman;
-import Game.Game;
-import Game.PacmanGrid;
+import Entities.Ghost.Ghost;
 import Game.Position;
 import Game.Strategies.Direction;
 import Game.Strategies.PacmanMovementStrategy;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class PacmanGameWindow extends JFrame {
@@ -22,13 +25,16 @@ public class PacmanGameWindow extends JFrame {
     private BufferedImage bufferedImage;
     private Graphics2D graphics2D;
 
+    private Map<String, BufferedImage> images;
+
     public PacmanGameWindow() {
         grid = new PacmanGrid();
         pacman = new Pacman(PacmanGrid.PACMAN_START_POSITION.getX(), PacmanGrid.PACMAN_START_POSITION.getY());
-        Game game = new Game(grid); // Assumendo che tu abbia una classe Game
+        Game game = new Game();
         pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, game);
 
         setupWindow();
+        loadImages();
         initializeGraphics();
 
         addKeyListener(new KeyAdapter() {
@@ -41,9 +47,24 @@ public class PacmanGameWindow extends JFrame {
 
     private void setupWindow() {
         setTitle("Pacman");
-        setSize(800, 600); // Dimensioni della finestra
+        setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+    }
+
+    private void loadImages() {
+        images = new HashMap<>();
+        try {
+            images.put("down", ImageIO.read(getClass().getResource("/down.gif")));
+            images.put("ghost", ImageIO.read(getClass().getResource("/ghost.gif")));
+            images.put("heart", ImageIO.read(getClass().getResource("/heart.png")));
+            images.put("left", ImageIO.read(getClass().getResource("/left.gif")));
+            images.put("pacman", ImageIO.read(getClass().getResource("/pacman.png")));
+            images.put("right", ImageIO.read(getClass().getResource("/right.gif")));
+            images.put("up", ImageIO.read(getClass().getResource("/up.gif")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initializeGraphics() {
@@ -51,7 +72,7 @@ public class PacmanGameWindow extends JFrame {
         graphics2D = bufferedImage.createGraphics();
         graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         graphics2D.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        drawGraphics(); // Disegna inizialmente
+        drawGraphics();
     }
 
     private void handleKeyPress(KeyEvent e) {
@@ -64,7 +85,7 @@ public class PacmanGameWindow extends JFrame {
         }
         if (direction != null) {
             pacmanMovementStrategy.move(direction);
-            drawGraphics(); // Ridisegna l'immagine del buffer
+            drawGraphics();
             repaint();
         }
     }
@@ -83,15 +104,13 @@ public class PacmanGameWindow extends JFrame {
             for (int j = 0; j < grid.getColumns(); j++) {
                 Position pos = new Position(j, i);
                 Optional<MapComponent> component = grid.getComponentByPosition(pos);
-                component.ifPresent(mapComponent -> mapComponent.draw(graphics2D));
+                component.ifPresent(mapComponent -> mapComponent.draw(graphics2D, images));
             }
         }
     }
 
     private void drawPacman() {
-        // Disegna Pacman alla sua posizione attuale
-        pacman.draw(graphics2D); // Assumendo che Pacman abbia un metodo draw che accetta Graphics2D come
-                                 // argomento
+        pacman.draw(graphics2D, images);
     }
 
     @Override
