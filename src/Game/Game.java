@@ -2,6 +2,7 @@ package Game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import Entities.Ghost.Ghost;
 import Entities.Pacman;
@@ -121,6 +122,12 @@ public class Game {
     }
 
     public void handlePacmanHit() {
-        // TODO implementare logica
+
+
+        pacman.setPosition(grid.getPacmanStartPosition());
+        this.lives--;
+
+        IntStream.range(0, ghosts.size())
+                .forEach(i -> ghosts.get(i).setPosition(grid.getGhostSpawnPoints().get(i)));
     }
 }
