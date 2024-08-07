@@ -1,8 +1,10 @@
-package Game;
+package Game.GUI;
 
 import API.MapComponent;
 import Entities.Pacman;
 import Entities.Ghost.Ghost;
+import Game.Game;
+import Game.PacmanGrid;
 import Game.Position;
 import Game.Strategies.Direction;
 import Game.Strategies.PacmanMovementStrategy;
@@ -16,6 +18,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 public class PacmanGameWindow extends JFrame {
@@ -29,8 +32,8 @@ public class PacmanGameWindow extends JFrame {
 
     public PacmanGameWindow() {
         grid = new PacmanGrid();
-        pacman = new Pacman(PacmanGrid.PACMAN_START_POSITION.getX(), PacmanGrid.PACMAN_START_POSITION.getY());
         Game game = new Game();
+        pacman = new Pacman(game.getPacman().getX(), game.getPacman().getY());
         pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, game);
 
         setupWindow();
@@ -55,15 +58,15 @@ public class PacmanGameWindow extends JFrame {
     private void loadImages() {
         images = new HashMap<>();
         try {
-            images.put("down", ImageIO.read(getClass().getResource("/down.gif")));
-            images.put("ghost", ImageIO.read(getClass().getResource("/ghost.gif")));
-            images.put("heart", ImageIO.read(getClass().getResource("/heart.png")));
-            images.put("left", ImageIO.read(getClass().getResource("/left.gif")));
-            images.put("pacman", ImageIO.read(getClass().getResource("/pacman.png")));
-            images.put("right", ImageIO.read(getClass().getResource("/right.gif")));
-            images.put("up", ImageIO.read(getClass().getResource("/up.gif")));
+            images.put("down", ImageIO.read(Objects.requireNonNull(getClass().getResource("/down.gif"))));
+            images.put("ghost", ImageIO.read(Objects.requireNonNull(getClass().getResource("/ghost.gif"))));
+            images.put("heart", ImageIO.read(Objects.requireNonNull(getClass().getResource("/heart.png"))));
+            images.put("left", ImageIO.read(Objects.requireNonNull(getClass().getResource("/left.gif"))));
+            images.put("pacman", ImageIO.read(Objects.requireNonNull(getClass().getResource("/pacman.png"))));
+            images.put("right", ImageIO.read(Objects.requireNonNull(getClass().getResource("/right.gif"))));
+            images.put("up", ImageIO.read(Objects.requireNonNull(getClass().getResource("/up.gif"))));
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage()+"Errore nel caricamento delle risorse");
         }
     }
 
