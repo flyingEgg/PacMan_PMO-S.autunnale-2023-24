@@ -1,8 +1,5 @@
 package Entities;
 
-import API.MapComponent;
-import Game.Position;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Map;
