@@ -23,7 +23,7 @@ public class Game {
         this.gameOver = false;
         this.lives = 3;
         this.grid = new PacmanGrid();
-        this.pacman = new Pacman(PacmanGrid.PACMAN_START_POSITION.getX(), PacmanGrid.PACMAN_START_POSITION.getY());
+        this.pacman = new Pacman(grid.getPacmanStartPosition().getX(), grid.getPacmanStartPosition().getY());
         this.ghosts = new ArrayList<>();
         this.score = 0;
         initialiseGhosts();
@@ -118,5 +118,9 @@ public class Game {
         this.ghosts.add(new Ghost(9, 10, PINK));
         this.ghosts.add(new Ghost(8, 9, BLUE));
 
+    }
+
+    public void handlePacmanHit() {
+        // TODO implementare logica
     }
 }
