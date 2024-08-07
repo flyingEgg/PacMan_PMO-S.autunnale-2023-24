@@ -1,11 +1,15 @@
 package Entities;
 
+import Game.Game;
+import Game.Strategies.PacmanMovementStrategy;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 
 public class Pacman extends AbstractEntity {
     private boolean superMode;
+    private PacmanMovementStrategy myMovementStrat;
 
     public Pacman(int x, int y) {
         super(x, y);
@@ -29,5 +33,9 @@ public class Pacman extends AbstractEntity {
 
     public boolean isSuperMode() {
         return superMode;
+    }
+
+    public PacmanMovementStrategy getMyMovementStrat(){
+        return myMovementStrat;
     }
 }
