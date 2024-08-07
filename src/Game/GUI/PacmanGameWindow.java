@@ -27,12 +27,13 @@ public class PacmanGameWindow extends JFrame {
     private PacmanMovementStrategy pacmanMovementStrategy;
     private BufferedImage bufferedImage;
     private Graphics2D graphics2D;
+    private final Game game;
 
     private Map<String, BufferedImage> images;
 
     public PacmanGameWindow() {
         grid = new PacmanGrid();
-        Game game = new Game();
+        this.game = new Game();
         pacman = new Pacman(game.getPacman().getX(), game.getPacman().getY());
         pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, game);
 
@@ -87,7 +88,7 @@ public class PacmanGameWindow extends JFrame {
             case KeyEvent.VK_RIGHT -> direction = Direction.RIGHT;
         }
         if (direction != null) {
-            pacmanMovementStrategy.move(direction);
+            pacman.getMyMovementStrat().move(direction);
             drawGraphics();
             repaint();
         }
