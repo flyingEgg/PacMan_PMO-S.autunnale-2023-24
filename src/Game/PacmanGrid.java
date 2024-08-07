@@ -91,6 +91,10 @@ public class PacmanGrid extends Grid {
         return getArray(MAGIC_COORDS);
     }
 
+    public Position getPacmanStartPosition(){
+        return PACMAN_START_POSITION;
+    }
+
     private void initializeExcludedPositions() {
         excludedPositions = new HashSet<>();
 
