@@ -69,7 +69,7 @@ public class PacmanGrid extends Grid {
 
     // Posizioni di spawn dei fantasmi
     private static final Position[] GHOST_SPAWN_POSITIONS = {
-            new Position(9, 9), new Position(9, 8), new Position(9, 10)
+            new Position(9, 9), new Position(9, 8), new Position(9, 10), new Position(8, 9)
     };
 
     // Altre posizioni escluse
@@ -84,11 +84,15 @@ public class PacmanGrid extends Grid {
     }
 
     public Set<Position> getWallPositions(){
-        return getArray(WALL_POSITIONS);
+        return getBidimensionalArray(WALL_POSITIONS);
     }
 
     public Set<Position> getMagicCoords(){
-        return getArray(MAGIC_COORDS);
+        return getBidimensionalArray(MAGIC_COORDS);
+    }
+
+    public List<Position> getGhostSpawnPoints(){
+        return List.of(GHOST_SPAWN_POSITIONS);
     }
 
     public Position getPacmanStartPosition(){
@@ -179,7 +183,7 @@ public class PacmanGrid extends Grid {
         Arrays.stream(positionsArray).forEach(pos -> excludedPositions.add(new Position(pos[0], pos[1])));
     }
 
-    private Set<Position> getArray(int[][] ARR){
+    private Set<Position> getBidimensionalArray(int[][] ARR){
         return Arrays.stream(ARR).
                 map(p -> new Position(p[0], p[1])).
                 collect(Collectors.toSet());
