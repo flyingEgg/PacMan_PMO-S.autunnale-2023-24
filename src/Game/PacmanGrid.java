@@ -57,7 +57,7 @@ public class PacmanGrid extends Grid {
 
     // Posizioni dei Big Dot
     private static final int[][] BIG_DOT_POSITIONS = {
-            { 1, 1  }, { 19, 1 }, { 1, 17 }, { 19, 17 }
+            { 1, 1 }, { 19, 1 }, { 1, 17 }, { 19, 17 }
     };
 
     private static final int[][] MAGIC_COORDS = {
@@ -83,19 +83,19 @@ public class PacmanGrid extends Grid {
         initializeMap();
     }
 
-    public Set<Position> getWallPositions(){
+    public Set<Position> getWallPositions() {
         return getBidimensionalArray(WALL_POSITIONS);
     }
 
-    public Set<Position> getMagicCoords(){
+    public Set<Position> getMagicCoords() {
         return getBidimensionalArray(MAGIC_COORDS);
     }
 
-    public List<Position> getGhostSpawnPoints(){
+    public List<Position> getGhostSpawnPoints() {
         return List.of(GHOST_SPAWN_POSITIONS);
     }
 
-    public Position getPacmanStartPosition(){
+    public Position getPacmanStartPosition() {
         return PACMAN_START_POSITION;
     }
 
@@ -105,10 +105,8 @@ public class PacmanGrid extends Grid {
         // Aggiungi posizioni dei muri
         addPositions(WALL_POSITIONS);
 
-
         // Aggiungi posizioni dei Big Dot
         addPositions(BIG_DOT_POSITIONS);
-
 
         // Aggiungi posizione di Pac-Man
         excludedPositions.add(PACMAN_START_POSITION);
@@ -169,9 +167,9 @@ public class PacmanGrid extends Grid {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 component = getComponentByPosition(new Position(j, i));
-                if(component.isPresent()){
-                    component.get().draw();
-                }else{
+                if (component.isPresent()) {
+                    component.get().draw(null, null); // da rivedere
+                } else {
                     System.out.println(" ");
                 }
             }
@@ -179,13 +177,11 @@ public class PacmanGrid extends Grid {
         }
     }
 
-    private void addPositions(int[][] positionsArray){
+    private void addPositions(int[][] positionsArray) {
         Arrays.stream(positionsArray).forEach(pos -> excludedPositions.add(new Position(pos[0], pos[1])));
     }
 
-    private Set<Position> getBidimensionalArray(int[][] ARR){
-        return Arrays.stream(ARR).
-                map(p -> new Position(p[0], p[1])).
-                collect(Collectors.toSet());
+    private Set<Position> getBidimensionalArray(int[][] ARR) {
+        return Arrays.stream(ARR).map(p -> new Position(p[0], p[1])).collect(Collectors.toSet());
     }
 }

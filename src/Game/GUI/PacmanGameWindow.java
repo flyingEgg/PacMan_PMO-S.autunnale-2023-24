@@ -59,15 +59,18 @@ public class PacmanGameWindow extends JFrame {
     private void loadImages() {
         images = new HashMap<>();
         try {
-            images.put("down", ImageIO.read(Objects.requireNonNull(getClass().getResource("/down.gif"))));
-            images.put("ghost", ImageIO.read(Objects.requireNonNull(getClass().getResource("/ghost.gif"))));
-            images.put("heart", ImageIO.read(Objects.requireNonNull(getClass().getResource("/heart.png"))));
-            images.put("left", ImageIO.read(Objects.requireNonNull(getClass().getResource("/left.gif"))));
-            images.put("pacman", ImageIO.read(Objects.requireNonNull(getClass().getResource("/pacman.png"))));
-            images.put("right", ImageIO.read(Objects.requireNonNull(getClass().getResource("/right.gif"))));
-            images.put("up", ImageIO.read(Objects.requireNonNull(getClass().getResource("/up.gif"))));
+            images.put("down", ImageIO.read(Objects.requireNonNull(getClass().getResource("down.gif"))));
+            images.put("ghost", ImageIO.read(Objects.requireNonNull(getClass().getResource("ghost.gif"))));
+            images.put("heart", ImageIO.read(Objects.requireNonNull(getClass().getResource("heart.png"))));
+            images.put("left", ImageIO.read(Objects.requireNonNull(getClass().getResource("left.gif"))));
+            images.put("pacman", ImageIO.read(Objects.requireNonNull(getClass().getResource("pacman.png"))));
+            images.put("right", ImageIO.read(Objects.requireNonNull(getClass().getResource("right.gif"))));
+            images.put("up", ImageIO.read(Objects.requireNonNull(getClass().getResource("up.gif"))));
+
+            // tocca mettere le immagini per la frutta
+
         } catch (IOException e) {
-            System.out.println(e.getMessage()+"Errore nel caricamento delle risorse");
+            System.out.println(e.getMessage() + "Errore nel caricamento delle risorse");
         }
     }
 
