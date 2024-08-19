@@ -32,10 +32,10 @@ public class PacmanGameWindow extends JFrame {
     private Map<String, BufferedImage> images;
 
     public PacmanGameWindow() {
-        grid = new PacmanGrid();
+        this.grid = new PacmanGrid();
         this.game = new Game();
-        pacman = new Pacman(game.getPacman().getX(), game.getPacman().getY());
-        pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, game);
+        this.pacman = new Pacman(game.getPacman().getX(), game.getPacman().getY());
+        this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, game);
 
         setupWindow();
         loadImages();
@@ -102,18 +102,8 @@ public class PacmanGameWindow extends JFrame {
         graphics2D.setColor(Color.BLACK);
         graphics2D.fillRect(0, 0, getWidth(), getHeight());
 
-        drawGrid();
+        grid.drawGrid(graphics2D, new HashMap<>());
         drawPacman();
-    }
-
-    private void drawGrid() {
-        for (int i = 0; i < grid.getRows(); i++) {
-            for (int j = 0; j < grid.getColumns(); j++) {
-                Position pos = new Position(j, i);
-                Optional<MapComponent> component = grid.getComponentByPosition(pos);
-                component.ifPresent(mapComponent -> mapComponent.draw(graphics2D, images));
-            }
-        }
     }
 
     private void drawPacman() {

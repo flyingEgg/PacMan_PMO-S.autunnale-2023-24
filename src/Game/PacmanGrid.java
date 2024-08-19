@@ -9,7 +9,11 @@ import Game.Composite.EmptySpace;
 import Game.Composite.SmallDot;
 import Game.Composite.Wall;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -161,21 +165,33 @@ public class PacmanGrid extends Grid {
                 .forEach(this::addComponent);
     }
 
-    public void printGrid() {
-        Optional<MapComponent> component;
-
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLUMNS; j++) {
-                component = getComponentByPosition(new Position(j, i));
-                if (component.isPresent()) {
-                    component.get().draw(null, null); // da rivedere
-                } else {
-                    System.out.println(" ");
-                }
+    public void drawGrid(Graphics2D g2d, Map<String, BufferedImage> images) {
+        for (int i = 0; i < getRows(); i++) {
+            for (int j = 0; j < getColumns(); j++) {
+                Position pos = new Position(j, i);
+                Optional<MapComponent> component = getComponentByPosition(pos);
+                component.ifPresent(mapComponent -> mapComponent.draw(g2d, images));
             }
-            System.out.println(); // A capo alla fine di ogni riga
         }
     }
+
+    /*
+     * public void printGrid() {
+     * Optional<MapComponent> component;
+     * 
+     * for (int i = 0; i < ROWS; i++) {
+     * for (int j = 0; j < COLUMNS; j++) {
+     * component = getComponentByPosition(new Position(j, i));
+     * if (component.isPresent()) {
+     * component.get().draw(null, null); // da rivedere
+     * } else {
+     * System.out.println(" ");
+     * }
+     * }
+     * System.out.println(); // A capo alla fine di ogni riga
+     * }
+     * }
+     */
 
     private void addPositions(int[][] positionsArray) {
         Arrays.stream(positionsArray).forEach(pos -> excludedPositions.add(new Position(pos[0], pos[1])));
