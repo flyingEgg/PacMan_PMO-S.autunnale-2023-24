@@ -17,12 +17,6 @@ public class Pacman extends AbstractEntity {
     }
 
     @Override
-    protected void move(int dx, int dy) {
-        this.x += dx;
-        this.y += dy;
-    }
-
-    @Override
     public void draw(Graphics2D g2d, Map<String, BufferedImage> images) {
         g2d.drawImage(images.get("pacman"), x * 20, y * 20, null);
     }
