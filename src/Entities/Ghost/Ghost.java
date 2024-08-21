@@ -14,11 +14,6 @@ public class Ghost extends AbstractEntity {
         this.color = c;
     }
 
-    @Override
-    protected void move(int dx, int dy) {
-        this.x += dx;
-        this.y += dy;
-    }
 
     @Override
     public void draw(Graphics2D g2d, Map<String, BufferedImage> images) {

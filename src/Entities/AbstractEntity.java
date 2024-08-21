@@ -32,8 +32,6 @@ public abstract class AbstractEntity implements MapComponent {
         this.y = y;
     }
 
-    protected abstract void move(int dx, int dy);
-
     @Override
     public abstract void draw(Graphics2D g2d, Map<String, BufferedImage> images);
 
