@@ -2,16 +2,16 @@ package Game.GUI;
 
 import API.MapComponent;
 import Entities.Pacman;
-import Entities.Ghost.Ghost;
 import Game.Game;
 import Game.PacmanGrid;
-import Game.Position;
 import Game.Strategies.Direction;
 import Game.Strategies.PacmanMovementStrategy;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -19,12 +19,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 public class PacmanGameWindow extends JFrame {
-    private PacmanGrid grid;
-    private Pacman pacman;
-    private PacmanMovementStrategy pacmanMovementStrategy;
+    private final PacmanGrid grid;
+    private final Pacman pacman;
+    private final PacmanMovementStrategy pacmanMovementStrategy;
     private BufferedImage bufferedImage;
     private Graphics2D graphics2D;
     private final Game game;
@@ -32,8 +31,8 @@ public class PacmanGameWindow extends JFrame {
     private Map<String, BufferedImage> images;
 
     public PacmanGameWindow() {
-        this.grid = new PacmanGrid();
         this.game = new Game();
+        this.grid = new PacmanGrid();
         this.pacman = new Pacman(game.getPacman().getX(), game.getPacman().getY());
         this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, game);
 
@@ -45,6 +44,13 @@ public class PacmanGameWindow extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 handleKeyPress(e);
+            }
+        });
+
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                maintainAspectRatio();
             }
         });
     }
@@ -59,22 +65,32 @@ public class PacmanGameWindow extends JFrame {
     private void loadImages() {
         images = new HashMap<>();
         try {
-            images.put("down", ImageIO.read(Objects.requireNonNull(getClass().getResource("down.gif"))));
-            images.put("ghost", ImageIO.read(Objects.requireNonNull(getClass().getResource("ghost.gif"))));
-            images.put("heart", ImageIO.read(Objects.requireNonNull(getClass().getResource("heart.png"))));
-            images.put("left", ImageIO.read(Objects.requireNonNull(getClass().getResource("left.gif"))));
-            images.put("pacman", ImageIO.read(Objects.requireNonNull(getClass().getResource("pacman.png"))));
-            images.put("right", ImageIO.read(Objects.requireNonNull(getClass().getResource("right.gif"))));
-            images.put("up", ImageIO.read(Objects.requireNonNull(getClass().getResource("up.gif"))));
-
-            // tocca mettere le immagini per la frutta
-
+            images.put("down",
+                    ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/down.gif"))));
+            images.put("ghost",
+                    ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/ghost.gif"))));
+            images.put("heart",
+                    ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/heart.png"))));
+            images.put("left",
+                    ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/left.gif"))));
+            images.put("pacman",
+                    ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/pacman.png"))));
+            images.put("right",
+                    ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/right.gif"))));
+            images.put("up", ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/up.gif"))));
         } catch (IOException e) {
-            System.out.println(e.getMessage() + "Errore nel caricamento delle risorse");
+            System.out.println("Errore nel caricamento delle risorse: " + e.getMessage());
+        } catch (NullPointerException e) {
+            System.out.println("Immagine non trovata, controlla il percorso delle risorse.");
         }
     }
 
     private void initializeGraphics() {
+        Insets insets = getInsets();
+        int gridWidth = grid.getColumns() * PacmanGrid.CELL_SIZE;
+        int gridHeight = grid.getRows() * PacmanGrid.CELL_SIZE;
+        setSize(gridWidth + insets.left + insets.right, gridHeight + insets.top + insets.bottom);
+
         bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
         graphics2D = bufferedImage.createGraphics();
         graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -102,7 +118,7 @@ public class PacmanGameWindow extends JFrame {
         graphics2D.setColor(Color.BLACK);
         graphics2D.fillRect(0, 0, getWidth(), getHeight());
 
-        grid.drawGrid(graphics2D, new HashMap<>());
+        grid.drawGrid(graphics2D, images);
         drawPacman();
     }
 
@@ -114,6 +130,23 @@ public class PacmanGameWindow extends JFrame {
     public void paint(Graphics g) {
         super.paint(g);
         g.drawImage(bufferedImage, 0, 0, this);
+    }
+
+    private void maintainAspectRatio() {
+        Insets insets = getInsets();
+        int gridWidth = grid.getColumns() * PacmanGrid.CELL_SIZE;
+        int gridHeight = grid.getRows() * PacmanGrid.CELL_SIZE;
+
+        int newWidth = getWidth() - insets.left - insets.right;
+        int newHeight = (int) ((double) gridHeight / gridWidth * newWidth);
+
+        if (newHeight + insets.top + insets.bottom > getHeight()) {
+            newHeight = getHeight() - insets.top - insets.bottom;
+            newWidth = (int) ((double) gridWidth / gridHeight * newHeight);
+        }
+
+        setSize(newWidth + insets.left + insets.right, newHeight + insets.top + insets.bottom);
+        initializeGraphics();
     }
 
     public static void main(String[] args) {

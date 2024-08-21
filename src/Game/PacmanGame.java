@@ -24,7 +24,7 @@ public class PacmanGame {
 
     private void start() {
         PacmanGrid grid = new PacmanGrid();
-        grid.drawGrid(null, null); // test per vedere se viene stampata effettivamente la grid
+        grid.drawGrid(null, null); // test per vedere se viene stampata effettivamente la grid (null??)
         // printGrid
     }
 }

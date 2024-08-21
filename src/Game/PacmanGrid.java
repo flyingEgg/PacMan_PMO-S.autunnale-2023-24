@@ -18,13 +18,14 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class PacmanGrid extends Grid {
+    public static final int CELL_SIZE = 20;
     private static final int COLUMNS = 21; // Numero di colonne della griglia
     private static final int ROWS = 19; // Numero di righe della griglia
     private Set<Position> excludedPositions;
 
     // Posizioni dei muri
     private static final int[][] WALL_POSITIONS = {
-            { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 },
+            { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 },
             { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 },
             { 19, 0 }, { 20, 0 },
             { 0, 1 }, { 6, 1 }, { 8, 1 }, { 10, 1 }, { 12, 1 }, { 16, 1 }, { 20, 1 },
@@ -53,11 +54,10 @@ public class PacmanGrid extends Grid {
             { 20, 16 },
             { 0, 17 }, { 6, 17 }, { 8, 17 }, { 10, 17 }, { 12, 17 }, { 16, 17 }, { 20, 17 },
             { 0, 18 }, { 1, 18 }, { 2, 18 }, { 3, 18 }, { 4, 18 }, { 5, 18 }, { 6, 18 }, { 7, 18 }, { 8, 18 },
-            { 9, 18 }, { 10, 18 }, { 11, 18 }, { 12, 18 }, { 13, 18 }, { 14, 18 }, { 15, 18 }, { 16, 18 }, { 17, 18 },
+            { 10, 18 }, { 11, 18 }, { 12, 18 }, { 13, 18 }, { 14, 18 }, { 15, 18 }, { 16, 18 }, { 17, 18 },
             { 18, 18 }, { 19, 18 }, { 20, 18 }
-    }; // eventualmente togliere { 0, 9 } e { 18, 9 } ed effettuare il teletrasporto da
-       // unlato all'altro
-       // tocca liberare i fantasmi da { 8, 9 }
+    };
+    // tocca liberare i fantasmi da { 8, 9 }
 
     // Posizioni dei Big Dot
     private static final int[][] BIG_DOT_POSITIONS = {
@@ -65,7 +65,7 @@ public class PacmanGrid extends Grid {
     };
 
     private static final int[][] MAGIC_COORDS = {
-            { 0, 9 }, { 18, 9 }
+            { 9, 0 }, { 9, 18 }
     };
 
     // Posizione di partenza di Pac-Man
@@ -78,7 +78,9 @@ public class PacmanGrid extends Grid {
 
     // Altre posizioni escluse
     private static final int[][] OTHER_EXCLUDED_POSITIONS = {
-            { 9, 1 }, { 9, 2 }, { 9, 3 }, { 9, 15 }, { 9, 16 }, { 9, 17 }
+            { 9, 1 }, { 9, 2 }, { 9, 3 }, { 9, 15 }, { 9, 16 }, { 9, 17 },
+            { 7, 1 }, { 7, 2 }, { 7, 16 }, { 7, 17 },
+            { 11, 1 }, { 11, 2 }, { 11, 16 }, { 11, 17 }
     };
 
     public PacmanGrid() {
@@ -120,6 +122,9 @@ public class PacmanGrid extends Grid {
 
         // Aggiungi altre posizioni escluse
         addPositions(OTHER_EXCLUDED_POSITIONS);
+
+        // Aggiungi posizioni per teletrasporto
+        addPositions(MAGIC_COORDS);
 
     }
 
