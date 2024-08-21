@@ -46,18 +46,12 @@ public class PacmanGameWindow extends JFrame {
                 handleKeyPress(e);
             }
         });
-
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                maintainAspectRatio();
-            }
-        });
     }
 
     private void setupWindow() {
         setTitle("Pacman");
-        setSize(800, 600);
+        setSize(600, 400);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
@@ -86,11 +80,6 @@ public class PacmanGameWindow extends JFrame {
     }
 
     private void initializeGraphics() {
-        Insets insets = getInsets();
-        int gridWidth = grid.getColumns() * PacmanGrid.CELL_SIZE;
-        int gridHeight = grid.getRows() * PacmanGrid.CELL_SIZE;
-        setSize(gridWidth + insets.left + insets.right, gridHeight + insets.top + insets.bottom);
-
         bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
         graphics2D = bufferedImage.createGraphics();
         graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -130,23 +119,6 @@ public class PacmanGameWindow extends JFrame {
     public void paint(Graphics g) {
         super.paint(g);
         g.drawImage(bufferedImage, 0, 0, this);
-    }
-
-    private void maintainAspectRatio() {
-        Insets insets = getInsets();
-        int gridWidth = grid.getColumns() * PacmanGrid.CELL_SIZE;
-        int gridHeight = grid.getRows() * PacmanGrid.CELL_SIZE;
-
-        int newWidth = getWidth() - insets.left - insets.right;
-        int newHeight = (int) ((double) gridHeight / gridWidth * newWidth);
-
-        if (newHeight + insets.top + insets.bottom > getHeight()) {
-            newHeight = getHeight() - insets.top - insets.bottom;
-            newWidth = (int) ((double) gridWidth / gridHeight * newHeight);
-        }
-
-        setSize(newWidth + insets.left + insets.right, newHeight + insets.top + insets.bottom);
-        initializeGraphics();
     }
 
     public static void main(String[] args) {
