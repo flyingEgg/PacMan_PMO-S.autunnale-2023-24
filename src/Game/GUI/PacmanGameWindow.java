@@ -1,6 +1,5 @@
 package Game.GUI;
 
-import API.MapComponent;
 import Entities.Pacman;
 import Game.Game;
 import Game.PacmanGrid;
@@ -10,8 +9,6 @@ import Game.Strategies.PacmanMovementStrategy;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -24,11 +21,13 @@ public class PacmanGameWindow extends JFrame {
     private final PacmanGrid grid;
     private final Pacman pacman;
     private final PacmanMovementStrategy pacmanMovementStrategy;
-    private BufferedImage bufferedImage;
-    private Graphics2D graphics2D;
     private final Game game;
 
     private Map<String, BufferedImage> images;
+    private GamePanel gamePanel;
+    private InfoPanel infoPanel;
+    private JMenuBar menuBar;
+    private JPanel statusBar;
 
     public PacmanGameWindow() {
         this.game = new Game();
@@ -36,9 +35,10 @@ public class PacmanGameWindow extends JFrame {
         this.pacman = new Pacman(game.getPacman().getX(), game.getPacman().getY());
         this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, game);
 
-        setupWindow();
         loadImages();
-        initializeGraphics();
+        setupWindow();
+        setupMenu();
+        setupStatusBar();
 
         addKeyListener(new KeyAdapter() {
             @Override
@@ -50,10 +50,70 @@ public class PacmanGameWindow extends JFrame {
 
     private void setupWindow() {
         setTitle("Pacman");
-        setSize(600, 400);
+        setSize(800, 600); // Dimensioni generose per includere sia il gioco che il pannello info
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null); // Centra la finestra sullo schermo
+        setLayout(new BorderLayout());
+
+        // Pannello di gioco
+        gamePanel = new GamePanel(grid, pacman, images);
+        add(gamePanel, BorderLayout.CENTER);
+
+        // Pannello informativo
+        infoPanel = new InfoPanel();
+        add(infoPanel, BorderLayout.EAST);
+
+        // Applica un tema moderno
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         setVisible(true);
+    }
+
+    private void setupMenu() {
+        menuBar = new JMenuBar();
+        JMenu gameMenu = new JMenu("Game");
+
+        JMenuItem startItem = new JMenuItem("Start");
+        JMenuItem pauseItem = new JMenuItem("Pause");
+        JMenuItem resetItem = new JMenuItem("Reset");
+
+        startItem.addActionListener(e -> startGame());
+        pauseItem.addActionListener(e -> pauseGame());
+        resetItem.addActionListener(e -> resetGame());
+
+        gameMenu.add(startItem);
+        gameMenu.add(pauseItem);
+        gameMenu.add(resetItem);
+
+        menuBar.add(gameMenu);
+        setJMenuBar(menuBar);
+    }
+
+    private void setupStatusBar() {
+        statusBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JLabel statusLabel = new JLabel("Welcome to Pacman!");
+        statusBar.add(statusLabel);
+        add(statusBar, BorderLayout.SOUTH);
+    }
+
+    private void startGame() {
+        // Logica per avviare il gioco
+        System.out.println("Gioco avviato!");
+    }
+
+    private void pauseGame() {
+        // Logica per mettere in pausa il gioco
+        System.out.println("Gioco in pausa.");
+    }
+
+    private void resetGame() {
+        // Logica per resettare il gioco
+        System.out.println("Gioco resettato.");
     }
 
     private void loadImages() {
@@ -79,14 +139,6 @@ public class PacmanGameWindow extends JFrame {
         }
     }
 
-    private void initializeGraphics() {
-        bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-        graphics2D = bufferedImage.createGraphics();
-        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics2D.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        drawGraphics();
-    }
-
     private void handleKeyPress(KeyEvent e) {
         Direction direction = null;
         switch (e.getKeyCode()) {
@@ -97,28 +149,8 @@ public class PacmanGameWindow extends JFrame {
         }
         if (direction != null) {
             pacman.getMyMovementStrat().move(direction);
-            drawGraphics();
-            repaint();
+            gamePanel.repaint();
         }
-    }
-
-    private void drawGraphics() {
-        graphics2D.setComposite(AlphaComposite.SrcOver);
-        graphics2D.setColor(Color.BLACK);
-        graphics2D.fillRect(0, 0, getWidth(), getHeight());
-
-        grid.drawGrid(graphics2D, images);
-        drawPacman();
-    }
-
-    private void drawPacman() {
-        pacman.draw(graphics2D, images);
-    }
-
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        g.drawImage(bufferedImage, 0, 0, this);
     }
 
     public static void main(String[] args) {
