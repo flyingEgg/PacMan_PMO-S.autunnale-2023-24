@@ -118,24 +118,25 @@ public class PacmanGameWindow extends JFrame {
 
     private void loadImages() {
         images = new HashMap<>();
-        try {
-            images.put("down",
-                    ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/down.gif"))));
-            images.put("ghost",
-                    ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/ghost.gif"))));
-            images.put("heart",
-                    ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/heart.png"))));
-            images.put("left",
-                    ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/left.gif"))));
-            images.put("pacman",
-                    ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/pacman.png"))));
-            images.put("right",
-                    ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/right.gif"))));
-            images.put("up", ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/up.gif"))));
-        } catch (IOException e) {
-            System.out.println("Errore nel caricamento delle risorse: " + e.getMessage());
-        } catch (NullPointerException e) {
-            System.out.println("Immagine non trovata, controlla il percorso delle risorse.");
+        String[] imageNames = { "down", "ghost", "heart", "left", "pacman", "right", "up" };
+        String[] imagePaths = { "/images/down.gif",
+                "/images/ghost.gif",
+                "/images/heart.png",
+                "/images/left.gif",
+                "/images/pacman.png",
+                "/images/right.gif",
+                "/images/up.gif" };
+
+        for (int i = 0; i < imageNames.length; i++) {
+            try {
+                BufferedImage image = ImageIO
+                        .read(Objects.requireNonNull(getClass().getResourceAsStream(imagePaths[i])));
+                images.put(imageNames[i], image);
+            } catch (IOException e) {
+                System.out.println("Errore nel caricamento dell'immagine: " + imagePaths[i] + " - " + e.getMessage());
+            } catch (NullPointerException e) {
+                System.out.println("Immagine non trovata, controlla il percorso: " + imagePaths[i]);
+            }
         }
     }
 
