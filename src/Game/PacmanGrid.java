@@ -128,7 +128,7 @@ public class PacmanGrid extends Grid {
 
     }
 
-    private void initializeMap() {
+    protected void initializeMap() {
         // Inizializza la griglia con spazi vuoti e Small Dot
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
@@ -179,24 +179,6 @@ public class PacmanGrid extends Grid {
             }
         }
     }
-
-    /*
-     * public void printGrid() {
-     * Optional<MapComponent> component;
-     * 
-     * for (int i = 0; i < ROWS; i++) {
-     * for (int j = 0; j < COLUMNS; j++) {
-     * component = getComponentByPosition(new Position(j, i));
-     * if (component.isPresent()) {
-     * component.get().draw(null, null); // da rivedere
-     * } else {
-     * System.out.println(" ");
-     * }
-     * }
-     * System.out.println(); // A capo alla fine di ogni riga
-     * }
-     * }
-     */
 
     private void addPositions(int[][] positionsArray) {
         Arrays.stream(positionsArray).forEach(pos -> excludedPositions.add(new Position(pos[0], pos[1])));

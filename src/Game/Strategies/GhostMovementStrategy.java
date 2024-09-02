@@ -19,6 +19,21 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     protected boolean isValidPosition(Position position) {
         int x = position.getX();
         int y = position.getY();
-        return x >= 0 && x < grid.getColumns() && y >= 0 && y < grid.getRows(); // serve controllo per i muri
+        return x >= 0 && x < grid.getColumns() && y >= 0 && y < grid.getRows()
+                && !grid.getWallPositions().contains(position);
+    }
+
+    protected Position calculateNewPosition(Direction direction) {
+        int newX = ghost.getX();
+        int newY = ghost.getY();
+
+        switch (direction) {
+            case UP -> newY -= 1;
+            case DOWN -> newY += 1;
+            case LEFT -> newX -= 1;
+            case RIGHT -> newX += 1;
+        }
+
+        return new Position(newX, newY);
     }
 }

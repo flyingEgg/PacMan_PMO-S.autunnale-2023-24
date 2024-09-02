@@ -1,7 +1,6 @@
 package Entities;
 
-import Game.Game;
-import Game.Strategies.PacmanMovementStrategy;
+import Game.PacmanGrid;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -9,7 +8,6 @@ import java.util.Map;
 
 public class Pacman extends AbstractEntity {
     private boolean superMode;
-    private PacmanMovementStrategy myMovementStrat;
 
     public Pacman(int x, int y) {
         super(x, y);
@@ -18,7 +16,12 @@ public class Pacman extends AbstractEntity {
 
     @Override
     public void draw(Graphics2D g2d, Map<String, BufferedImage> images) {
-        g2d.drawImage(images.get("pacman"), x * 20, y * 20, null);
+        BufferedImage pacmanImage = images.get("pacman");
+        if (pacmanImage != null) {
+            g2d.drawImage(pacmanImage, x * PacmanGrid.CELL_SIZE, y * PacmanGrid.CELL_SIZE, null);
+        } else {
+            System.out.println("Pacman image not found!");
+        }
     }
 
     public void setSuperMode(boolean superMode) {
@@ -27,9 +30,5 @@ public class Pacman extends AbstractEntity {
 
     public boolean isSuperMode() {
         return superMode;
-    }
-
-    public PacmanMovementStrategy getMyMovementStrat(){
-        return myMovementStrat;
     }
 }

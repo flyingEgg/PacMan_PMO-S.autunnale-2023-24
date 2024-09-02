@@ -1,5 +1,7 @@
 package Game.Strategies;
 
+import java.util.Map;
+
 import API.MovementStrategy;
 import Entities.Pacman;
 import Exceptions.IllegalEntityMovementException;
@@ -22,8 +24,9 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
 
     @Override
     public void move(Direction direction) {
-        int newX = pacman.getX(),
-                newY = pacman.getY();
+        int newX = pacman.getX();
+        int newY = pacman.getY();
+
         switch (direction) {
             case UP -> newY -= 1;
             case DOWN -> newY += 1;
@@ -34,15 +37,14 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
         Position newPosition = new Position(newX, newY);
 
         if (isValidPosition(newPosition)) {
-            grid.removeComponent(pacman); // rimuove pacman dalla posizione attuale
-            pacman.setPosition(newPosition); // registra una nuova posizione per pacman
+            grid.removeComponent(pacman); // Rimuove Pacman dalla posizione attuale
+            pacman.setPosition(newPosition); // Registra una nuova posizione per Pacman
             grid.addComponent(pacman);
-            pacman.draw(); // disegna pacman nella nuova posizione
+            pacman.draw(g2d, images); // Disegna Pacman nella nuova posizione
 
-            // Gestire la collisione con i fantasmi
+            // Gestione collisione con i fantasmi
             if (isPacmanHitByGhost(newPosition)) {
-                game.handlePacmanHit(); // Implementare questa logica per gestire la collisione con relativa perdita di
-                                        // vita
+                handlePacmanGhostCollision(newPosition);
             }
         } else {
             throw new IllegalEntityMovementException("Invalid movement for Pacman");
@@ -64,20 +66,28 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
             return false;
         }
 
-        return true; // controllata la posizione e i muri
+        return true;
     }
 
     private boolean isPacmanHitByGhost(Position pacPos) {
-        return this.game.getGhosts()
-                .stream()
-                .anyMatch(ghost -> pacPos.equals(ghost.getPosition()));
+        return this.game.getGhosts().stream().anyMatch(ghost -> pacPos.equals(ghost.getPosition()));
     }
 
     private boolean isPacmanBumpingWall(Position pacPos) {
         return this.game.getGrid().getWallPositions().contains(pacPos);
     }
 
-    private boolean isOnMagicCoord(Position pacPos){
+    private void handlePacmanGhostCollision(Position pacPos) {
+        if (pacman.isSuperMode()) {
+            // Pacman è in modalità super, il fantasma viene mangiato
+            this.game.eatGhost(pacPos); // Logica per mangiare il fantasma
+        } else {
+            // Pacman viene colpito dal fantasma, perde una vita
+            this.game.loseLife();
+        }
+    }
+
+    private boolean isOnMagicCoord(Position pacPos) {
         return this.game.getGrid().getMagicCoords().contains(pacPos);
     }
 

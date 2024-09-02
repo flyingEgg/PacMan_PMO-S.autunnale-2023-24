@@ -2,12 +2,10 @@ package Game;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
+import Entities.Ghost.Color;
 import Entities.Ghost.Ghost;
 import Entities.Pacman;
-
-import static Entities.Ghost.Color.*;
 
 public class Game {
     private boolean onGoing;
@@ -17,6 +15,7 @@ public class Game {
     private PacmanGrid grid;
     private Pacman pacman;
     private List<Ghost> ghosts;
+    private int currentLevel;
 
     public Game() {
         this.onGoing = false;
@@ -24,9 +23,10 @@ public class Game {
         this.gameOver = false;
         this.lives = 3;
         this.grid = new PacmanGrid();
-        this.pacman = new Pacman(grid.getPacmanStartPosition().getX(), grid.getPacmanStartPosition().getY());
+        this.pacman = new Pacman(11, 9);
         this.ghosts = new ArrayList<>();
         this.score = 0;
+        this.currentLevel = 1;
         initialiseGhosts();
     }
 
@@ -92,6 +92,15 @@ public class Game {
         }
     }
 
+    public void eatGhost(Position ghostPosition) {
+        Ghost ghost = ghosts.stream().filter(g -> g.getPosition().equals(ghostPosition)).findFirst().orElse(null);
+        if (ghost != null) {
+            incrementScore(200); // Aggiungi punti per ogni fantasma mangiato
+            ghosts.remove(ghost);
+            grid.removeComponent(ghost);
+        }
+    }
+
     public PacmanGrid getGrid() {
         return this.grid;
     }
@@ -114,20 +123,21 @@ public class Game {
     }
 
     private void initialiseGhosts() {
-        this.ghosts.add(new Ghost(9, 8, RED));
-        this.ghosts.add(new Ghost(9, 9, ORANGE));
-        this.ghosts.add(new Ghost(9, 10, PINK));
-        this.ghosts.add(new Ghost(8, 9, BLUE));
-
+        ghosts.add(new Ghost(9, 8, Color.RED));
+        ghosts.add(new Ghost(9, 9, Color.ORANGE));
+        ghosts.add(new Ghost(9, 10, Color.PINK));
+        ghosts.add(new Ghost(8, 9, Color.BLUE));
     }
 
-    public void handlePacmanHit() {
-
-
+    public void nextLevel() {
+        currentLevel++;
+        incrementGhostSpeed();
+        grid.initializeMap(); // Reinizializza la mappa
         pacman.setPosition(grid.getPacmanStartPosition());
-        this.lives--;
+        initialiseGhosts();
+    }
 
-        IntStream.range(0, ghosts.size())
-                .forEach(i -> ghosts.get(i).setPosition(grid.getGhostSpawnPoints().get(i)));
+    private void incrementGhostSpeed() {
+        // Aumenta la velocità dei fantasmi al passare dei livelli???
     }
 }

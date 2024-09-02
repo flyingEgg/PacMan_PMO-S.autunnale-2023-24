@@ -26,13 +26,11 @@ public class PacmanGameWindow extends JFrame {
     private Map<String, BufferedImage> images;
     private GamePanel gamePanel;
     private InfoPanel infoPanel;
-    private JMenuBar menuBar;
-    private JPanel statusBar;
 
     public PacmanGameWindow() {
         this.game = new Game();
         this.grid = new PacmanGrid();
-        this.pacman = new Pacman(game.getPacman().getX(), game.getPacman().getY());
+        this.pacman = game.getPacman();
         this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, game);
 
         loadImages();
@@ -50,21 +48,18 @@ public class PacmanGameWindow extends JFrame {
 
     private void setupWindow() {
         setTitle("Pacman");
-        setSize(800, 600); // Dimensioni generose per includere sia il gioco che il pannello info
+        setSize(516, 460); // Dimensioni generose per includere sia il gioco che il pannello info
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Centra la finestra sullo schermo
         setLayout(new BorderLayout());
 
-        // Pannello di gioco
         gamePanel = new GamePanel(grid, pacman, images);
         add(gamePanel, BorderLayout.CENTER);
 
-        // Pannello informativo
         infoPanel = new InfoPanel();
         add(infoPanel, BorderLayout.EAST);
 
-        // Applica un tema moderno
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
@@ -75,7 +70,7 @@ public class PacmanGameWindow extends JFrame {
     }
 
     private void setupMenu() {
-        menuBar = new JMenuBar();
+        JMenuBar menuBar = new JMenuBar();
         JMenu gameMenu = new JMenu("Game");
 
         JMenuItem startItem = new JMenuItem("Start");
@@ -95,47 +90,39 @@ public class PacmanGameWindow extends JFrame {
     }
 
     private void setupStatusBar() {
-        statusBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel statusBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel statusLabel = new JLabel("Welcome to Pacman!");
         statusBar.add(statusLabel);
         add(statusBar, BorderLayout.SOUTH);
     }
 
     private void startGame() {
-        // Logica per avviare il gioco
         System.out.println("Gioco avviato!");
     }
 
     private void pauseGame() {
-        // Logica per mettere in pausa il gioco
         System.out.println("Gioco in pausa.");
     }
 
     private void resetGame() {
-        // Logica per resettare il gioco
         System.out.println("Gioco resettato.");
     }
 
     private void loadImages() {
         images = new HashMap<>();
         String[] imageNames = { "down", "ghost", "heart", "left", "pacman", "right", "up" };
-        String[] imagePaths = { "/images/down.gif",
-                "/images/ghost.gif",
-                "/images/heart.png",
-                "/images/left.gif",
-                "/images/pacman.png",
-                "/images/right.gif",
-                "/images/up.gif" };
+        String[] imagePaths = {
+                "/images/down.gif", "/images/ghost.gif", "/images/heart.png",
+                "/images/left.gif", "/images/pacman.png", "/images/right.gif", "/images/up.gif"
+        };
 
         for (int i = 0; i < imageNames.length; i++) {
             try {
                 BufferedImage image = ImageIO
                         .read(Objects.requireNonNull(getClass().getResourceAsStream(imagePaths[i])));
                 images.put(imageNames[i], image);
-            } catch (IOException e) {
+            } catch (IOException | NullPointerException e) {
                 System.out.println("Errore nel caricamento dell'immagine: " + imagePaths[i] + " - " + e.getMessage());
-            } catch (NullPointerException e) {
-                System.out.println("Immagine non trovata, controlla il percorso: " + imagePaths[i]);
             }
         }
     }
@@ -149,8 +136,16 @@ public class PacmanGameWindow extends JFrame {
             case KeyEvent.VK_RIGHT -> direction = Direction.RIGHT;
         }
         if (direction != null) {
-            pacman.getMyMovementStrat().move(direction);
+            pacmanMovementStrategy.move(direction);
             gamePanel.repaint();
+            checkForGameOver();
+        }
+    }
+
+    private void checkForGameOver() {
+        if (game.isGameOver()) {
+            JOptionPane.showMessageDialog(this, "Game Over! Your score: " + game.getScore());
+            resetGame();
         }
     }
 
