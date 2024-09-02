@@ -2,14 +2,16 @@ package Game.Strategies;
 
 import API.MovementStrategy;
 import Entities.Ghost.Ghost;
+import Game.PacmanGame;
+import Game.PacmanGrid;
 import Game.Position;
 import Game.Grid;
 
 public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     protected final Ghost ghost;
-    protected final Grid grid;
+    protected final PacmanGrid grid;
 
-    public GhostMovementStrategy(Ghost ghost, Grid grid) {
+    public GhostMovementStrategy(Ghost ghost, PacmanGrid grid) {
         this.ghost = ghost;
         this.grid = grid;
     }
