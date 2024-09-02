@@ -112,8 +112,9 @@ public class PacmanGameWindow extends JFrame {
         images = new HashMap<>();
         String[] imageNames = { "down", "ghost", "heart", "left", "pacman", "right", "up" };
         String[] imagePaths = {
-                "/images/down.gif", "/images/ghost.gif", "/images/heart.png",
-                "/images/left.gif", "/images/pacman.png", "/images/right.gif", "/images/up.gif"
+                "/Game/GUI/images/down.gif", "/Game/GUI/images/ghost.gif", "/Game/GUI/images/heart.png",
+                "/Game/GUI/images/left.gif", "/Game/GUI/images/pacman.png", "/Game/GUI/images/right.gif",
+                "/Game/GUI/images/up.gif"
         };
 
         for (int i = 0; i < imageNames.length; i++) {

@@ -40,7 +40,6 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
             grid.removeComponent(pacman); // Rimuove Pacman dalla posizione attuale
             pacman.setPosition(newPosition); // Registra una nuova posizione per Pacman
             grid.addComponent(pacman);
-            pacman.draw(g2d, images); // Disegna Pacman nella nuova posizione
 
             // Gestione collisione con i fantasmi
             if (isPacmanHitByGhost(newPosition)) {

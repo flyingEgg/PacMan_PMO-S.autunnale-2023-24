@@ -25,9 +25,10 @@ public class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
         if (grid != null && images != null) {
-            grid.drawGrid((Graphics2D) g, images); // Metodo per disegnare la griglia
-            pacman.draw((Graphics2D) g, images); // Metodo per disegnare Pacman
+            grid.drawGrid(g2d, images); // Metodo per disegnare la griglia
+            pacman.draw(g2d, images); // Metodo per disegnare Pacman
         }
     }
 
