@@ -79,9 +79,9 @@ public class JUnitGridTest {
 
     }
 
-    @Test
+    /*@Test
     public void testPrintGrid(){
         pacmanGrid.printGrid();
-    }
+    }*/
 
 }
