@@ -1,6 +1,6 @@
 package Game.Strategies;
 
-import java.util.Map;
+import java.util.Optional;
 
 import API.MovementStrategy;
 import Entities.Pacman;
@@ -37,17 +37,29 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
         Position newPosition = new Position(newX, newY);
 
         if (isValidPosition(newPosition)) {
-            grid.removeComponent(pacman); // Rimuove Pacman dalla posizione attuale
-            pacman.setPosition(newPosition); // Registra una nuova posizione per Pacman
-            grid.addComponent(pacman);
+            redrawPacman(newPosition);
+
+            if (handleMagicCoords(newPosition).isPresent()) {
+                newPosition = handleMagicCoords(newPosition).get();
+                redrawPacman(newPosition);
+            }
 
             // Gestione collisione con i fantasmi
             if (isPacmanHitByGhost(newPosition)) {
                 handlePacmanGhostCollision(newPosition);
             }
+
+
         } else {
             throw new IllegalEntityMovementException("Invalid movement for Pacman");
         }
+    }
+
+
+    private void redrawPacman(Position pacPos) {
+        this.grid.removeComponent(pacman); // Rimuove Pacman dalla posizione attuale
+        this.pacman.setPosition(pacPos); // Registra una nuova posizione per Pacman
+        this.grid.addComponent(pacman);
     }
 
     // Verifica che la posizione all'interno della griglia sia valida
@@ -89,5 +101,19 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
     private boolean isOnMagicCoord(Position pacPos) {
         return this.game.getGrid().getMagicCoords().contains(pacPos);
     }
+
+    private Optional<Position> handleMagicCoords(Position pacPos) {
+
+        if (this.game.getGrid().getMagicCoords().contains(pacPos)) {
+            if (pacPos.equals(new Position(9, 0))) {
+                return Optional.of(new Position(9, 18));
+            } else if (pacPos.equals(new Position(9, 18))) {
+                return Optional.of(new Position(9, 0));
+            }
+        }
+
+        return Optional.empty();
+    }
+
 
 }
