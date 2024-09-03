@@ -79,8 +79,12 @@ public class Game {
         return score;
     }
 
-    public void resetScore() {
+    public void resetGame() {
         this.score = 0;
+        this.lives = 3;
+        this.gameOver = false;
+        this.pacman = new Pacman(this.grid.getPacmanStartPosition().getX(), this.grid.getPacmanStartPosition().getY());
+        initialiseGhosts();
     }
 
     public void loseLife() {
@@ -145,12 +149,12 @@ public class Game {
         }
     }
 
-    public void nextLevel() { // metodo per riavviare la mappa terminati i puntini?
+    /*public void nextLevel() { // metodo per riavviare la mappa terminati i puntini?
         incrementGhostSpeed();
         grid.initializeMap(); // Reinizializza la mappa
         pacman.setPosition(grid.getPacmanStartPosition());
         initialiseGhosts();
-    }
+    }*/
 
     private void incrementGhostSpeed() {
         // Aumenta la velocità dei fantasmi al passare dei livelli???
