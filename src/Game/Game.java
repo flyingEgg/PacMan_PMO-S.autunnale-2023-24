@@ -138,10 +138,11 @@ public class Game {
     }
 
     private void initialiseGhosts() {
-        ghosts.add(new Ghost(9, 8, Color.RED));
-        ghosts.add(new Ghost(9, 9, Color.ORANGE));
-        ghosts.add(new Ghost(9, 10, Color.PINK));
-        ghosts.add(new Ghost(8, 9, Color.BLUE));
+        for (int i = 0; i < Color.values().length; i++) {
+            int x = this.grid.getGhostStartPositions().get(i).getX();
+            int y = this.grid.getGhostStartPositions().get(i).getY();
+            ghosts.add(new Ghost(x, y, Color.values()[i]));
+        }
     }
 
     public void nextLevel() { // metodo per riavviare la mappa terminati i puntini?
