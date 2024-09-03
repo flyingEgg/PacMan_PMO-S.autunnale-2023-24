@@ -97,7 +97,7 @@ public class PacmanGrid extends Grid {
         return getBidimensionalArray(MAGIC_COORDS);
     }
 
-    public List<Position> getGhostSpawnPoints() {
+    public List<Position> getGhostStartPositions() {
         return List.of(GHOST_SPAWN_POSITIONS);
     }
 
