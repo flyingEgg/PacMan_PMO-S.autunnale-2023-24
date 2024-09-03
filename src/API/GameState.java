@@ -10,7 +10,7 @@ public interface GameState {
      * Fa uscire la partita da un determinato stato
      */
     void exitState();
-//
+
     /**
      * Effettua aggiornamenti sullo stato
      */

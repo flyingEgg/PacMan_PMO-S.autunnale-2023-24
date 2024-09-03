@@ -1,8 +1,6 @@
 package Game.State;
 
 import API.GameState;
-import API.GameSubject;
-import API.GameSubjectListener;
 import Game.Game;
 
 public class GamePause implements GameState {

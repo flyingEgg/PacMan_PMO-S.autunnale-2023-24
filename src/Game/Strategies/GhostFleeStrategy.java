@@ -1,15 +1,25 @@
 package Game.Strategies;
 
-import Entities.Ghost;
-import Game.Grid;
+import Entities.Ghost.Ghost;
+import Game.PacmanGrid;
+import Game.Position;
 
 public class GhostFleeStrategy extends GhostMovementStrategy {
-    public GhostFleeStrategy(Ghost ghost, Grid grid) {
+
+    public GhostFleeStrategy(Ghost ghost, PacmanGrid grid) {
         super(ghost, grid);
     }
 
     @Override
-    public void move(Direction direction) {
-        // Logica di fuga
+    protected Direction determineNextDirection() {
+        // Logica semplice per fuggire da Pacman
+        Position pacmanPosition = grid.getPacmanStartPosition(); // Supponendo di avere accesso alla posizione di Pacman
+        if (ghost.getX() > pacmanPosition.getX())
+            return Direction.RIGHT;
+        if (ghost.getX() < pacmanPosition.getX())
+            return Direction.LEFT;
+        if (ghost.getY() > pacmanPosition.getY())
+            return Direction.DOWN;
+        return Direction.UP;
     }
 }

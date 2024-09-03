@@ -1,21 +1,31 @@
 package Game;
 
 import API.MapComponent;
+import Entities.Ghost.Color;
+import Entities.Ghost.Ghost;
 import Entities.Pacman;
 import Game.Composite.BigDot;
 import Game.Composite.EmptySpace;
 import Game.Composite.SmallDot;
 import Game.Composite.Wall;
 
-import java.util.Arrays;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class PacmanGrid extends Grid {
+    public static final int CELL_SIZE = 20;
     private static final int COLUMNS = 21; // Numero di colonne della griglia
     private static final int ROWS = 19; // Numero di righe della griglia
+    private Set<Position> excludedPositions;
 
     // Posizioni dei muri
     private static final int[][] WALL_POSITIONS = {
-            { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 },
+            { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 },
             { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 },
             { 19, 0 }, { 20, 0 },
             { 0, 1 }, { 6, 1 }, { 8, 1 }, { 10, 1 }, { 12, 1 }, { 16, 1 }, { 20, 1 },
@@ -29,7 +39,7 @@ public class PacmanGrid extends Grid {
             { 0, 7 }, { 2, 7 }, { 4, 7 }, { 6, 7 }, { 8, 7 }, { 9, 7 }, { 10, 7 }, { 12, 7 }, { 14, 7 }, { 16, 7 },
             { 18, 7 }, { 20, 7 },
             { 0, 8 }, { 4, 8 }, { 8, 8 }, { 10, 8 }, { 12, 8 }, { 16, 8 }, { 20, 8 },
-            { 0, 9 }, { 1, 9 }, { 2, 9 }, { 4, 9 }, { 5, 9 }, { 6, 9 }, { 8, 9 }, { 10, 9 }, { 12, 9 }, { 13, 9 },
+            { 0, 9 }, { 1, 9 }, { 2, 9 }, { 4, 9 }, { 5, 9 }, { 6, 9 }, { 10, 9 }, { 12, 9 }, { 13, 9 },
             { 14, 9 }, { 16, 9 }, { 17, 9 }, { 18, 9 }, { 20, 9 },
             { 0, 10 }, { 4, 10 }, { 8, 10 }, { 10, 10 }, { 12, 10 }, { 16, 10 }, { 20, 10 },
             { 0, 11 }, { 2, 11 }, { 4, 11 }, { 6, 11 }, { 8, 11 }, { 9, 11 }, { 10, 11 }, { 12, 11 }, { 14, 11 },
@@ -44,89 +54,137 @@ public class PacmanGrid extends Grid {
             { 20, 16 },
             { 0, 17 }, { 6, 17 }, { 8, 17 }, { 10, 17 }, { 12, 17 }, { 16, 17 }, { 20, 17 },
             { 0, 18 }, { 1, 18 }, { 2, 18 }, { 3, 18 }, { 4, 18 }, { 5, 18 }, { 6, 18 }, { 7, 18 }, { 8, 18 },
-            { 9, 18 }, { 10, 18 }, { 11, 18 }, { 12, 18 }, { 13, 18 }, { 14, 18 }, { 15, 18 }, { 16, 18 }, { 17, 18 },
+            { 10, 18 }, { 11, 18 }, { 12, 18 }, { 13, 18 }, { 14, 18 }, { 15, 18 }, { 16, 18 }, { 17, 18 },
             { 18, 18 }, { 19, 18 }, { 20, 18 }
-    }; // eventualmente togliere { 0, 9 } e { 18, 9 } ed effettuare il teletrasporto da
-       // unlato all'altro
-       // tocca liberare i fantasmi da { 8, 9 }
+    };
+    // tocca liberare i fantasmi da { 8, 9 }
+
+    // Posizioni dei Big Dot
+    private static final int[][] BIG_DOT_POSITIONS = {
+            { 1, 1 }, { 19, 1 }, { 1, 17 }, { 19, 17 }
+    };
+
+    private static final int[][] MAGIC_COORDS = {
+            { 9, 0 }, { 9, 18 }
+    };
+
+    // Posizione di partenza di Pac-Man
+    private static final Position PACMAN_START_POSITION = new Position(11, 9);
+
+    // Posizioni di spawn dei fantasmi
+    private static final Position[] GHOST_SPAWN_POSITIONS = {
+            new Position(9, 9), new Position(9, 8), new Position(9, 10), new Position(8, 9)
+    };
+
+    // Altre posizioni escluse
+    private static final int[][] OTHER_EXCLUDED_POSITIONS = {
+            { 9, 1 }, { 9, 2 }, { 9, 3 }, { 9, 15 }, { 9, 16 }, { 9, 17 },
+            { 7, 1 }, { 7, 2 }, { 7, 16 }, { 7, 17 },
+            { 11, 1 }, { 11, 2 }, { 11, 16 }, { 11, 17 }
+    };
 
     public PacmanGrid() {
         super(COLUMNS, ROWS);
+        initializeExcludedPositions();
         initializeMap();
     }
 
-    private void initializeMap() {
-        // Inizializza la griglia con spazi vuoti
+    public Set<Position> getWallPositions() {
+        return getBidimensionalArray(WALL_POSITIONS);
+    }
+
+    public Set<Position> getMagicCoords() {
+        return getBidimensionalArray(MAGIC_COORDS);
+    }
+
+    public List<Position> getGhostSpawnPoints() {
+        return List.of(GHOST_SPAWN_POSITIONS);
+    }
+
+    public Position getPacmanStartPosition() {
+        return PACMAN_START_POSITION;
+    }
+
+    private void initializeExcludedPositions() {
+        excludedPositions = new HashSet<>();
+
+        // Aggiungi posizioni dei muri
+        addPositions(WALL_POSITIONS);
+
+        // Aggiungi posizioni dei Big Dot
+        addPositions(BIG_DOT_POSITIONS);
+
+        // Aggiungi posizione di Pac-Man
+        excludedPositions.add(PACMAN_START_POSITION);
+
+        // Aggiungi posizioni di spawn dei fantasmi
+        excludedPositions.addAll(Arrays.asList(GHOST_SPAWN_POSITIONS));
+
+        // Aggiungi altre posizioni escluse
+        addPositions(OTHER_EXCLUDED_POSITIONS);
+
+        // Aggiungi posizioni per teletrasporto
+        addPositions(MAGIC_COORDS);
+
+    }
+
+    protected void initializeMap() {
+        // Inizializza la griglia con spazi vuoti e Small Dot
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 Position currentPosition = new Position(j, i);
-                // Imposta uno spazio vuoto in ogni cella della griglia
                 addComponent(new EmptySpace(currentPosition));
-                // Escludi le posizioni specificate
-                if (!isExcludedPosition(currentPosition)) {
+                if (!excludedPositions.contains(currentPosition)) {
                     addComponent(new SmallDot(currentPosition));
                 }
             }
         }
 
-        // Aggiungi i big dot alla griglia nelle posizioni specificate
-        addComponent(new BigDot(new Position(1, 1)));
-        addComponent(new BigDot(new Position(19, 1)));
-        addComponent(new BigDot(new Position(1, 17)));
-        addComponent(new BigDot(new Position(19, 17)));
-        // credo sia da fixare perchè addcomponent richiede una position ma i dot ne
-        // hanno anche una propria nel costruttore
-
-        // Aggiungi muri alla griglia
         addWallsToGrid();
-
-        // Aggiungi PacMan alla griglia
-        Pacman pacman = new Pacman(11, 9);
-        addComponent(pacman);
-    }
-
-    private boolean isExcludedPosition(Position position) {
-        int x = position.getX();
-        int y = position.getY();
-
-        // Check se la posizione è esclusa per essere vuota o per altre ragioni
-        // specifiche
-        if (x == 11 && y == 9) { // Escludi la posizione di partenza di Pac-Man
-            return true;
-        }
-
-        // Escludi altre posizioni specifiche
-        int[][] excludedPositions = {
-                { 9, 0 }, { 9, 1 }, { 9, 2 }, { 9, 3 }, { 9, 15 }, { 9, 16 }, { 9, 17 }, { 9, 18 }, // Posizioni muro
-                                                                                                    // fantasmi
-                { 9, 8 }, { 9, 9 }, { 9, 10 } // Posizioni di spawn dei fantasmi
-        };
-
-        for (int[] excluded : excludedPositions) {
-            if (x == excluded[0] && y == excluded[1]) {
-                return true;
-            }
-        }
-
-        return false;
+        addPacmanToGrid();
+        addGhostsToGrid();
+        addBigDotsToGrid();
     }
 
     private void addWallsToGrid() {
-        // Aggiungi i muri alla griglia
-        Arrays.stream(WALL_POSITIONS).forEach(position ->
-                                      addComponent(new Wall(new Position(position[0], position[1]))));
-
-        // Posizione di partenza dei fantasmi
-        // addComponent(new GhostStartPoint(), new Position(9, 9));
+        Arrays.stream(WALL_POSITIONS)
+                .map(pos -> new Wall(new Position(pos[0], pos[1])))
+                .forEach(this::addComponent);
     }
 
-    public void printGrid() {
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLUMNS; j++) {
-                MapComponent component = getComponentByPosition(new Position(j, i));
-                component.draw();
+    private void addPacmanToGrid() {
+        addComponent(new Pacman(PACMAN_START_POSITION.getX(), PACMAN_START_POSITION.getY()));
+    }
+
+    private void addGhostsToGrid() {
+        IntStream.range(0, GHOST_SPAWN_POSITIONS.length).mapToObj(i -> {
+            Position pos = GHOST_SPAWN_POSITIONS[i];
+            Color color = Color.values()[i % Color.values().length];
+            return new Ghost(pos.getX(), pos.getY(), color);
+        }).forEach(this::addComponent);
+    }
+
+    private void addBigDotsToGrid() {
+        Arrays.stream(BIG_DOT_POSITIONS)
+                .map(pos -> new BigDot(new Position(pos[0], pos[1])))
+                .forEach(this::addComponent);
+    }
+
+    public void drawGrid(Graphics2D g2d, Map<String, BufferedImage> images) {
+        for (int i = 0; i < getRows(); i++) {
+            for (int j = 0; j < getColumns(); j++) {
+                Position pos = new Position(j, i);
+                Optional<MapComponent> component = getComponentByPosition(pos);
+                component.ifPresent(mapComponent -> mapComponent.draw(g2d, images));
             }
-            System.out.println(); // Vai a capo alla fine di ogni riga
         }
+    }
+
+    private void addPositions(int[][] positionsArray) {
+        Arrays.stream(positionsArray).forEach(pos -> excludedPositions.add(new Position(pos[0], pos[1])));
+    }
+
+    private Set<Position> getBidimensionalArray(int[][] ARR) {
+        return Arrays.stream(ARR).map(p -> new Position(p[0], p[1])).collect(Collectors.toSet());
     }
 }

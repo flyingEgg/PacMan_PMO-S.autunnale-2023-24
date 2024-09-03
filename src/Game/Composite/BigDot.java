@@ -3,27 +3,37 @@ package Game.Composite;
 import Game.Game;
 import Game.Position;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Map;
+
+import Entities.Pacman;
+import Entities.Ghost.Ghost;
+
 public class BigDot extends Dot {
     private boolean eaten;
 
     public BigDot(Position position) {
-        super(position, 0); // 0 punti per un big dot
+        super(position, 0); // 0 points for a big dot
         this.eaten = false;
     }
 
     @Override
-    public void draw() {
-        // Logica specifica per disegnare un puntino grande sulla mappa di gioco
-        System.out.println("Rendering big dot at position: " + getPosition());
+    public void draw(Graphics2D g2d, Map<String, BufferedImage> images) {
+        g2d.setColor(Color.YELLOW);
+        g2d.fillOval(position.getX() * 20, position.getY() * 20, 20, 20);
     }
 
     @Override
     public void collect(Game game) {
-        // Aggiorna lo stato di Pac-Man per consentire di mangiare i fantasmi
-        // DA SCOMMENTARE player.setSuperMode(true);
+        Pacman pacman = game.getPacman();
+        pacman.setSuperMode(true);
+
+        for (Ghost ghost : game.getGhosts()) {
+            ghost.runAway();
+        }
+
         System.out.println("Collecting big dot at position: " + getPosition());
-        // Altra logica specifica per la raccolta di un puntino grande dalla mappa di
-        // gioco
         this.eaten = true;
     }
 

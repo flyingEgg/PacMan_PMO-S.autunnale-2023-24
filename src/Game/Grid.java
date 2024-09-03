@@ -2,7 +2,10 @@ package Game;
 
 import API.MapComponent;
 
-public class Grid {
+import java.util.Optional;
+import Util.Pair;
+
+public abstract class Grid {
     private final MapComponent[][] grid;
 
     public Grid(int columns, int rows) {
@@ -14,35 +17,38 @@ public class Grid {
 
     public void addComponent(MapComponent component) {
         Position position = component.getPosition();
-        int x = position.getX();
-        int y = position.getY();
-        if (isValidPosition(x, y)) {
-            grid[y][x] = component;
+        Pair<Integer, Integer> coordinates = new Pair<>(position.getX(), position.getY());
+
+        if (isValidPosition(coordinates)) {
+            grid[coordinates.getB()][coordinates.getA()] = component;
         } else {
-            System.out.println("Invalid position: (" + x + ", " + y + ")");
+            System.out.println("Invalid position: ("+coordinates+")");
         }
     }
 
     // Questo metodo rimuove i componenti e le entities
     public void removeComponent(MapComponent component) {
         Position position = component.getPosition();
+        Pair<Integer, Integer> coordinates = new Pair<>(position.getX(), position.getY());
+
         int x = position.getX();
         int y = position.getY();
-        if (isValidPosition(x, y)) {
-            grid[y][x] = null;
+
+        if (isValidPosition(coordinates)) {
+            grid[coordinates.getB()][coordinates.getA()] = null;
         } else {
-            System.out.println("Invalid position: (" + x + ", " + y + ")");
+            System.out.println("Invalid position: ("+coordinates+")");
         }
     }
 
-    public MapComponent getComponentByPosition(Position position) {
-        int x = position.getX();
-        int y = position.getY();
-        if (isValidPosition(x, y)) {
-            return grid[x][y];
+    public Optional<MapComponent> getComponentByPosition(Position position) {
+        Pair<Integer, Integer> coordinates = new Pair<>(position.getX(), position.getY());
+
+        if (isValidPosition(coordinates)) {
+            return Optional.ofNullable(grid[coordinates.getB()][coordinates.getA()]);
         } else {
-            System.out.println("Invalid position: (" + x + ", " + y + ")");
-            return null;
+            System.out.println("Invalid position: (" +coordinates+")");
+            return Optional.empty();
         }
     }
 
@@ -54,7 +60,7 @@ public class Grid {
         return grid.length;
     }
 
-    private boolean isValidPosition(int x, int y) {
-        return x >= 0 && x < grid[0].length && y >= 0 && y < grid.length;
+    private boolean isValidPosition(Pair<Integer, Integer> coord) {
+        return coord.getA() >= 0 && coord.getA() < grid[0].length && coord.getB() >= 0 && coord.getB() < grid.length;
     }
 }

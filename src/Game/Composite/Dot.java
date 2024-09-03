@@ -4,8 +4,12 @@ import API.MapComponent;
 import Game.Game;
 import Game.Position;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Map;
+
 public abstract class Dot implements MapComponent {
-    protected Position position;
+    protected final Position position;
     protected boolean eaten;
     protected int points;
 
@@ -16,10 +20,9 @@ public abstract class Dot implements MapComponent {
     }
 
     @Override
-    public abstract void draw();
+    public abstract void draw(Graphics2D g2d, Map<String, BufferedImage> images);
 
     public void collect(Game game) {
-        // Logica generica per raccogliere un punto
         game.incrementScore(points);
         System.out.println("Collecting dot at position: " + position);
         this.eaten = true;

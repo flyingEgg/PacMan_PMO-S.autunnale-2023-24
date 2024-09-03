@@ -1,31 +1,34 @@
 package Entities;
 
-import Game.Position;
+import Game.PacmanGrid;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Map;
 
 public class Pacman extends AbstractEntity {
+    private boolean superMode;
 
-    public Pacman(int x, int y){
+    public Pacman(int x, int y) {
         super(x, y);
+        this.superMode = false;
     }
 
     @Override
-    protected void move(int dx, int dy) {
-        this.x += dx;
-        this.y += dy;
+    public void draw(Graphics2D g2d, Map<String, BufferedImage> images) {
+        BufferedImage pacmanImage = images.get("pacman");
+        if (pacmanImage != null) {
+            g2d.drawImage(pacmanImage, x * PacmanGrid.CELL_SIZE, y * PacmanGrid.CELL_SIZE, null);
+        } else {
+            System.out.println("Pacman image not found!");
+        }
     }
 
-    @Override
-    public void draw() {
-        System.out.println("Pacman disegnato alla posizione: "+x+", "+y);
+    public void setSuperMode(boolean superMode) {
+        this.superMode = superMode;
     }
 
-    @Override
-    public Position getPosition() {
-        return new Position(getX(), getY());
-    }
-
-    public void setPosition(Position position){
-        this.x = position.getX();
-        this.y = position.getY();
+    public boolean isSuperMode() {
+        return superMode;
     }
 }
