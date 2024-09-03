@@ -78,9 +78,9 @@ public class PacmanGameWindow extends JFrame {
         JMenuItem pauseItem = new JMenuItem("Pause");
         JMenuItem resetItem = new JMenuItem("Reset");
 
-        startItem.addActionListener(e -> startGame());
-        pauseItem.addActionListener(e -> pauseGame());
-        resetItem.addActionListener(e -> resetGame());
+        startItem.addActionListener(e -> start());
+        pauseItem.addActionListener(e -> pause());
+        resetItem.addActionListener(e -> reset());
 
         gameMenu.add(startItem);
         gameMenu.add(pauseItem);
@@ -97,15 +97,16 @@ public class PacmanGameWindow extends JFrame {
         add(statusBar, BorderLayout.SOUTH);
     }
 
-    private void startGame() {
+    private void start() {
         System.out.println("Gioco avviato!");
     }
 
-    private void pauseGame() {
+    private void pause() {
         System.out.println("Gioco in pausa.");
     }
 
-    private void resetGame() {
+    private void reset() {
+        this.infoPanel = new InfoPanel(this.game);
         System.out.println("Gioco resettato.");
     }
 
@@ -154,7 +155,9 @@ public class PacmanGameWindow extends JFrame {
     private void checkForGameOver() {
         if (game.isGameOver()) {
             JOptionPane.showMessageDialog(this, "Game Over! Your score: " + game.getScore());
-            resetGame();
+            game.resetGame();
+            gamePanel.repaint();
+            reset();
         }
     }
 
