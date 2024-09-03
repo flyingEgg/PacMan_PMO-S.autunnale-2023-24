@@ -7,16 +7,47 @@ import Game.PacmanGrid;
 import Game.Position;
 import Game.Grid;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     protected final Ghost ghost;
     protected final PacmanGrid grid;
+    protected Timer movementTimer;
 
     public GhostMovementStrategy(Ghost ghost, PacmanGrid grid) {
         this.ghost = ghost;
         this.grid = grid;
+        initializeMovementTimer();
     }
 
-    public abstract void move(Direction direction);
+    private void initializeMovementTimer() {
+        movementTimer = new Timer(400, new ActionListener() { // Il timer si attiva ogni 400 ms (puoi regolarlo)
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                moveAutomatically();
+            }
+        });
+        movementTimer.start();
+    }
+
+    private void moveAutomatically() {
+        Direction direction = determineNextDirection();
+        if (direction != null) {
+            move(direction);
+        }
+    }
+
+    protected abstract Direction determineNextDirection();
+
+    @Override
+    public void move(Direction direction) {
+        Position newPosition = calculateNewPosition(direction);
+        if (isValidPosition(newPosition)) {
+            ghost.setPosition(newPosition);
+        }
+    }
 
     protected boolean isValidPosition(Position position) {
         int x = position.getX();

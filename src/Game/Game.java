@@ -15,7 +15,6 @@ public class Game {
     private PacmanGrid grid;
     private Pacman pacman;
     private List<Ghost> ghosts;
-    private int currentLevel;
 
     public Game() {
         this.onGoing = false;
@@ -26,7 +25,6 @@ public class Game {
         this.pacman = new Pacman(11, 9);
         this.ghosts = new ArrayList<>();
         this.score = 0;
-        this.currentLevel = 1;
         initialiseGhosts();
     }
 
@@ -129,8 +127,7 @@ public class Game {
         ghosts.add(new Ghost(8, 9, Color.BLUE));
     }
 
-    public void nextLevel() {
-        currentLevel++;
+    public void nextLevel() { // metodo per riavviare la mappa terminati i puntini?
         incrementGhostSpeed();
         grid.initializeMap(); // Reinizializza la mappa
         pacman.setPosition(grid.getPacmanStartPosition());
