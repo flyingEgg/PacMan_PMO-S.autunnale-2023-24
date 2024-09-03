@@ -19,7 +19,7 @@ public class GameOver implements GameState {
     @Override
     public void exitState() {
         this.partita.setGameOver(false);
-        this.partita.resetScore();
+        this.partita.resetGame();
     }
 
     @Override
