@@ -1,5 +1,6 @@
 package Game.Strategies;
 
+import java.util.Map;
 import java.util.Optional;
 
 import API.MovementStrategy;
@@ -47,6 +48,10 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
             // Gestione collisione con i fantasmi
             if (isPacmanHitByGhost(newPosition)) {
                 handlePacmanGhostCollision(newPosition);
+                if(!this.game.isGameOver()){
+                    newPosition = this.game.getGrid().getPacmanStartPosition();
+                    redrawPacman(newPosition);
+                }
             }
 
 
@@ -103,16 +108,12 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
     }
 
     private Optional<Position> handleMagicCoords(Position pacPos) {
+        Map<Position, Position> magicCoordsMap = Map.of(
+                new Position(9,0), new Position(9, 17),
+                new Position(9, 18), new Position(9,1)
+        );
 
-        if (this.game.getGrid().getMagicCoords().contains(pacPos)) {
-            if (pacPos.equals(new Position(9, 0))) {
-                return Optional.of(new Position(9, 18));
-            } else if (pacPos.equals(new Position(9, 18))) {
-                return Optional.of(new Position(9, 0));
-            }
-        }
-
-        return Optional.empty();
+        return Optional.ofNullable(magicCoordsMap.get(pacPos));
     }
 
 
