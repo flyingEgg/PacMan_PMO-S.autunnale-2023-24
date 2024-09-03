@@ -48,10 +48,6 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
             // Gestione collisione con i fantasmi
             if (isPacmanHitByGhost(newPosition)) {
                 handlePacmanGhostCollision(newPosition);
-                if (!this.game.isGameOver()) {
-                    newPosition = this.game.getGrid().getPacmanStartPosition();
-                    redrawPacman(newPosition);
-                }
             }
 
         } else {
@@ -97,6 +93,7 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
             this.game.eatGhost(pacPos); // Logica per mangiare il fantasma
         } else {
             // Pacman viene colpito dal fantasma, perde una vita
+            redrawPacman(this.game.getGrid().getPacmanStartPosition());
             this.game.loseLife();
         }
     }
