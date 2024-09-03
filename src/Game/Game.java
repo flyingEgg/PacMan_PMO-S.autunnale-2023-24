@@ -2,7 +2,7 @@ package Game;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import API.GameStatisticsListener;
 import Entities.Ghost.Color;
 import Entities.Ghost.Ghost;
 import Entities.Pacman;
@@ -15,6 +15,7 @@ public class Game {
     private PacmanGrid grid;
     private Pacman pacman;
     private List<Ghost> ghosts;
+    private List<GameStatisticsListener> listeners = new ArrayList<>();
 
     public Game() {
         this.onGoing = false;
@@ -22,10 +23,22 @@ public class Game {
         this.gameOver = false;
         this.lives = 3;
         this.grid = new PacmanGrid();
-        this.pacman = new Pacman(11, 9);
+        this.pacman = new Pacman(this.grid.getPacmanStartPosition().getX(), this.grid.getPacmanStartPosition().getY());
         this.ghosts = new ArrayList<>();
         this.score = 0;
         initialiseGhosts();
+    }
+
+    public void addStatisticsListener(GameStatisticsListener lis){
+        listeners.add(lis);
+    }
+
+    private void notifyScoreChanged(){
+        listeners.stream().forEach(lis -> lis.onScoreChanged(score));
+    }
+
+    private void notifyLivesChanged(){
+        listeners.stream().forEach(lis -> lis.onLivesChanged(lives));
     }
 
     public void startStopGame(boolean onGoing) {
@@ -59,6 +72,7 @@ public class Game {
 
     public void incrementScore(int points) {
         score += points;
+        notifyScoreChanged();
     }
 
     public int getScore() {
@@ -70,10 +84,13 @@ public class Game {
     }
 
     public void loseLife() {
-        lives--;
-        if (lives <= 0) {
+        this.lives--;
+        if (this.lives <= 0) {
             setGameOver(true);
         }
+
+        this.pacman = new Pacman(this.grid.getPacmanStartPosition().getX(), this.grid.getPacmanStartPosition().getY());
+        notifyLivesChanged();
     }
 
     public int getLives() {
