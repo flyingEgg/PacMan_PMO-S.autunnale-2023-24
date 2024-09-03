@@ -48,18 +48,16 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
             // Gestione collisione con i fantasmi
             if (isPacmanHitByGhost(newPosition)) {
                 handlePacmanGhostCollision(newPosition);
-                if(!this.game.isGameOver()){
+                if (!this.game.isGameOver()) {
                     newPosition = this.game.getGrid().getPacmanStartPosition();
                     redrawPacman(newPosition);
                 }
             }
 
-
         } else {
             throw new IllegalEntityMovementException("Invalid movement for Pacman");
         }
     }
-
 
     private void redrawPacman(Position pacPos) {
         this.grid.removeComponent(pacman); // Rimuove Pacman dalla posizione attuale
@@ -109,12 +107,10 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
 
     private Optional<Position> handleMagicCoords(Position pacPos) {
         Map<Position, Position> magicCoordsMap = Map.of(
-                new Position(9,0), new Position(9, 17),
-                new Position(9, 18), new Position(9,1)
-        );
+                new Position(9, 0), new Position(9, 17),
+                new Position(9, 18), new Position(9, 1));
 
         return Optional.ofNullable(magicCoordsMap.get(pacPos));
     }
-
 
 }

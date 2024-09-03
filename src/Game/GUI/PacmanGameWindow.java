@@ -111,7 +111,7 @@ public class PacmanGameWindow extends JFrame {
 
     private void loadImages() {
         images = new HashMap<>();
-        String[] imageNames = {"down", "ghost", "heart", "left", "pacman", "right", "up"};
+        String[] imageNames = { "down", "ghost", "heart", "left", "pacman", "right", "up" };
         String[] imagePaths = {
                 "/Game/GUI/images/down.gif", "/Game/GUI/images/ghost.gif", "/Game/GUI/images/heart.png",
                 "/Game/GUI/images/left.gif", "/Game/GUI/images/pacman.png", "/Game/GUI/images/right.gif",
@@ -142,8 +142,8 @@ public class PacmanGameWindow extends JFrame {
                 pacmanMovementStrategy.move(direction);
                 gamePanel.repaint();
                 checkForGameOver();
-            }catch (IllegalEntityMovementException iemE){
-                System.out.println("Pacman hitta il muro "+switchDirezione(direction));
+            } catch (IllegalEntityMovementException iemE) {
+                System.out.println("Pacman hitta il muro " + switchDirezione(direction));
             }
 
         }
@@ -160,7 +160,7 @@ public class PacmanGameWindow extends JFrame {
         SwingUtilities.invokeLater(PacmanGameWindow::new);
     }
 
-    private String switchDirezione(Direction d){
+    private String switchDirezione(Direction d) {
         return switch (d) {
             case UP -> "sopra";
             case DOWN -> "sotto";

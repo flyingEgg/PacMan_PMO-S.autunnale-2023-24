@@ -8,9 +8,5 @@ import Game.Position;
 public interface MapComponent {
     void draw(Graphics2D g2d, Map<String, BufferedImage> images);
 
-    /**
-     *
-     * @return La posizione attuale del component
-     */
     Position getPosition();
 }
