@@ -58,7 +58,7 @@ public class PacmanGameWindow extends JFrame {
         gamePanel = new GamePanel(grid, pacman, images);
         add(gamePanel, BorderLayout.CENTER);
 
-        infoPanel = new InfoPanel();
+        infoPanel = new InfoPanel(this.game);
         add(infoPanel, BorderLayout.EAST);
 
         try {
