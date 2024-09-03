@@ -17,7 +17,12 @@ public class Ghost extends AbstractEntity {
 
     @Override
     public void draw(Graphics2D g2d, Map<String, BufferedImage> images) {
-        g2d.drawImage(images.get("ghost"), x * 20, y * 20, null);
+        switch (this.color){
+            case BLUE   -> g2d.drawImage(images.get("ghost_blue"), x * 20, y * 20, null);
+            case ORANGE -> g2d.drawImage(images.get("ghost_orange"), x * 20, y * 20, null);
+            case PINK   -> g2d.drawImage(images.get("ghost_pink"), x * 20, y * 20, null);
+            case RED    -> g2d.drawImage(images.get("ghost_red"), x * 20, y * 20, null);
+        }
     }
 
     public void runAway() {
