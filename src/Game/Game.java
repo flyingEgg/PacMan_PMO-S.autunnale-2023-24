@@ -12,7 +12,7 @@ public class Game {
     private boolean paused;
     private boolean gameOver;
     private int score, lives;
-    private PacmanGrid grid;
+    private Grid grid;
     private Pacman pacman;
     private List<Ghost> ghosts;
     private List<GameStatisticsListener> listeners = new ArrayList<>();
@@ -22,7 +22,7 @@ public class Game {
         this.paused = false;
         this.gameOver = false;
         this.lives = 3;
-        this.grid = new PacmanGrid();
+        this.grid = new Grid();
         this.pacman = new Pacman(this.grid.getPacmanStartPosition().getX(), this.grid.getPacmanStartPosition().getY());
         this.ghosts = new ArrayList<>();
         this.score = 0;
@@ -120,7 +120,7 @@ public class Game {
         }
     }
 
-    public PacmanGrid getGrid() {
+    public Grid getGrid() {
         return this.grid;
     }
 

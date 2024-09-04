@@ -3,7 +3,7 @@ package Game.GUI;
 import Entities.Pacman;
 import Exceptions.IllegalEntityMovementException;
 import Game.Game;
-import Game.PacmanGrid;
+import Game.Grid;
 import Game.Strategies.Direction;
 import Game.Strategies.PacmanMovementStrategy;
 
@@ -19,10 +19,10 @@ import java.util.Map;
 import java.util.Objects;
 
 public class PacmanGameWindow extends JFrame {
-    private final PacmanGrid grid;
+    private Grid grid;
     private final Pacman pacman;
     private final PacmanMovementStrategy pacmanMovementStrategy;
-    private final Game game;
+    private Game game;
 
     private Map<String, BufferedImage> images;
     private GamePanel gamePanel;
@@ -30,7 +30,7 @@ public class PacmanGameWindow extends JFrame {
 
     public PacmanGameWindow() {
         this.game = new Game();
-        this.grid = new PacmanGrid();
+        this.grid = new Grid();
         this.pacman = game.getPacman();
         this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, game);
 
@@ -106,13 +106,15 @@ public class PacmanGameWindow extends JFrame {
     }
 
     private void reset() {
+        this.game = new Game();
+        this.grid = new Grid();
         this.infoPanel = new InfoPanel(this.game);
         System.out.println("Gioco resettato.");
     }
 
     private void loadImages() {
         images = new HashMap<>();
-        String[] imageNames = { "down", "ghost_orange", "ghost_blue", "ghost_pink", "ghost_red", "heart", "left", "pacman", "right", "up" };
+        String[] imageNames = {"down", "ghost_orange", "ghost_blue", "ghost_pink", "ghost_red", "heart", "left", "pacman", "right", "up"};
         String[] imagePaths = {
                 "/Game/GUI/images/down.gif", "/Game/GUI/images/ghost_orange.gif",
                 "/Game/GUI/images/ghost_blue.gif", "/Game/GUI/images/ghost_pink.gif",
@@ -155,9 +157,9 @@ public class PacmanGameWindow extends JFrame {
     private void checkForGameOver() {
         if (game.isGameOver()) {
             JOptionPane.showMessageDialog(this, "Game Over! Your score: " + game.getScore());
-            game.resetGame();
+
+            this.reset();
             gamePanel.repaint();
-            reset();
         }
     }
 
@@ -173,4 +175,5 @@ public class PacmanGameWindow extends JFrame {
             case LEFT -> "a sinistra";
         };
     }
+
 }

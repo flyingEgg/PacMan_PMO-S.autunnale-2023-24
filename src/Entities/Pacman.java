@@ -1,6 +1,6 @@
 package Entities;
 
-import Game.PacmanGrid;
+import Game.Grid;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -18,7 +18,7 @@ public class Pacman extends AbstractEntity {
     public void draw(Graphics2D g2d, Map<String, BufferedImage> images) {
         BufferedImage pacmanImage = images.get("pacman");
         if (pacmanImage != null) {
-            g2d.drawImage(pacmanImage, x * PacmanGrid.CELL_SIZE, y * PacmanGrid.CELL_SIZE, null);
+            g2d.drawImage(pacmanImage, x * Grid.CELL_SIZE, y * Grid.CELL_SIZE, null);
         } else {
             System.out.println("Pacman image not found!");
         }

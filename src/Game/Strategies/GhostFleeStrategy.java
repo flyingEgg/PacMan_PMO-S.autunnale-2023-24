@@ -1,12 +1,12 @@
 package Game.Strategies;
 
 import Entities.Ghost.Ghost;
-import Game.PacmanGrid;
+import Game.Grid;
 import Game.Position;
 
 public class GhostFleeStrategy extends GhostMovementStrategy {
 
-    public GhostFleeStrategy(Ghost ghost, PacmanGrid grid) {
+    public GhostFleeStrategy(Ghost ghost, Grid grid) {
         super(ghost, grid);
     }
 

@@ -5,7 +5,7 @@ import Entities.Pacman;
 import Game.Composite.BigDot;
 import Game.Composite.SmallDot;
 import Game.Composite.Wall;
-import Game.PacmanGrid;
+import Game.Grid;
 import Game.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,13 +15,13 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class JUnitGridTest {
-    private PacmanGrid pacmanGrid;
+public class JUnitAbsGridTest {
+    private Grid pacmanGrid;
 
 
     @BeforeEach
     public void setUp(){
-        pacmanGrid = new PacmanGrid();
+        pacmanGrid = new Grid();
     }
 
     @Test

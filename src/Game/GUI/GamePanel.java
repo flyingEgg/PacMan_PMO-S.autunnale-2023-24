@@ -5,17 +5,17 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 import Entities.Pacman;
-import Game.PacmanGrid;
+import Game.Grid;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class GamePanel extends JPanel {
-    private final PacmanGrid grid;
+    private final Grid grid;
     private final Pacman pacman;
     private final Map<String, BufferedImage> images;
 
-    public GamePanel(PacmanGrid grid, Pacman pacman, Map<String, BufferedImage> images) {
+    public GamePanel(Grid grid, Pacman pacman, Map<String, BufferedImage> images) {
         this.grid = grid;
         this.pacman = pacman;
         this.images = images;
@@ -34,7 +34,7 @@ public class GamePanel extends JPanel {
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(grid.getColumns() * PacmanGrid.CELL_SIZE,
-                grid.getRows() * PacmanGrid.CELL_SIZE);
+        return new Dimension(grid.getColumns() * Grid.CELL_SIZE,
+                grid.getRows() * Grid.CELL_SIZE);
     }
 }

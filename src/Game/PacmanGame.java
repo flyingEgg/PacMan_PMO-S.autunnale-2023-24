@@ -6,7 +6,7 @@ import Game.GUI.MainMenu;
 
 public class PacmanGame {
     private GameState state;
-    private Grid grid;
+    private AbsGrid absGrid;
     private MapComponent component;
 
     public PacmanGame() {

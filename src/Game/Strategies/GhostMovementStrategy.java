@@ -2,10 +2,8 @@ package Game.Strategies;
 
 import API.MovementStrategy;
 import Entities.Ghost.Ghost;
-import Game.PacmanGame;
-import Game.PacmanGrid;
-import Game.Position;
 import Game.Grid;
+import Game.Position;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -13,10 +11,10 @@ import java.awt.event.ActionListener;
 
 public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     protected final Ghost ghost;
-    protected final PacmanGrid grid;
+    protected final Grid grid;
     protected Timer movementTimer;
 
-    public GhostMovementStrategy(Ghost ghost, PacmanGrid grid) {
+    public GhostMovementStrategy(Ghost ghost, Grid grid) {
         this.ghost = ghost;
         this.grid = grid;
         initializeMovementTimer();
