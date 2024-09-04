@@ -5,20 +5,21 @@ import java.util.Optional;
 
 import API.MovementStrategy;
 import Entities.Pacman;
+import Entities.Ghost.Ghost;
 import Exceptions.IllegalEntityMovementException;
 import Game.Game;
 import Game.Position;
-import Game.AbsGrid;
+import Game.Grid;
 
 public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
     private final Pacman pacman;
-    private final AbsGrid absGrid;
+    private final Grid Grid;
     private final Game game;
     private Direction currentDirection;
 
-    public PacmanMovementStrategy(Pacman p, AbsGrid g, Game gam) {
+    public PacmanMovementStrategy(Pacman p, Grid g, Game gam) {
         this.pacman = p;
-        this.absGrid = g;
+        this.Grid = g;
         this.game = gam;
         this.currentDirection = null; // inizialmente fermo
     }
@@ -38,27 +39,28 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
         Position newPosition = new Position(newX, newY);
 
         if (isValidPosition(newPosition)) {
-            redrawPacman(newPosition);
+            for (Ghost ghost : game.getGhosts()) {
+                ghost.getMovementStrategy().move(direction);
+            }
 
             if (handleMagicCoords(newPosition).isPresent()) {
                 newPosition = handleMagicCoords(newPosition).get();
                 redrawPacman(newPosition);
             }
 
-            // Gestione collisione con i fantasmi
             if (isPacmanHitByGhost(newPosition)) {
                 handlePacmanGhostCollision(newPosition);
             }
-
+            redrawPacman(newPosition);
         } else {
             throw new IllegalEntityMovementException("Invalid movement for Pacman");
         }
     }
 
     private void redrawPacman(Position pacPos) {
-        this.absGrid.removeComponent(pacman); // Rimuove Pacman dalla posizione attuale
+        this.Grid.removeComponent(pacman); // Rimuove Pacman dalla posizione attuale
         this.pacman.setPosition(pacPos); // Registra una nuova posizione per Pacman
-        this.absGrid.addComponent(pacman);
+        this.Grid.addComponent(pacman);
     }
 
     // Verifica che la posizione all'interno della griglia sia valida
@@ -67,7 +69,7 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
         int y = position.getY();
 
         // Verifica se la posizione è all'interno dei limiti della griglia
-        if (x < 0 || x >= absGrid.getColumns() || y < 0 || y >= absGrid.getRows()) {
+        if (x < 0 || x >= Grid.getColumns() || y < 0 || y >= Grid.getRows()) {
             return false;
         }
 

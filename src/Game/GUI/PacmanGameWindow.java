@@ -114,7 +114,8 @@ public class PacmanGameWindow extends JFrame {
 
     private void loadImages() {
         images = new HashMap<>();
-        String[] imageNames = {"down", "ghost_orange", "ghost_blue", "ghost_pink", "ghost_red", "heart", "left", "pacman", "right", "up"};
+        String[] imageNames = { "down", "ghost_orange", "ghost_blue", "ghost_pink", "ghost_red", "heart", "left",
+                "pacman", "right", "up" };
         String[] imagePaths = {
                 "/Game/GUI/images/down.gif", "/Game/GUI/images/ghost_orange.gif",
                 "/Game/GUI/images/ghost_blue.gif", "/Game/GUI/images/ghost_pink.gif",

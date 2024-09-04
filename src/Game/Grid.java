@@ -98,7 +98,7 @@ public class Grid extends AbsGrid {
     }
 
     public List<Position> getGhostStartPositions() {
-        return List.of(GHOST_SPAWN_POSITIONS);
+        return Arrays.asList(GHOST_SPAWN_POSITIONS);
     }
 
     public Position getPacmanStartPosition() {
@@ -160,7 +160,8 @@ public class Grid extends AbsGrid {
         IntStream.range(0, GHOST_SPAWN_POSITIONS.length).mapToObj(i -> {
             Position pos = GHOST_SPAWN_POSITIONS[i];
             Color color = Color.values()[i % Color.values().length];
-            return new Ghost(pos.getX(), pos.getY(), color);
+            Ghost ghost = new Ghost(pos.getX(), pos.getY(), color);
+            return ghost;
         }).forEach(this::addComponent);
     }
 

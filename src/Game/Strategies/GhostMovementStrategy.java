@@ -2,42 +2,22 @@ package Game.Strategies;
 
 import API.MovementStrategy;
 import Entities.Ghost.Ghost;
+import Game.Game;
 import Game.Grid;
 import Game.Position;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     protected final Ghost ghost;
     protected final Grid grid;
-    protected Timer movementTimer;
+    protected final Game game;
 
-    public GhostMovementStrategy(Ghost ghost, Grid grid) {
+    public GhostMovementStrategy(Ghost ghost, Grid grid, Game game) {
         this.ghost = ghost;
         this.grid = grid;
-        initializeMovementTimer();
+        this.game = game;
     }
 
-    private void initializeMovementTimer() {
-        movementTimer = new Timer(400, new ActionListener() { // Il timer si attiva ogni 400 ms (puoi regolarlo)
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                moveAutomatically();
-            }
-        });
-        movementTimer.start();
-    }
-
-    private void moveAutomatically() {
-        Direction direction = determineNextDirection();
-        if (direction != null) {
-            move(direction);
-        }
-    }
-
-    protected abstract Direction determineNextDirection();
+    public abstract Direction determineNextDirection();
 
     @Override
     public void move(Direction direction) {

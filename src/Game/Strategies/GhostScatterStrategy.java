@@ -2,6 +2,7 @@ package Game.Strategies;
 
 import Entities.Ghost.Color;
 import Entities.Ghost.Ghost;
+import Game.Game;
 import Game.Grid;
 import Game.Position;
 
@@ -9,8 +10,8 @@ public class GhostScatterStrategy extends GhostMovementStrategy {
 
     private final Position scatterTarget;
 
-    public GhostScatterStrategy(Ghost ghost, Grid grid) {
-        super(ghost, grid);
+    public GhostScatterStrategy(Ghost ghost, Grid grid, Game game) {
+        super(ghost, grid, game);
         this.scatterTarget = getScatterTarget(ghost.getColor(), grid);
     }
 
@@ -24,7 +25,7 @@ public class GhostScatterStrategy extends GhostMovementStrategy {
     }
 
     @Override
-    protected Direction determineNextDirection() {
+    public Direction determineNextDirection() {
         if (ghost.getX() > scatterTarget.getX())
             return Direction.LEFT;
         if (ghost.getX() < scatterTarget.getX())

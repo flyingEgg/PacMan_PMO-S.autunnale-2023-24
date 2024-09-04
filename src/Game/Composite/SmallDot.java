@@ -22,22 +22,6 @@ public class SmallDot extends Dot {
         g2d.fillOval(position.getX() * 20 + 5, position.getY() * 20 + 5, 10, 10);
     }
 
-    /*
-     * @Override
-     * public void collect(Game game) {
-     * if (game == null) {
-     * throw new IllegalArgumentException("Game cannot be null");
-     * }
-     * 
-     * System.out.println("Collecting small dot at position: " + getPosition());
-     * game.incrementScore(points);
-     * game.getGrid().removeDot(this); // Rimuove il punto dalla griglia
-     * System.out.println(
-     * "Score updated to: " + game.getScore() +
-     * " after collecting small dot at position: " + getPosition());
-     * this.eaten = true;
-     * }
-     */
     @Override
     public Position getPosition() {
         return position;
@@ -55,8 +39,9 @@ public class SmallDot extends Dot {
 
     @Override
     protected void onCollect(Game game) {
+        game.incrementScore(points);
         game.getGrid().removeComponent(this); // Rimuovi il punto dalla griglia
         System.out.println("Small dot collected at position: " + getPosition());
+        game.notifyScoreChanged(); // Notifica il cambio di punteggio
     }
-
 }

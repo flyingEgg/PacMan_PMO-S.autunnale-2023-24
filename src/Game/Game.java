@@ -5,6 +5,7 @@ import java.util.List;
 import API.GameStatisticsListener;
 import Entities.Ghost.Color;
 import Entities.Ghost.Ghost;
+import Game.Strategies.GhostChaseStrategy;
 import Entities.Pacman;
 
 public class Game {
@@ -16,6 +17,7 @@ public class Game {
     private Pacman pacman;
     private List<Ghost> ghosts;
     private List<GameStatisticsListener> listeners = new ArrayList<>();
+    private int superModeMoves;
 
     public Game() {
         this.onGoing = false;
@@ -26,18 +28,18 @@ public class Game {
         this.pacman = new Pacman(this.grid.getPacmanStartPosition().getX(), this.grid.getPacmanStartPosition().getY());
         this.ghosts = new ArrayList<>();
         this.score = 0;
-        initialiseGhosts();
+        initializeGhosts();
     }
 
-    public void addStatisticsListener(GameStatisticsListener lis){
+    public void addStatisticsListener(GameStatisticsListener lis) {
         listeners.add(lis);
     }
 
-    private void notifyScoreChanged(){
+    public void notifyScoreChanged() {
         listeners.stream().forEach(lis -> lis.onScoreChanged(score));
     }
 
-    private void notifyLivesChanged(){
+    public void notifyLivesChanged() {
         listeners.stream().forEach(lis -> lis.onLivesChanged(lives));
     }
 
@@ -84,7 +86,7 @@ public class Game {
         this.lives = 3;
         this.gameOver = false;
         this.pacman = new Pacman(this.grid.getPacmanStartPosition().getX(), this.grid.getPacmanStartPosition().getY());
-        initialiseGhosts();
+        initializeGhosts();
     }
 
     public void loseLife() {
@@ -109,6 +111,25 @@ public class Game {
         } else {
             System.out.println("Partita in corso");
         }
+    }
+
+    public int getSuperModeMoves() {
+        return superModeMoves;
+    }
+
+    public void setSuperModeMoves(int moves) {
+        this.superModeMoves = moves;
+    }
+
+    public void decrementSuperModeMoves() {
+        if (superModeMoves > 0) {
+            superModeMoves--;
+        }
+    }
+
+    // Metodo per verificare se la super mode è ancora attiva
+    public boolean isSuperModeActive() {
+        return superModeMoves > 0;
     }
 
     public void eatGhost(Position ghostPosition) {
@@ -141,20 +162,29 @@ public class Game {
         }
     }
 
-    private void initialiseGhosts() {
+    private void initializeGhosts() {
         for (int i = 0; i < Color.values().length; i++) {
             int x = this.grid.getGhostStartPositions().get(i).getX();
             int y = this.grid.getGhostStartPositions().get(i).getY();
-            ghosts.add(new Ghost(x, y, Color.values()[i]));
+            Ghost ghost = new Ghost(x, y, Color.values()[i]);
+
+            // Assegna la strategia di movimento, ad esempio, in modalità normale:
+            ghost.setMovementStrategy(new GhostChaseStrategy(ghost, grid, this));
+
+            this.grid.addComponent(ghost);
+            this.ghosts.add(ghost); // Aggiungi il fantasma alla lista dei fantasmi
         }
     }
 
-    /*public void nextLevel() { // metodo per riavviare la mappa terminati i puntini?
-        incrementGhostSpeed();
-        grid.initializeMap(); // Reinizializza la mappa
-        pacman.setPosition(grid.getPacmanStartPosition());
-        initialiseGhosts();
-    }*/
+    /*
+     * public void nextLevel() { // metodo per riavviare la mappa terminati i
+     * puntini?
+     * incrementGhostSpeed();
+     * grid.initializeMap(); // Reinizializza la mappa
+     * pacman.setPosition(grid.getPacmanStartPosition());
+     * initialiseGhosts();
+     * }
+     */
 
     private void incrementGhostSpeed() {
         // Aumenta la velocità dei fantasmi al passare dei livelli???
