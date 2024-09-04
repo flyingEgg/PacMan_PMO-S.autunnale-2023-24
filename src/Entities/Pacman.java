@@ -1,6 +1,7 @@
 package Entities;
 
 import Game.Grid;
+import Game.Strategies.Direction;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -8,15 +9,24 @@ import java.util.Map;
 
 public class Pacman extends AbstractEntity {
     private boolean superMode;
+    private Direction direction;
 
     public Pacman(int x, int y) {
         super(x, y);
+        this.direction = Direction.RIGHT;
         this.superMode = false;
     }
 
     @Override
     public void draw(Graphics2D g2d, Map<String, BufferedImage> images) {
-        BufferedImage pacmanImage = images.get("pacman");
+        BufferedImage pacmanImage = images.get("right");
+        switch (direction){
+            case RIGHT -> pacmanImage = images.get("right");
+            case LEFT  -> pacmanImage = images.get("left");
+            case UP    -> pacmanImage = images.get("up");
+            case DOWN  -> pacmanImage = images.get("down");
+        }
+
         if (pacmanImage != null) {
             g2d.drawImage(pacmanImage, x * Grid.CELL_SIZE, y * Grid.CELL_SIZE, null);
         } else {
@@ -30,5 +40,9 @@ public class Pacman extends AbstractEntity {
 
     public boolean isSuperMode() {
         return superMode;
+    }
+
+    public void setDirection(Direction d){
+        this.direction = d;
     }
 }

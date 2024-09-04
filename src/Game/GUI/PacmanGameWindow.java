@@ -119,8 +119,8 @@ public class PacmanGameWindow extends JFrame {
 
     private void loadImages() {
         images = new HashMap<>();
-        String[] imageNames = { "down", "ghost_orange", "ghost_blue", "ghost_pink", "ghost_red", "heart", "left",
-                "pacman", "right", "up" };
+        String[] imageNames = {"down", "ghost_orange", "ghost_blue", "ghost_pink", "ghost_red", "heart", "left",
+                "pacman", "right", "up"};
         String[] imagePaths = {
                 "/Game/GUI/images/down.gif", "/Game/GUI/images/ghost_orange.gif",
                 "/Game/GUI/images/ghost_blue.gif", "/Game/GUI/images/ghost_pink.gif",
@@ -142,12 +142,15 @@ public class PacmanGameWindow extends JFrame {
 
     private void handleKeyPress(KeyEvent e) {
         Direction direction = null;
+
         switch (e.getKeyCode()) {
-            case KeyEvent.VK_UP -> direction = Direction.UP;
-            case KeyEvent.VK_DOWN -> direction = Direction.DOWN;
-            case KeyEvent.VK_LEFT -> direction = Direction.LEFT;
+            case KeyEvent.VK_UP    -> direction = Direction.UP;
+            case KeyEvent.VK_DOWN  -> direction = Direction.DOWN;
             case KeyEvent.VK_RIGHT -> direction = Direction.RIGHT;
+            case KeyEvent.VK_LEFT  -> direction = Direction.LEFT;
         }
+        this.pacman.setDirection(direction);
+
         if (direction != null) {
             try {
                 pacmanMovementStrategy.move(direction);
