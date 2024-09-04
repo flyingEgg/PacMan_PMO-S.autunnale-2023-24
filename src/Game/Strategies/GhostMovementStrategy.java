@@ -42,7 +42,7 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
             move(direction);
             // Ridisegna dopo il movimento automatico
             if (gamePanel != null) {
-                // Logica di movimento
+                System.out.println("Eseguo il repaint di gamePanel");
                 gamePanel.repaint(); // Esegui il repaint se gamePanel è stato inizializzato
             } else {
                 System.out.println("GamePanel non inizializzato!");

@@ -47,12 +47,4 @@ public class GamePanel extends JPanel {
         return new Dimension(grid.getColumns() * Grid.CELL_SIZE,
                 grid.getRows() * Grid.CELL_SIZE);
     }
-
-    public void updateGame(Grid grid, Game game, Pacman pacman, List<Ghost> ghosts) {
-        this.grid = grid;
-        this.game = game;
-        this.pacman = pacman;
-        this.ghosts = ghosts;
-        repaint(); // Ridisegna il pannello con le nuove informazioni
-    }
 }

@@ -55,6 +55,11 @@ public class PacmanGameWindow extends JFrame {
         setLocationRelativeTo(null); // Centra la finestra sullo schermo
         setLayout(new BorderLayout());
 
+        if (images == null || images.isEmpty()) {
+            System.out.println("Immagini non caricate correttamente.");
+            return;
+        }
+
         gamePanel = new GamePanel(game.getGrid(), game, game.getPacman(), game.getGhosts(), images);
         add(gamePanel, BorderLayout.CENTER);
 
