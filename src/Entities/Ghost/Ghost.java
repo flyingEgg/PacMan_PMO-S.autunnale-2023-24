@@ -47,7 +47,7 @@ public class Ghost extends AbstractEntity {
 
     public void runAway() {
         System.out.println("Fantasma alla posizione " + getPosition() + " sta scappando!");
-        setMovementStrategy(new GhostFleeStrategy(this, grid, game)); // Cambia strategia per fuggire
+        setMovementStrategy(new GhostFleeStrategy(this, grid, game, null)); // Cambia strategia per fuggire
     }
 
     public Color getColor() {

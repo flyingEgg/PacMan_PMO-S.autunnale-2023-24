@@ -50,8 +50,9 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
 
             if (isPacmanHitByGhost(newPosition)) {
                 handlePacmanGhostCollision(newPosition);
+            } else {
+                redrawPacman(newPosition);
             }
-            redrawPacman(newPosition);
         } else {
             throw new IllegalEntityMovementException("Invalid movement for Pacman");
         }

@@ -5,6 +5,7 @@ import java.util.List;
 import API.GameStatisticsListener;
 import Entities.Ghost.Color;
 import Entities.Ghost.Ghost;
+import Game.GUI.GamePanel;
 import Game.Strategies.GhostChaseStrategy;
 import Entities.Pacman;
 
@@ -18,6 +19,7 @@ public class Game {
     private List<Ghost> ghosts;
     private List<GameStatisticsListener> listeners = new ArrayList<>();
     private int superModeMoves;
+    private GamePanel gamePanel;
 
     public Game() {
         this.onGoing = false;
@@ -25,10 +27,22 @@ public class Game {
         this.gameOver = false;
         this.lives = 3;
         this.grid = new Grid();
+        this.score = 0;
+        initializeGame();
+    }
+
+    private void initializeGame() {
         this.pacman = new Pacman(this.grid.getPacmanStartPosition().getX(), this.grid.getPacmanStartPosition().getY());
         this.ghosts = new ArrayList<>();
-        this.score = 0;
-        initializeGhosts();
+        initializeGhosts(); // Inizializza i fantasmi
+    }
+
+    public void setGamePanel(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
+    }
+
+    public GamePanel getGamePanel() {
+        return gamePanel;
     }
 
     public void addStatisticsListener(GameStatisticsListener lis) {
@@ -169,7 +183,7 @@ public class Game {
             Ghost ghost = new Ghost(x, y, Color.values()[i]);
 
             // Assegna la strategia di movimento, ad esempio, in modalità normale:
-            ghost.setMovementStrategy(new GhostChaseStrategy(ghost, grid, this));
+            ghost.setMovementStrategy(new GhostChaseStrategy(ghost, grid, this, this.gamePanel));
 
             this.grid.addComponent(ghost);
             this.ghosts.add(ghost); // Aggiungi il fantasma alla lista dei fantasmi

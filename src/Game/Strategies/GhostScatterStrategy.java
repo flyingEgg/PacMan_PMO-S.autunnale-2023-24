@@ -5,13 +5,14 @@ import Entities.Ghost.Ghost;
 import Game.Game;
 import Game.Grid;
 import Game.Position;
+import Game.GUI.GamePanel;
 
 public class GhostScatterStrategy extends GhostMovementStrategy {
 
     private final Position scatterTarget;
 
-    public GhostScatterStrategy(Ghost ghost, Grid grid, Game game) {
-        super(ghost, grid, game);
+    public GhostScatterStrategy(Ghost ghost, Grid grid, Game game, GamePanel gamePanel) {
+        super(ghost, grid, game, gamePanel);
         this.scatterTarget = getScatterTarget(ghost.getColor(), grid);
     }
 

@@ -5,16 +5,44 @@ import Entities.Ghost.Ghost;
 import Game.Game;
 import Game.Grid;
 import Game.Position;
+import Game.GUI.GamePanel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
 
 public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     protected final Ghost ghost;
     protected final Grid grid;
     protected final Game game;
+    protected final GamePanel gamePanel;
+    protected Timer movementTimer;
 
-    public GhostMovementStrategy(Ghost ghost, Grid grid, Game game) {
+    public GhostMovementStrategy(Ghost ghost, Grid grid, Game game, GamePanel gamePanel) {
         this.ghost = ghost;
         this.grid = grid;
         this.game = game;
+        this.gamePanel = gamePanel;
+        initializeMovementTimer();
+    }
+
+    private void initializeMovementTimer() {
+        movementTimer = new Timer(400, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                moveAutomatically();
+            }
+        });
+        movementTimer.start();
+    }
+
+    private void moveAutomatically() {
+        Direction direction = determineNextDirection();
+        if (direction != null) {
+            move(direction);
+            // Ridisegna dopo il movimento automatico
+            gamePanel.repaint();
+        }
     }
 
     public abstract Direction determineNextDirection();

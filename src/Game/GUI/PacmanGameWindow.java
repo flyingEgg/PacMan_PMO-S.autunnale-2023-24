@@ -55,7 +55,7 @@ public class PacmanGameWindow extends JFrame {
         setLocationRelativeTo(null); // Centra la finestra sullo schermo
         setLayout(new BorderLayout());
 
-        gamePanel = new GamePanel(grid, pacman, images);
+        gamePanel = new GamePanel(game.getGrid(), game, game.getPacman(), game.getGhosts(), images);
         add(gamePanel, BorderLayout.CENTER);
 
         infoPanel = new InfoPanel(this.game);

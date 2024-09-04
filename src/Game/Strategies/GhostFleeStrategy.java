@@ -4,11 +4,12 @@ import Entities.Ghost.Ghost;
 import Game.Game;
 import Game.Grid;
 import Game.Position;
+import Game.GUI.GamePanel;
 
 public class GhostFleeStrategy extends GhostMovementStrategy {
 
-    public GhostFleeStrategy(Ghost ghost, Grid grid, Game game) {
-        super(ghost, grid, game);
+    public GhostFleeStrategy(Ghost ghost, Grid grid, Game game, GamePanel gamePanel) {
+        super(ghost, grid, game, gamePanel);
     }
 
     @Override
