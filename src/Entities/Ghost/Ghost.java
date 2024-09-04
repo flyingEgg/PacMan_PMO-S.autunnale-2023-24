@@ -44,7 +44,7 @@ public class Ghost extends AbstractEntity {
 
     public void setMovementStrategy(GhostMovementStrategy strategy) {
         this.movementStrategy = strategy;
-        if (strategy instanceof GhostMovementStrategy) {
+        if (strategy != null) {
             System.out.println("Strategia di movimento per il fantasma impostata correttamente.");
         }
     }
