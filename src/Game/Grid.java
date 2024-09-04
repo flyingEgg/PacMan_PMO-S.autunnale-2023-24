@@ -9,8 +9,8 @@ import Game.Composite.EmptySpace;
 import Game.Composite.SmallDot;
 import Game.Composite.Wall;
 
+import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 import java.util.*;
 import java.util.List;
@@ -171,7 +171,7 @@ public class Grid extends AbsGrid {
                 .forEach(this::addComponent);
     }
 
-    public void drawGrid(Graphics2D g2d, Map<String, BufferedImage> images) {
+    public void drawGrid(Graphics2D g2d, Map<String, ImageIcon> images) {
         for (int i = 0; i < getRows(); i++) {
             for (int j = 0; j < getColumns(); j++) {
                 Position pos = new Position(j, i);

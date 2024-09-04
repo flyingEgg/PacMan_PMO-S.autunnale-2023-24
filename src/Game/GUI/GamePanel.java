@@ -3,7 +3,7 @@ package Game.GUI;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import Entities.Pacman;
 import Entities.Ghost.Ghost;
@@ -11,16 +11,15 @@ import Game.Game;
 import Game.Grid;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class GamePanel extends JPanel {
     private Grid grid;
     private Game game;
     private Pacman pacman;
     private List<Ghost> ghosts;
-    private final Map<String, BufferedImage> images;
+    private final Map<String, ImageIcon> images;
 
-    public GamePanel(Grid grid, Game game, Pacman pacman, List<Ghost> ghosts, Map<String, BufferedImage> images) {
+    public GamePanel(Grid grid, Game game, Pacman pacman, List<Ghost> ghosts, Map<String, ImageIcon> images) {
         this.grid = grid;
         this.game = game;
         this.pacman = pacman;

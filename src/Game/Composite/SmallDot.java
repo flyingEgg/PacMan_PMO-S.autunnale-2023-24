@@ -3,8 +3,8 @@ package Game.Composite;
 import Game.Game;
 import Game.Position;
 
+import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Map;
 
 public class SmallDot extends Dot {
@@ -17,7 +17,7 @@ public class SmallDot extends Dot {
     }
 
     @Override
-    public void draw(Graphics2D g2d, Map<String, BufferedImage> images) {
+    public void draw(Graphics2D g2d, Map<String, ImageIcon> images) {
         g2d.setColor(Color.WHITE);
         g2d.fillOval(position.getX() * 20 + 5, position.getY() * 20 + 5, 10, 10);
     }

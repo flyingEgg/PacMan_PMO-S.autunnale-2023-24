@@ -4,11 +4,12 @@ import Game.Game;
 import Game.Position;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Map;
 
 import Entities.Pacman;
 import Entities.Ghost.Ghost;
+
+import javax.swing.*;
 
 public class BigDot extends Dot {
     private static final int POINTS = 0; // BigDot non contribuisce al punteggio direttamente
@@ -20,7 +21,7 @@ public class BigDot extends Dot {
     }
 
     @Override
-    public void draw(Graphics2D g2d, Map<String, BufferedImage> images) {
+    public void draw(Graphics2D g2d, Map<String, ImageIcon> images) {
         g2d.setColor(Color.YELLOW);
         g2d.fillOval(position.getX() * 20, position.getY() * 20, 20, 20);
     }

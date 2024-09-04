@@ -4,12 +4,11 @@ import Entities.AbstractEntity;
 import Game.Game;
 import Game.Grid;
 import Game.GUI.GamePanel;
-import Game.Strategies.GhostChaseStrategy;
 import Game.Strategies.GhostFleeStrategy;
 import Game.Strategies.GhostMovementStrategy;
 
+import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Map;
 
 public class Ghost extends AbstractEntity {
@@ -26,12 +25,12 @@ public class Ghost extends AbstractEntity {
     }
 
     @Override
-    public void draw(Graphics2D g2d, Map<String, BufferedImage> images) {
+    public void draw(Graphics2D g2d, Map<String, ImageIcon> images) {
         switch (this.color) {
-            case BLUE -> g2d.drawImage(images.get("ghost_blue"), x * 20, y * 20, null);
-            case ORANGE -> g2d.drawImage(images.get("ghost_orange"), x * 20, y * 20, null);
-            case PINK -> g2d.drawImage(images.get("ghost_pink"), x * 20, y * 20, null);
-            case RED -> g2d.drawImage(images.get("ghost_red"), x * 20, y * 20, null);
+            case BLUE -> g2d.drawImage(images.get("ghost_blue").getImage(), x * 20, y * 20, null);
+            case ORANGE -> g2d.drawImage(images.get("ghost_orange").getImage(), x * 20, y * 20, null);
+            case PINK -> g2d.drawImage(images.get("ghost_pink").getImage(), x * 20, y * 20, null);
+            case RED -> g2d.drawImage(images.get("ghost_red").getImage(), x * 20, y * 20, null);
         }
     }
 

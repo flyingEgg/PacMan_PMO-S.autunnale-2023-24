@@ -24,7 +24,7 @@ public class PacmanGameWindow extends JFrame {
     private final PacmanMovementStrategy pacmanMovementStrategy;
     private Game game;
 
-    private Map<String, BufferedImage> images;
+    private Map<String, ImageIcon> images;
     private GamePanel gamePanel;
     private InfoPanel infoPanel;
 
@@ -133,7 +133,9 @@ public class PacmanGameWindow extends JFrame {
             try {
                 BufferedImage image = ImageIO
                         .read(Objects.requireNonNull(getClass().getResourceAsStream(imagePaths[i])));
-                images.put(imageNames[i], image);
+
+                ImageIcon icon = new ImageIcon(image);
+                images.put(imageNames[i], icon);
             } catch (IOException | NullPointerException e) {
                 System.out.println("Errore nel caricamento dell'immagine: " + imagePaths[i] + " - " + e.getMessage());
             }

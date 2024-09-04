@@ -3,8 +3,8 @@ package Entities;
 import Game.Grid;
 import Game.Strategies.Direction;
 
+import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Map;
 
 public class Pacman extends AbstractEntity {
@@ -18,8 +18,8 @@ public class Pacman extends AbstractEntity {
     }
 
     @Override
-    public void draw(Graphics2D g2d, Map<String, BufferedImage> images) {
-        BufferedImage pacmanImage = images.get("right");
+    public void draw(Graphics2D g2d, Map<String, ImageIcon> images) {
+        ImageIcon pacmanImage = images.get("right");
         switch (direction){
             case RIGHT -> pacmanImage = images.get("right");
             case LEFT  -> pacmanImage = images.get("left");
@@ -28,7 +28,7 @@ public class Pacman extends AbstractEntity {
         }
 
         if (pacmanImage != null) {
-            g2d.drawImage(pacmanImage, x * Grid.CELL_SIZE, y * Grid.CELL_SIZE, null);
+            g2d.drawImage(pacmanImage.getImage(), x * Grid.CELL_SIZE, y * Grid.CELL_SIZE, null);
         } else {
             System.out.println("Pacman image not found!");
         }

@@ -1,12 +1,13 @@
 package Game.Composite;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Map;
 
 import API.MapComponent;
 import Game.Game;
 import Game.Position;
+
+import javax.swing.*;
 
 public class Fruit implements MapComponent {
     private Position position;
@@ -20,7 +21,7 @@ public class Fruit implements MapComponent {
     }
 
     @Override
-    public void draw(Graphics2D g2d, Map<String, BufferedImage> images) {
+    public void draw(Graphics2D g2d, Map<String, ImageIcon> images) {
         System.out.println("FRUIT: " + getPosition());
         // Logica per disegnare il frutto sulla mappa di gioco
     }
