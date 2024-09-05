@@ -1,12 +1,12 @@
 package main.java.model;
 
 import java.util.List;
-import main.java.model.Entities.Pacman;
-import main.java.model.Entities.Ghost;
+
+import main.java.controller.Strategies.PacmanMovementStrategy;
 import main.java.model.API.Direction;
+import main.java.model.Entities.Ghost;
+import main.java.model.Entities.Pacman;
 import main.java.model.Exceptions.IllegalEntityMovementException;
-import main.java.model.Strategies.PacmanMovementStrategy;
-import main.java.model.API.GameStatisticsListener;
 
 public class Model {
     private Game game;

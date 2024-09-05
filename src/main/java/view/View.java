@@ -1,17 +1,7 @@
 package main.java.view;
 
-import main.java.controller.Controller;
-import main.java.model.Game;
-import main.java.model.Grid;
-import main.java.model.Model;
-import main.java.model.API.Direction;
-import main.java.model.Entities.Pacman;
-import main.java.model.Exceptions.IllegalEntityMovementException;
-import main.java.model.Strategies.PacmanMovementStrategy;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -19,6 +9,22 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import main.java.controller.Controller;
+import main.java.controller.Strategies.PacmanMovementStrategy;
+import main.java.model.Game;
+import main.java.model.Grid;
+import main.java.model.Model;
+import main.java.model.API.Direction;
+import main.java.model.Entities.Pacman;
+import main.java.model.Exceptions.IllegalEntityMovementException;
 
 public class View extends JFrame {
     private Controller controller;
@@ -30,7 +36,7 @@ public class View extends JFrame {
     private Map<String, ImageIcon> images;
     private GamePanel gamePanel;
     private InfoPanel infoPanel;
-    private MainMenu mainMenu;
+    private MainMenuView mainMenu;
 
     public View(Controller controller) {
         this.controller = controller;
@@ -53,7 +59,7 @@ public class View extends JFrame {
         setLayout(new BorderLayout());
 
         // Start with the main menu
-        mainMenu = new MainMenu(controller);
+        mainMenu = new MainMenuView(controller);
         add(mainMenu, BorderLayout.CENTER);
 
         setVisible(true);
@@ -171,7 +177,7 @@ public class View extends JFrame {
         if (mainMenu != null) {
             remove(mainMenu);
         }
-        mainMenu = new MainMenu(controller);
+        mainMenu = new MainMenuView(controller);
         add(mainMenu, BorderLayout.CENTER);
         revalidate();
         repaint();
