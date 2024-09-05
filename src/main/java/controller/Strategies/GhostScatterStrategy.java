@@ -36,4 +36,12 @@ public class GhostScatterStrategy extends GhostMovementStrategy {
             return Direction.UP;
         return Direction.DOWN;
     }
+
+    @Override
+    public void move(Direction direction) {
+        Position newPosition = calculateNewPosition(direction);
+        if (isValidPosition(newPosition)) {
+            ghost.setPosition(newPosition);
+        }
+    }
 }

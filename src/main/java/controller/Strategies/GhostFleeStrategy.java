@@ -25,4 +25,12 @@ public class GhostFleeStrategy extends GhostMovementStrategy {
             return Direction.DOWN;
         return Direction.UP;
     }
+
+    @Override
+    public void move(Direction direction) {
+        Position newPosition = calculateNewPosition(direction);
+        if (isValidPosition(newPosition)) {
+            ghost.setPosition(newPosition);
+        }
+    }
 }
