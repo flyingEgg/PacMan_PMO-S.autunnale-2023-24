@@ -29,7 +29,6 @@ public class View extends JFrame {
     private Controller controller;
     private Grid grid;
     private Pacman pacman;
-    private PacmanMovementStrategy pacmanMovementStrategy;
     private Model model;
 
     private Map<String, ImageIcon> images;
@@ -42,7 +41,6 @@ public class View extends JFrame {
         this.model = controller.getModel();
         this.grid = new Grid();
         this.pacman = model.getPacman();
-        this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, model);
 
         loadImages();
         setupWindow();
@@ -151,7 +149,6 @@ public class View extends JFrame {
         this.model = new Model();
         this.grid = new Grid();
         this.pacman = model.getPacman();
-        this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, model);
         // controller.resetGame();
         showGameWindow(controller.getModel());
     }
