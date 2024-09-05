@@ -40,7 +40,8 @@ public class SmallDot extends Dot {
     @Override
     protected void onCollect(Game game) {
         game.incrementScore(points);
-        game.getGrid().removeComponent(this); // Rimuovi il punto dalla griglia
+        game.getGrid().removeComponent(this);                   // Rimuovi il punto dalla griglia
+        game.getGrid().removeDotFromMap(this.getPosition());    // Rimuovi il punto dalla mappa dei punti
         System.out.println("Small dot collected at position: " + getPosition());
         game.notifyScoreChanged(); // Notifica il cambio di punteggio
     }
