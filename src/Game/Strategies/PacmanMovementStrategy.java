@@ -39,9 +39,7 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
         Position newPosition = new Position(newX, newY);
 
         if (isValidPosition(newPosition)) {
-            for (Ghost ghost : game.getGhosts()) {
-                ghost.getMovementStrategy().move(direction);
-            }
+            game.getGhosts().stream().forEach(ghost -> ghost.getMovementStrategy().move(direction));
 
             if (handleMagicCoords(newPosition).isPresent()) {
                 newPosition = handleMagicCoords(newPosition).get();
@@ -99,10 +97,6 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
             redrawPacman(this.game.getGrid().getPacmanStartPosition());
             this.game.loseLife();
         }
-    }
-
-    private boolean isOnMagicCoord(Position pacPos) {
-        return this.game.getGrid().getMagicCoords().contains(pacPos);
     }
 
     private Optional<Position> handleMagicCoords(Position pacPos) {
