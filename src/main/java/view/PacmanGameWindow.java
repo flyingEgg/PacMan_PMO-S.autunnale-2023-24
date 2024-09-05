@@ -5,7 +5,7 @@ import main.java.model.Grid;
 import main.java.model.API.Direction;
 import main.java.model.Entities.Pacman;
 import main.java.model.Exceptions.IllegalEntityMovementException;
-import main.java.model.Strategies.PacmanMovementStrategy;
+import main.java.controller.Strategies.PacmanMovementStrategy;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

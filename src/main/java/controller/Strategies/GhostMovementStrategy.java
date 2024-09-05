@@ -1,4 +1,4 @@
-package main.java.model.Strategies;
+package main.java.controller.Strategies;
 
 import main.java.model.Game;
 import main.java.model.Grid;

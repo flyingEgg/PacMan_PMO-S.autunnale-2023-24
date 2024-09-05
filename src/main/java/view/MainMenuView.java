@@ -4,8 +4,8 @@ import javax.swing.*;
 
 import java.awt.*;
 
-public class MainMenu extends JFrame {
-    public MainMenu() {
+public class MainMenuView extends JFrame {
+    public MainMenuView() {
         setTitle("Pacman - Main Menu");
         setSize(400, 300);
         setLocationRelativeTo(null); // Centra la finestra sullo schermo
@@ -39,6 +39,6 @@ public class MainMenu extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(MainMenu::new);
+        SwingUtilities.invokeLater(MainMenuView::new);
     }
 }

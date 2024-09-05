@@ -2,8 +2,8 @@ package main.java.model.Entities;
 
 import main.java.model.Game;
 import main.java.model.Grid;
-import main.java.model.Strategies.GhostFleeStrategy;
-import main.java.model.Strategies.GhostMovementStrategy;
+import main.java.controller.Strategies.GhostFleeStrategy;
+import main.java.controller.Strategies.GhostMovementStrategy;
 import main.java.view.GamePanel;
 
 import javax.swing.*;

@@ -8,7 +8,7 @@ import main.java.model.API.Position;
 import main.java.model.Entities.Ghost;
 import main.java.model.Entities.GhostColor;
 import main.java.model.Entities.Pacman;
-import main.java.model.Strategies.GhostChaseStrategy;
+import main.java.controller.Strategies.GhostChaseStrategy;
 import main.java.view.GamePanel;
 
 public class Game {
