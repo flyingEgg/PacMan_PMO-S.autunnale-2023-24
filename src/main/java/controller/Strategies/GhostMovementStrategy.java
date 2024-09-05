@@ -55,12 +55,7 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     public abstract Direction determineNextDirection();
 
     @Override
-    public void move(Direction direction) {
-        Position newPosition = calculateNewPosition(direction);
-        if (isValidPosition(newPosition)) {
-            ghost.setPosition(newPosition);
-        }
-    }
+    public abstract void move(Direction direction);
 
     protected boolean isValidPosition(Position position) {
         int x = position.getX();
