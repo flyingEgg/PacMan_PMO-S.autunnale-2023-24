@@ -152,6 +152,7 @@ public class View extends JFrame {
         this.grid = new Grid();
         this.pacman = model.getPacman();
         this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, model);
+        // controller.resetGame();
         showGameWindow(controller.getModel());
     }
 
