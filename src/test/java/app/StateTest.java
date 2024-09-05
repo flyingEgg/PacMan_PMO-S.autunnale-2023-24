@@ -6,7 +6,7 @@
 
 package test.java.app;
 
-import main.java.model.Game;
+import main.java.model.Model;
 import main.java.model.State.GameOnGoing;
 import main.java.model.State.GameOver;
 import main.java.model.State.GamePause;
@@ -17,12 +17,12 @@ import java.util.Scanner;
 public class StateTest {
 
     public static void main(String[] args) {
-        Game partita = new Game();
+        Model partita = new Model();
         Scanner reader = new Scanner(System.in);
         mainMenu(partita, reader);
     }
 
-    private static void mainMenu(Game m, Scanner reader) throws IllegalStateException {
+    private static void mainMenu(Model m, Scanner reader) throws IllegalStateException {
         int choice;
         boolean onMenu = true;
 
@@ -53,7 +53,7 @@ public class StateTest {
         System.exit(0);
     }
 
-    private static void testGameOnGoing(Game p, Scanner pad) {
+    private static void testGameOnGoing(Model p, Scanner pad) {
         GameOnGoing state = new GameOnGoing(p);
         String command;
 
@@ -72,7 +72,7 @@ public class StateTest {
         }
     }
 
-    private static void testGameOver(Game p, Scanner read) {
+    private static void testGameOver(Model p, Scanner read) {
         GameOver state = new GameOver(p);
         int choice;
 
@@ -97,7 +97,7 @@ public class StateTest {
         } while (choice != 2);
     }
 
-    private static void testGamePause(Game p, Scanner read) {
+    private static void testGamePause(Model p, Scanner read) {
         GamePause state = new GamePause(p);
         int choice;
         state.enterState();

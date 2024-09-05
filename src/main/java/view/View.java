@@ -131,7 +131,7 @@ public class View extends JFrame {
         if (direction != null) {
             try {
                 pacmanMovementStrategy.move(direction);
-                gamePanel.repaint();
+                gamePanel.repaint(); // da fixare
                 checkForGameOver();
             } catch (IllegalEntityMovementException iemE) {
                 System.out.println("Pacman ha colpito un muro: " + switchDirezione(direction));
@@ -143,7 +143,7 @@ public class View extends JFrame {
         if (model.isGameOver()) {
             JOptionPane.showMessageDialog(this, "Game Over! Your score: " + model.getScore());
             resetGame();
-            gamePanel.repaint();
+            gamePanel.repaint(); // da fixare
         }
     }
 
