@@ -1,6 +1,6 @@
 package main.java.model.Composite;
 
-import main.java.model.Game;
+import main.java.model.Model;
 import main.java.model.API.Position;
 import main.java.model.Entities.Ghost;
 import main.java.model.Entities.Pacman;
@@ -36,16 +36,16 @@ public class BigDot extends Dot {
     }
 
     @Override
-    protected void onCollect(Game game) {
-        Pacman pacman = game.getPacman();
+    protected void onCollect(Model model) {
+        Pacman pacman = model.getPacman();
         pacman.setSuperMode(true);
-        game.setSuperModeMoves(20); // Numero di mosse in super mode
+        model.setSuperModeMoves(20); // Numero di mosse in super mode
 
-        for (Ghost ghost : game.getGhosts()) {
+        for (Ghost ghost : model.getGhosts()) {
             ghost.runAway();
         }
 
-        game.getGrid().removeComponent(this); // Rimuovi il BigDot dalla griglia
+        model.getGrid().removeComponent(this); // Rimuovi il BigDot dalla griglia
         System.out.println("Big dot collected at position: " + getPosition());
     }
 }

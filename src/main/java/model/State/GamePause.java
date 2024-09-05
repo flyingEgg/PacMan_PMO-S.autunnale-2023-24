@@ -1,12 +1,12 @@
 package main.java.model.State;
 
-import main.java.model.Game;
+import main.java.model.Model;
 import main.java.model.API.GameState;
 
 public class GamePause implements GameState {
-    private final Game partita;
+    private final Model partita;
 
-    public GamePause(Game p) {
+    public GamePause(Model p) {
         this.partita = p;
     }
 

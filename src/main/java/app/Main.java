@@ -9,11 +9,9 @@ public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             Model model = new Model();
-            View view = new View(null);
-            Controller controller = new Controller(view, model);
-            view.setController(controller);
-            view.showMainMenu();
-            view.setVisible(true);
+            Controller controller = new Controller(null, model);
+            View view = new View(controller);
+            controller.setView(view);
         });
     }
 }

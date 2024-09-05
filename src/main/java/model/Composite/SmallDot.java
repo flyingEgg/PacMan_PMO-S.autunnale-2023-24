@@ -1,6 +1,6 @@
 package main.java.model.Composite;
 
-import main.java.model.Game;
+import main.java.model.Model;
 import main.java.model.API.Position;
 
 import javax.swing.*;
@@ -38,11 +38,11 @@ public class SmallDot extends Dot {
     }
 
     @Override
-    protected void onCollect(Game game) {
-        game.incrementScore(points);
-        game.getGrid().removeComponent(this); // Rimuovi il punto dalla griglia
-        game.getGrid().removeDotFromMap(this.getPosition()); // Rimuovi il punto dalla mappa dei punti
+    protected void onCollect(Model model) {
+        model.incrementScore(points);
+        model.getGrid().removeComponent(this); // Rimuovi il punto dalla griglia
+        model.getGrid().removeDotFromMap(this.getPosition()); // Rimuovi il punto dalla mappa dei punti
         System.out.println("Small dot collected at position: " + getPosition());
-        game.notifyScoreChanged(); // Notifica il cambio di punteggio
+        model.notifyScoreChanged(); // Notifica il cambio di punteggio
     }
 }

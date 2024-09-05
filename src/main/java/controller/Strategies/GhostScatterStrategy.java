@@ -1,7 +1,7 @@
 package main.java.controller.Strategies;
 
-import main.java.model.Game;
 import main.java.model.Grid;
+import main.java.model.Model;
 import main.java.model.API.Direction;
 import main.java.model.API.Position;
 import main.java.model.Entities.Ghost;
@@ -12,8 +12,8 @@ public class GhostScatterStrategy extends GhostMovementStrategy {
 
     private final Position scatterTarget;
 
-    public GhostScatterStrategy(Ghost ghost, Grid grid, Game game, GamePanel gamePanel) {
-        super(ghost, grid, game, gamePanel);
+    public GhostScatterStrategy(Ghost ghost, Grid grid, Model model, GamePanel gamePanel) {
+        super(ghost, grid, model, gamePanel);
         this.scatterTarget = getScatterTarget(ghost.getColor(), grid);
     }
 

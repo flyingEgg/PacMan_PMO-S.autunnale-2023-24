@@ -19,9 +19,8 @@ import javax.swing.JPanel;
 
 import main.java.controller.Controller;
 import main.java.controller.Strategies.PacmanMovementStrategy;
-import main.java.model.Game;
-import main.java.model.Grid;
 import main.java.model.Model;
+import main.java.model.Grid;
 import main.java.model.API.Direction;
 import main.java.model.Entities.Pacman;
 import main.java.model.Exceptions.IllegalEntityMovementException;
@@ -31,7 +30,7 @@ public class View extends JFrame {
     private Grid grid;
     private Pacman pacman;
     private PacmanMovementStrategy pacmanMovementStrategy;
-    private Game game;
+    private Model model;
 
     private Map<String, ImageIcon> images;
     private GamePanel gamePanel;
@@ -40,10 +39,10 @@ public class View extends JFrame {
 
     public View(Controller controller) {
         this.controller = controller;
-        this.game = new Game();
+        this.model = new Model();
         this.grid = new Grid();
-        this.pacman = game.getPacman();
-        this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, game);
+        this.pacman = model.getPacman();
+        this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, model);
 
         loadImages();
         setupWindow();
@@ -57,12 +56,7 @@ public class View extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
-
-        // Start with the main menu
-        mainMenu = new MainMenu(controller);
-        add(mainMenu, BorderLayout.CENTER);
-
-        setVisible(true);
+        showMainMenu();
     }
 
     private void setupStatusBar() {
@@ -88,13 +82,14 @@ public class View extends JFrame {
         if (infoPanel != null) {
             remove(infoPanel);
         }
-        gamePanel = new GamePanel(model.getGame().getGrid(), model.getGame(), model.getPacman(), model.getGhosts(),
+        gamePanel = new GamePanel(model.getGrid(), model, model.getPacman(), model.getGhosts(),
                 images);
-        infoPanel = new InfoPanel(model.getGame());
+        infoPanel = new InfoPanel(model);
         add(gamePanel, BorderLayout.CENTER);
         add(infoPanel, BorderLayout.EAST);
         revalidate();
         repaint();
+        setVisible(true);
     }
 
     private void loadImages() {
@@ -145,18 +140,18 @@ public class View extends JFrame {
     }
 
     private void checkForGameOver() {
-        if (game.isGameOver()) {
-            JOptionPane.showMessageDialog(this, "Game Over! Your score: " + game.getScore());
+        if (model.isGameOver()) {
+            JOptionPane.showMessageDialog(this, "Game Over! Your score: " + model.getScore());
             resetGame();
             gamePanel.repaint();
         }
     }
 
     public void resetGame() {
-        this.game = new Game();
+        this.model = new Model();
         this.grid = new Grid();
-        this.pacman = game.getPacman();
-        this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, game);
+        this.pacman = model.getPacman();
+        this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, model);
         showGameWindow(controller.getModel());
     }
 
@@ -178,15 +173,15 @@ public class View extends JFrame {
             remove(mainMenu);
         }
         mainMenu = new MainMenu(controller);
-        add(mainMenu, BorderLayout.CENTER);
+        mainMenu.setupMenu();
         revalidate();
         repaint();
     }
 
     public void updateInfoPanel() {
         if (infoPanel != null) {
-            infoPanel.setLives(game.getLives());
-            infoPanel.setScore(game.getScore());
+            infoPanel.setLives(model.getLives());
+            infoPanel.setScore(model.getScore());
         }
     }
 }

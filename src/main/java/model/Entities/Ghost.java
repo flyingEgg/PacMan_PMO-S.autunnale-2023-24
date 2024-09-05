@@ -1,6 +1,6 @@
 package main.java.model.Entities;
 
-import main.java.model.Game;
+import main.java.model.Model;
 import main.java.model.Grid;
 import main.java.controller.Strategies.GhostFleeStrategy;
 import main.java.controller.Strategies.GhostMovementStrategy;
@@ -14,7 +14,7 @@ public class Ghost extends AbstractEntity {
     private GhostColor color;
     private GhostMovementStrategy movementStrategy;
     private Grid grid;
-    private Game game;
+    private Model model;
     private GamePanel gamePanel;
 
     public Ghost(int x, int y, GhostColor c) {
@@ -50,7 +50,7 @@ public class Ghost extends AbstractEntity {
 
     public void runAway() {
         System.out.println("Fantasma alla posizione " + getPosition() + " sta scappando!");
-        setMovementStrategy(new GhostFleeStrategy(this, grid, game, gamePanel)); // Cambia strategia per fuggire
+        setMovementStrategy(new GhostFleeStrategy(this, grid, model, gamePanel)); // Cambia strategia per fuggire
     }
 
     public GhostColor getColor() {

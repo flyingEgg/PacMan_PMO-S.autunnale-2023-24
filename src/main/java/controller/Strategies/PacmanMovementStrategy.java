@@ -3,7 +3,7 @@ package main.java.controller.Strategies;
 import java.util.Map;
 import java.util.Optional;
 
-import main.java.model.Game;
+import main.java.model.Model;
 import main.java.model.Grid;
 import main.java.model.API.Direction;
 import main.java.model.API.MovementStrategy;
@@ -15,14 +15,12 @@ import main.java.model.Exceptions.IllegalEntityMovementException;
 public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
     private final Pacman pacman;
     private final Grid grid;
-    private final Game game;
-    private Direction currentDirection;
+    private Model model;
 
-    public PacmanMovementStrategy(Pacman p, Grid g, Game gam) {
+    public PacmanMovementStrategy(Pacman p, Grid g, Model model) {
         this.pacman = p;
         this.grid = g;
-        this.game = gam;
-        this.currentDirection = null; // inizialmente fermo
+        this.model = model;
     }
 
     @Override
@@ -40,7 +38,7 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
         Position newPosition = new Position(newX, newY);
 
         if (isValidPosition(newPosition)) {
-            game.getGhosts().stream().forEach(ghost -> ghost.getMovementStrategy().move(direction));
+            model.getGhosts().stream().forEach(ghost -> ghost.getMovementStrategy().move(direction));
 
             if (handleMagicCoords(newPosition).isPresent()) {
                 newPosition = handleMagicCoords(newPosition).get();
@@ -84,11 +82,11 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
     }
 
     private boolean isPacmanHitByGhost(Position pacPos) {
-        return this.game.getGhosts().stream().anyMatch(ghost -> pacPos.equals(ghost.getPosition()));
+        return this.model.getGhosts().stream().anyMatch(ghost -> pacPos.equals(ghost.getPosition()));
     }
 
     private boolean isPacmanBumpingWall(Position pacPos) {
-        return this.game.getGrid().getWallPositions().contains(pacPos);
+        return this.model.getGrid().getWallPositions().contains(pacPos);
     }
 
     private void handlePacmanDotEat(Position pacPos) {
@@ -96,8 +94,8 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
 
         try {
             if (dot != null && !dot.isEaten()) {
-                dot.collect(game);
-                game.getGamePanel().repaint();
+                dot.collect(model);
+                model.getGamePanel().repaint();
             }
         } catch (NullPointerException npE) {
             System.out.println(npE.getMessage() + " " + npE.getCause());
@@ -108,11 +106,11 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
     private void handlePacmanGhostCollision(Position pacPos) {
         if (pacman.isSuperMode()) {
             // Pacman è in modalità super, il fantasma viene mangiato
-            this.game.eatGhost(pacPos); // Logica per mangiare il fantasma
+            this.model.eatGhost(pacPos); // Logica per mangiare il fantasma
         } else {
             // Pacman viene colpito dal fantasma, perde una vita
-            redrawPacman(this.game.getGrid().getPacmanStartPosition());
-            this.game.loseLife();
+            redrawPacman(this.model.getGrid().getPacmanStartPosition());
+            this.model.loseLife();
         }
     }
 

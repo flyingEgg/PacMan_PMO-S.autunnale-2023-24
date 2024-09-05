@@ -1,7 +1,7 @@
 package main.java.controller.Strategies;
 
-import main.java.model.Game;
 import main.java.model.Grid;
+import main.java.model.Model;
 import main.java.model.API.Direction;
 import main.java.model.API.MovementStrategy;
 import main.java.model.API.Position;
@@ -16,14 +16,14 @@ import javax.swing.Timer;
 public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     protected final Ghost ghost;
     protected final Grid grid;
-    protected final Game game;
+    protected final Model model;
     protected final GamePanel gamePanel;
     protected Timer movementTimer;
 
-    public GhostMovementStrategy(Ghost ghost, Grid grid, Game game, GamePanel gamePanel) {
+    public GhostMovementStrategy(Ghost ghost, Grid grid, Model model, GamePanel gamePanel) {
         this.ghost = ghost;
         this.grid = grid;
-        this.game = game;
+        this.model = model;
         this.gamePanel = gamePanel;
         initializeMovementTimer();
     }

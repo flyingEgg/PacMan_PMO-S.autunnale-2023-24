@@ -5,7 +5,7 @@ import java.util.Map;
 
 import javax.swing.*;
 
-import main.java.model.Game;
+import main.java.model.Model;
 import main.java.model.Grid;
 import main.java.model.Entities.Ghost;
 import main.java.model.Entities.Pacman;
@@ -14,14 +14,14 @@ import java.awt.*;
 
 public class GamePanel extends JPanel {
     private Grid grid;
-    private Game game;
+    private Model model;
     private Pacman pacman;
     private List<Ghost> ghosts;
     private final Map<String, ImageIcon> images;
 
-    public GamePanel(Grid grid, Game game, Pacman pacman, List<Ghost> ghosts, Map<String, ImageIcon> images) {
+    public GamePanel(Grid grid, Model model, Pacman pacman, List<Ghost> ghosts, Map<String, ImageIcon> images) {
         this.grid = grid;
-        this.game = game;
+        this.model = model;
         this.pacman = pacman;
         this.ghosts = ghosts;
         this.images = images;

@@ -1,6 +1,6 @@
 package main.java.view;
 
-import main.java.model.Game;
+import main.java.model.Model;
 import main.java.model.API.GameStatisticsListener;
 
 import java.awt.Font;
@@ -11,21 +11,21 @@ public class InfoPanel extends JPanel implements GameStatisticsListener {
     private static final Font LABEL_FONT = new Font("Arial", Font.BOLD, 20);
     private static final String LIVES_TEXT = "Lives: ";
     private static final String SCORE_TEXT = "Score: ";
-    private Game game;
+    private Model model;
     private JLabel livesLabel;
     private JLabel scoreLabel;
 
-    public InfoPanel(Game g) {
-        this.game = g;
+    public InfoPanel(Model g) {
+        this.model = g;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         initializeLabels();
         setBackground(Color.LIGHT_GRAY);
-        this.game.addStatisticsListener(this);
+        this.model.addStatisticsListener(this);
     }
 
     private void initializeLabels() {
-        livesLabel = new JLabel(LIVES_TEXT + this.game.getLives());
-        scoreLabel = new JLabel(SCORE_TEXT + this.game.getScore());
+        livesLabel = new JLabel(LIVES_TEXT + this.model.getLives());
+        scoreLabel = new JLabel(SCORE_TEXT + this.model.getScore());
         livesLabel.setFont(LABEL_FONT);
         scoreLabel.setFont(LABEL_FONT);
         add(livesLabel);

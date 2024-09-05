@@ -1,6 +1,6 @@
 package main.java.model.Composite;
 
-import main.java.model.Game;
+import main.java.model.Model;
 import main.java.model.API.MapComponent;
 import main.java.model.API.Position;
 
@@ -22,18 +22,18 @@ public abstract class Dot implements MapComponent {
     @Override
     public abstract void draw(Graphics2D g2d, Map<String, ImageIcon> images);
 
-    public void collect(Game game) {
+    public void collect(Model model) {
         if (isEaten()) {
             return; // Non fare nulla se il dot è già stato mangiato
         }
 
-        game.incrementScore(points);
+        model.incrementScore(points);
         System.out.println("Collecting dot at position: " + position + " with points: " + points);
         this.eaten = true;
-        onCollect(game); // Metodo specifico per i Dot che possono avere logiche aggiuntive
+        onCollect(model); // Metodo specifico per i Dot che possono avere logiche aggiuntive
     }
 
-    protected abstract void onCollect(Game game);
+    protected abstract void onCollect(Model model);
 
     @Override
     public Position getPosition() {

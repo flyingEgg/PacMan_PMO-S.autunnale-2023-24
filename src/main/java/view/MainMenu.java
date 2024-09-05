@@ -11,10 +11,9 @@ public class MainMenu extends JFrame {
 
     public MainMenu(Controller controller) {
         this.controller = controller;
-        setupMenu();
     }
 
-    private void setupMenu() {
+    public void setupMenu() {
         setTitle("Pacman - Main Menu");
         setSize(400, 300);
         setLocationRelativeTo(null);
@@ -25,9 +24,13 @@ public class MainMenu extends JFrame {
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 
         JButton startButton = new JButton("Start Game");
+        startButton.addActionListener(e -> {
+            controller.startGame();
+            dispose(); // Chiude il menu principale
+        });
+
         JButton exitButton = new JButton("Exit");
 
-        startButton.addActionListener(e -> startGame());
         exitButton.addActionListener(e -> System.exit(0));
 
         buttonPanel.add(Box.createVerticalStrut(50));
@@ -41,21 +44,5 @@ public class MainMenu extends JFrame {
 
         add(buttonPanel, BorderLayout.CENTER);
         setVisible(true);
-    }
-
-    private void startGame() {
-        if (controller != null) {
-            controller.startGame();
-            SwingUtilities.invokeLater(() -> {
-                Container parent = getParent();
-                if (parent != null) {
-                    parent.remove(MainMenu.this);
-                    parent.revalidate();
-                    parent.repaint();
-                }
-            });
-        } else {
-            System.out.println("Controller is not initialized.");
-        }
     }
 }
