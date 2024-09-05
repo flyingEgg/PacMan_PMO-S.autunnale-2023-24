@@ -3,6 +3,7 @@ package Game;
 import API.MapComponent;
 
 import java.util.Optional;
+
 import Util.Pair;
 
 public abstract class AbsGrid {
@@ -22,7 +23,7 @@ public abstract class AbsGrid {
         if (isValidPosition(coordinates)) {
             grid[coordinates.getB()][coordinates.getA()] = component;
         } else {
-            System.out.println("Invalid position: ("+coordinates+")");
+            System.out.println("Invalid position: (" + coordinates + ")");
         }
     }
 
@@ -37,7 +38,7 @@ public abstract class AbsGrid {
         if (isValidPosition(coordinates)) {
             grid[coordinates.getB()][coordinates.getA()] = null;
         } else {
-            System.out.println("Invalid position: ("+coordinates+")");
+            System.out.println("Invalid position: (" + coordinates + ")");
         }
     }
 
@@ -47,7 +48,7 @@ public abstract class AbsGrid {
         if (isValidPosition(coordinates)) {
             return Optional.ofNullable(grid[coordinates.getB()][coordinates.getA()]);
         } else {
-            System.out.println("Invalid position: (" +coordinates+")");
+            System.out.println("Invalid position: (" + coordinates + ")");
             return Optional.empty();
         }
     }

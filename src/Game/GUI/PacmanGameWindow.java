@@ -146,10 +146,10 @@ public class PacmanGameWindow extends JFrame {
         Direction direction = null;
 
         switch (e.getKeyCode()) {
-            case KeyEvent.VK_UP    -> direction = Direction.UP;
-            case KeyEvent.VK_DOWN  -> direction = Direction.DOWN;
+            case KeyEvent.VK_UP -> direction = Direction.UP;
+            case KeyEvent.VK_DOWN -> direction = Direction.DOWN;
             case KeyEvent.VK_RIGHT -> direction = Direction.RIGHT;
-            case KeyEvent.VK_LEFT  -> direction = Direction.LEFT;
+            case KeyEvent.VK_LEFT -> direction = Direction.LEFT;
         }
         this.pacman.setDirection(direction);
 
