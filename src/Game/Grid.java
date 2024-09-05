@@ -22,6 +22,7 @@ public class Grid extends AbsGrid {
     private static final int COLUMNS = 21; // Numero di colonne della griglia
     private static final int ROWS = 19; // Numero di righe della griglia
     private Set<Position> excludedPositions;
+    private Map<Position, SmallDot> smallDotMap;
 
     // Posizioni dei muri
     private static final int[][] WALL_POSITIONS = {
@@ -85,6 +86,7 @@ public class Grid extends AbsGrid {
 
     public Grid() {
         super(COLUMNS, ROWS);
+        this.smallDotMap = new HashMap<>();
         initializeExcludedPositions();
         initializeMap();
     }
@@ -129,13 +131,17 @@ public class Grid extends AbsGrid {
     }
 
     protected void initializeMap() {
+        SmallDot smallDot;
+
         // Inizializza la griglia con spazi vuoti e Small Dot
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 Position currentPosition = new Position(j, i);
                 addComponent(new EmptySpace(currentPosition));
                 if (!excludedPositions.contains(currentPosition)) {
-                    addComponent(new SmallDot(currentPosition));
+                    smallDot = new SmallDot(currentPosition);
+                    addComponent(smallDot);
+                    smallDotMap.put(currentPosition, smallDot);
                 }
             }
         }
@@ -144,6 +150,14 @@ public class Grid extends AbsGrid {
         addPacmanToGrid();
         addGhostsToGrid();
         addBigDotsToGrid();
+    }
+
+    public SmallDot getSmallDotAtPosition(Position pos){
+        return smallDotMap.get(pos);
+    }
+
+    public void removeDotFromMap(Position pos){
+        this.smallDotMap.remove(pos);
     }
 
     private void addWallsToGrid() {
