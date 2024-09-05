@@ -39,7 +39,7 @@ public class View extends JFrame {
 
     public View(Controller controller) {
         this.controller = controller;
-        this.model = new Model();
+        this.model = controller.getModel();
         this.grid = new Grid();
         this.pacman = model.getPacman();
         this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, model);
@@ -130,7 +130,7 @@ public class View extends JFrame {
 
         if (direction != null) {
             try {
-                pacmanMovementStrategy.move(direction);
+                controller.movePacman(direction);
                 gamePanel.repaint(); // da fixare
                 checkForGameOver();
             } catch (IllegalEntityMovementException iemE) {
