@@ -3,23 +3,24 @@ package Game.Strategies;
 import java.util.Map;
 import java.util.Optional;
 
+import API.MapComponent;
 import API.MovementStrategy;
 import Entities.Pacman;
-import Entities.Ghost.Ghost;
 import Exceptions.IllegalEntityMovementException;
+import Game.Composite.SmallDot;
 import Game.Game;
 import Game.Position;
 import Game.Grid;
 
 public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
     private final Pacman pacman;
-    private final Grid Grid;
+    private final Grid grid;
     private final Game game;
     private Direction currentDirection;
 
     public PacmanMovementStrategy(Pacman p, Grid g, Game gam) {
         this.pacman = p;
-        this.Grid = g;
+        this.grid = g;
         this.game = gam;
         this.currentDirection = null; // inizialmente fermo
     }
@@ -51,15 +52,17 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
             } else {
                 redrawPacman(newPosition);
             }
+
+            handlePacmanDotEat(newPosition);
         } else {
             throw new IllegalEntityMovementException("Invalid movement for Pacman");
         }
     }
 
     private void redrawPacman(Position pacPos) {
-        this.Grid.removeComponent(pacman); // Rimuove Pacman dalla posizione attuale
+        this.grid.removeComponent(pacman); // Rimuove Pacman dalla posizione attuale
         this.pacman.setPosition(pacPos); // Registra una nuova posizione per Pacman
-        this.Grid.addComponent(pacman);
+        this.grid.addComponent(pacman);
     }
 
     // Verifica che la posizione all'interno della griglia sia valida
@@ -68,7 +71,7 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
         int y = position.getY();
 
         // Verifica se la posizione è all'interno dei limiti della griglia
-        if (x < 0 || x >= Grid.getColumns() || y < 0 || y >= Grid.getRows()) {
+        if (x < 0 || x >= grid.getColumns() || y < 0 || y >= grid.getRows()) {
             return false;
         }
 
@@ -86,6 +89,20 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
 
     private boolean isPacmanBumpingWall(Position pacPos) {
         return this.game.getGrid().getWallPositions().contains(pacPos);
+    }
+
+    private void handlePacmanDotEat(Position pacPos) {
+        SmallDot dot = grid.getSmallDotAtPosition(pacPos);
+
+        try {
+            if (dot != null && !dot.isEaten()) {
+                dot.collect(game);
+                game.getGamePanel().repaint();
+            }
+        } catch (NullPointerException npE) {
+            System.out.println(npE.getMessage() + " " + npE.getCause());
+        }
+
     }
 
     private void handlePacmanGhostCollision(Position pacPos) {
