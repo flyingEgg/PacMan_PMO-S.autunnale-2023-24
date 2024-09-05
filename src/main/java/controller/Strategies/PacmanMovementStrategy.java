@@ -1,4 +1,4 @@
-package main.java.model.Strategies;
+package main.java.controller.Strategies;
 
 import java.util.Map;
 import java.util.Optional;
@@ -6,7 +6,6 @@ import java.util.Optional;
 import main.java.model.Game;
 import main.java.model.Grid;
 import main.java.model.API.Direction;
-import main.java.model.API.MapComponent;
 import main.java.model.API.MovementStrategy;
 import main.java.model.API.Position;
 import main.java.model.Composite.SmallDot;
