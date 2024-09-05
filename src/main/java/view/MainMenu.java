@@ -6,10 +6,10 @@ import main.java.controller.Controller;
 
 import java.awt.*;
 
-public class MainMenuView extends JFrame {
+public class MainMenu extends JFrame {
     private final Controller controller;
 
-    public MainMenuView(Controller controller) {
+    public MainMenu(Controller controller) {
         this.controller = controller;
         setupMenu();
     }
@@ -49,7 +49,7 @@ public class MainMenuView extends JFrame {
             SwingUtilities.invokeLater(() -> {
                 Container parent = getParent();
                 if (parent != null) {
-                    parent.remove(MainMenuView.this);
+                    parent.remove(MainMenu.this);
                     parent.revalidate();
                     parent.repaint();
                 }

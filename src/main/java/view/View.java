@@ -36,7 +36,7 @@ public class View extends JFrame {
     private Map<String, ImageIcon> images;
     private GamePanel gamePanel;
     private InfoPanel infoPanel;
-    private MainMenuView mainMenu;
+    private MainMenu mainMenu;
 
     public View(Controller controller) {
         this.controller = controller;
@@ -59,7 +59,7 @@ public class View extends JFrame {
         setLayout(new BorderLayout());
 
         // Start with the main menu
-        mainMenu = new MainMenuView(controller);
+        mainMenu = new MainMenu(controller);
         add(mainMenu, BorderLayout.CENTER);
 
         setVisible(true);
@@ -177,7 +177,7 @@ public class View extends JFrame {
         if (mainMenu != null) {
             remove(mainMenu);
         }
-        mainMenu = new MainMenuView(controller);
+        mainMenu = new MainMenu(controller);
         add(mainMenu, BorderLayout.CENTER);
         revalidate();
         repaint();
