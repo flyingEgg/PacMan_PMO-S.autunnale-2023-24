@@ -7,8 +7,8 @@ import javax.swing.*;
 
 import main.java.model.Game;
 import main.java.model.Grid;
+import main.java.model.Entities.Ghost;
 import main.java.model.Entities.Pacman;
-import main.java.model.Entities.Ghost.Ghost;
 
 import java.awt.*;
 

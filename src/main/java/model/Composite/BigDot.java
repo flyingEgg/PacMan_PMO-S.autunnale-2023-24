@@ -2,8 +2,8 @@ package main.java.model.Composite;
 
 import main.java.model.Game;
 import main.java.model.API.Position;
+import main.java.model.Entities.Ghost;
 import main.java.model.Entities.Pacman;
-import main.java.model.Entities.Ghost.Ghost;
 
 import java.awt.*;
 import java.util.Map;

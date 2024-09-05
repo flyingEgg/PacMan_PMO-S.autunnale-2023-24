@@ -3,14 +3,13 @@ package main.java.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import Game.Grid;
-import Game.Position;
-import Game.GUI.GamePanel;
-import Game.Strategies.GhostChaseStrategy;
-import main.java.view.GamePanel;
-import main.java.model.Entities.Ghost.Color;
-import main.java.model.Entities.Ghost.Ghost;
+import main.java.model.API.GameStatisticsListener;
+import main.java.model.API.Position;
+import main.java.model.Entities.Ghost;
+import main.java.model.Entities.GhostColor;
+import main.java.model.Entities.Pacman;
 import main.java.model.Strategies.GhostChaseStrategy;
+import main.java.view.GamePanel;
 
 public class Game {
     private boolean onGoing;
@@ -180,10 +179,10 @@ public class Game {
     }
 
     private void initializeGhosts() {
-        for (int i = 0; i < Color.values().length; i++) {
+        for (int i = 0; i < GhostColor.values().length; i++) {
             int x = this.grid.getGhostStartPositions().get(i).getX();
             int y = this.grid.getGhostStartPositions().get(i).getY();
-            Ghost ghost = new Ghost(x, y, Color.values()[i]);
+            Ghost ghost = new Ghost(x, y, GhostColor.values()[i]);
 
             // Assegna la strategia di movimento, ad esempio, in modalità normale:
             ghost.setMovementStrategy(new GhostChaseStrategy(ghost, grid, this, this.gamePanel));

@@ -1,8 +1,7 @@
-package main.java.model.Entities.Ghost;
+package main.java.model.Entities;
 
 import main.java.model.Game;
 import main.java.model.Grid;
-import main.java.model.Entities.AbstractEntity;
 import main.java.model.Strategies.GhostFleeStrategy;
 import main.java.model.Strategies.GhostMovementStrategy;
 import main.java.view.GamePanel;
@@ -12,13 +11,13 @@ import java.awt.*;
 import java.util.Map;
 
 public class Ghost extends AbstractEntity {
-    private Color color;
+    private GhostColor color;
     private GhostMovementStrategy movementStrategy;
     private Grid grid;
     private Game game;
     private GamePanel gamePanel;
 
-    public Ghost(int x, int y, Color c) {
+    public Ghost(int x, int y, GhostColor c) {
         super(x, y);
         this.color = c;
         this.movementStrategy = null; // O altra strategia
@@ -54,7 +53,7 @@ public class Ghost extends AbstractEntity {
         setMovementStrategy(new GhostFleeStrategy(this, grid, game, gamePanel)); // Cambia strategia per fuggire
     }
 
-    public Color getColor() {
+    public GhostColor getColor() {
         return color;
     }
 }

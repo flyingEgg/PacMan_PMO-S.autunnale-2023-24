@@ -5,7 +5,7 @@ import main.java.model.Grid;
 import main.java.model.API.Direction;
 import main.java.model.API.MovementStrategy;
 import main.java.model.API.Position;
-import main.java.model.Entities.Ghost.Ghost;
+import main.java.model.Entities.Ghost;
 import main.java.view.GamePanel;
 
 import java.awt.event.ActionEvent;

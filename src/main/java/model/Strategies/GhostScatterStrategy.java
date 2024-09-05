@@ -1,12 +1,12 @@
 package main.java.model.Strategies;
 
-import Game.Game;
-import Game.Grid;
-import Game.Grid;
-import Game.Posit
-import Game.GUI.GameP
+import main.java.model.Game;
+import main.java.model.Grid;
+import main.java.model.API.Direction;
+import main.java.model.API.Position;
+import main.java.model.Entities.Ghost;
+import main.java.model.Entities.GhostColor;
 import main.java.view.GamePanel;
-import main.java.model.API.Direction;.Position;d;e;ities.Ghost.Ghost;
 
 public class GhostScatterStrategy extends GhostMovementStrategy {
 
@@ -17,7 +17,7 @@ public class GhostScatterStrategy extends GhostMovementStrategy {
         this.scatterTarget = getScatterTarget(ghost.getColor(), grid);
     }
 
-    private Position getScatterTarget(Color color, Grid grid) {
+    private Position getScatterTarget(GhostColor color, Grid grid) {
         return switch (color) {
             case RED -> new Position(0, 0); // Angolo in alto a sinistra
             case ORANGE -> new Position(grid.getColumns() - 1, 0); // Angolo in alto a destra

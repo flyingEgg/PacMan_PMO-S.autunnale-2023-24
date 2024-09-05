@@ -1,8 +1,8 @@
 package main.java.model;
 
-import Game.GUI.MainMenu;
-import main.java.model.A
-import main.java.view.MainMenu;I.MapComponent;
+import main.java.model.API.GameState;
+import main.java.model.API.MapComponent;
+import main.java.view.MainMenu;
 
 public class PacmanGame {
     private GameState state;
