@@ -1,5 +1,6 @@
 package main.java.model.Entities;
 
+import main.java.controller.Strategies.GhostChaseStrategy;
 import main.java.model.API.Direction;
 import main.java.model.Model;
 import main.java.model.API.Position;
@@ -18,23 +19,27 @@ public class Ghost extends AbstractEntity {
     private Grid grid;
     private Model model;
     private GamePanel gamePanel;
+    private Direction direction;
 
-    public Ghost(Position position, GhostColor color) {
+    public Ghost(Position position, GhostColor color, Grid g, Model m, GamePanel gp) {
         super(position);
         this.color = color;
+        this.grid = g;
+        this.model = m;
+        this.gamePanel = gp;
         this.movementStrategy = null;
+        this.direction = Direction.UP;
+        setInitialStrategy();
     }
 
     @Override
     public void draw(Graphics2D g2d, Map<String, ImageIcon> images) {
-        ImageIcon ghostImage = null;
-
-        switch (this.color) {
-            case BLUE -> ghostImage = images.get("ghost_blue");
-            case ORANGE -> ghostImage = images.get("ghost_orange");
-            case PINK -> ghostImage = images.get("ghost_pink");
-            case RED -> ghostImage = images.get("ghost_red");
-        }
+        ImageIcon ghostImage = switch (this.color) {
+            case BLUE -> images.get("ghost_blue");
+            case ORANGE -> images.get("ghost_orange");
+            case PINK -> images.get("ghost_pink");
+            case RED -> images.get("ghost_red");
+        };
 
         if (ghostImage != null) {
             g2d.drawImage(ghostImage.getImage(), position.getX() * Grid.CELL_SIZE, position.getY() * Grid.CELL_SIZE,
@@ -46,12 +51,12 @@ public class Ghost extends AbstractEntity {
 
     @Override
     public Direction getDirection() {
-        return null;
+        return direction;
     }
 
     @Override
     public void setDirection(Direction d) {
-
+        // forse da rimuovere
     }
 
     public void move() {
@@ -80,5 +85,14 @@ public class Ghost extends AbstractEntity {
 
     public GhostColor getColor() {
         return color;
+    }
+
+    private void setInitialStrategy(){
+        switch (color) {
+            case RED -> movementStrategy = new GhostChaseStrategy(this, grid, model, gamePanel);
+            case BLUE -> movementStrategy = new GhostChaseStrategy(this, grid, model, gamePanel);
+            case PINK -> movementStrategy = new GhostChaseStrategy(this, grid, model, gamePanel);
+            case ORANGE -> movementStrategy = new GhostChaseStrategy(this, grid, model, gamePanel);
+        }
     }
 }
