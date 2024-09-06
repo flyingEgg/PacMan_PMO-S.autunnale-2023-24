@@ -192,7 +192,7 @@ public class Model {
         for (int i = 0; i < GhostColor.values().length; i++) {
             Ghost ghost = new Ghost(
                     grid.getGhostStartPositions().get(i),
-                    GhostColor.values()[i]);
+                    GhostColor.values()[i], this.grid, this, this.gamePanel);
             ghost.setMovementStrategy(new GhostChaseStrategy(ghost, grid, this, this.gamePanel));
             ghosts.add(ghost);
         }
