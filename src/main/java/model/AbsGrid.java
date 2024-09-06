@@ -32,9 +32,6 @@ public abstract class AbsGrid {
         Position position = component.getPosition();
         Pair<Integer, Integer> coordinates = new Pair<>(position.getX(), position.getY());
 
-        int x = position.getX();
-        int y = position.getY();
-
         if (isValidPosition(coordinates)) {
             grid[coordinates.getB()][coordinates.getA()] = null;
         } else {

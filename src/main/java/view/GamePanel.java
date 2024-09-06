@@ -14,14 +14,12 @@ import java.awt.*;
 
 public class GamePanel extends JPanel {
     private Grid grid;
-    private Model model;
     private Pacman pacman;
     private List<Ghost> ghosts;
     private final Map<String, ImageIcon> images;
 
     public GamePanel(Grid grid, Model model, Pacman pacman, List<Ghost> ghosts, Map<String, ImageIcon> images) {
         this.grid = grid;
-        this.model = model;
         this.pacman = pacman;
         this.ghosts = ghosts;
         this.images = images;

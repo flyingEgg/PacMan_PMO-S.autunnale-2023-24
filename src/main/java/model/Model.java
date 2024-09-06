@@ -199,8 +199,4 @@ public class Model {
             this.ghosts.add(ghost); // Aggiungi il fantasma alla lista dei fantasmi
         }
     }
-
-    private void incrementGhostSpeed() {
-        // Aumenta la velocità dei fantasmi al passare dei livelli???
-    }
 }

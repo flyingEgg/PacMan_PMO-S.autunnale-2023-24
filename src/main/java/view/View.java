@@ -18,16 +18,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import main.java.controller.Controller;
-import main.java.controller.Strategies.PacmanMovementStrategy;
 import main.java.model.Model;
-import main.java.model.Grid;
 import main.java.model.API.Direction;
 import main.java.model.Entities.Pacman;
 import main.java.model.Exceptions.IllegalEntityMovementException;
 
 public class View extends JFrame {
     private Controller controller;
-    private Grid grid;
     private Pacman pacman;
     private Model model;
 
@@ -39,7 +36,6 @@ public class View extends JFrame {
     public View(Controller controller) {
         this.controller = controller;
         this.model = controller.getModel();
-        this.grid = new Grid();
         this.pacman = model.getPacman();
 
         loadImages();
@@ -50,7 +46,15 @@ public class View extends JFrame {
 
     private void setupWindow() {
         setTitle("Pacman");
-        setSize(800, 600); // 516, 460?
+
+        try {
+            BufferedImage icon = ImageIO.read(getClass().getResource("/main/java/view/images/right.gif"));
+            setIconImage(icon);
+        } catch (IOException e) {
+            System.out.println("Errore nel caricamento dell'icona: " + e.getMessage());
+        }
+
+        setSize(600, 445);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -147,7 +151,6 @@ public class View extends JFrame {
 
     public void resetGame() {
         this.model = new Model();
-        this.grid = new Grid();
         this.pacman = model.getPacman();
         // controller.resetGame();
         showGameWindow(controller.getModel());

@@ -1,10 +1,13 @@
 package main.java.view;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import main.java.controller.Controller;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class MainMenu extends JFrame {
     private final Controller controller;
@@ -15,6 +18,14 @@ public class MainMenu extends JFrame {
 
     public void setupMenu() {
         setTitle("Pacman - Main Menu");
+
+        try {
+            BufferedImage icon = ImageIO.read(getClass().getResource("/main/java/view/images/right.gif"));
+            setIconImage(icon);
+        } catch (IOException e) {
+            System.out.println("Errore nel caricamento dell'icona: " + e.getMessage());
+        }
+
         setSize(400, 300);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
