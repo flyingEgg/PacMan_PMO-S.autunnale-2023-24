@@ -98,7 +98,7 @@ public class View extends JFrame {
         String[] imageNames = { "wall", "smallDot", "bigDot", "ghost_orange", "ghost_blue", "ghost_pink", "ghost_red",
                 "heart", "pacman", "left", "right", "up", "down" };
         String[] imagePaths = {
-                "/main/java/view/images/wall.png",
+                "/main/java/view/images/wall_x.png",
                 "/main/java/view/images/smallDot.png",
                 "/main/java/view/images/bigDot.png",
                 "/main/java/view/images/ghost_orange.gif",
