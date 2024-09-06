@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
+import main.java.model.API.Direction;
 import main.java.model.API.MapComponent;
 import main.java.model.API.Position;
 
@@ -38,6 +39,10 @@ public abstract class AbstractEntity implements MapComponent {
     public Position getPosition() {
         return position;
     }
+
+    public abstract Direction getDirection();
+    public abstract void setDirection(Direction d);
+
 
     public void setPosition(Position position) {
         this.position = position;
