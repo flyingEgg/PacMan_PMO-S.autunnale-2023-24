@@ -3,7 +3,6 @@ package main.java.model.Composite;
 import main.java.model.Model;
 import main.java.model.API.MapComponent;
 import main.java.model.API.Position;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
@@ -24,13 +23,11 @@ public abstract class Dot implements MapComponent {
 
     public void collect(Model model) {
         if (isEaten()) {
-            return; // Non fare nulla se il dot è già stato mangiato
+            return; // Do nothing if the dot is already eaten
         }
 
-        model.incrementScore(points);
-        System.out.println("Collecting dot at position: " + position + " with points: " + points);
         this.eaten = true;
-        onCollect(model); // Metodo specifico per i Dot che possono avere logiche aggiuntive
+        onCollect(model); // Call the method for additional logic
     }
 
     protected abstract void onCollect(Model model);

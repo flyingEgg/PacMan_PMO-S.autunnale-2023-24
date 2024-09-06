@@ -99,11 +99,16 @@ public class View extends JFrame {
         String[] imageNames = { "down", "ghost_orange", "ghost_blue", "ghost_pink", "ghost_red", "heart", "left",
                 "pacman", "right", "up" };
         String[] imagePaths = {
-                "/main/java/view/images/down.gif", "/main/java/view/images/ghost_orange.gif",
-                "/main/java/view/images/ghost_blue.gif", "/main/java/view/images/ghost_pink.gif",
-                "/main/java/view/images/ghost_red.gif", "/main/java/view/images/heart.png",
-                "/main/java/view/images/left.gif", "/main/java/view/images/pacman.png",
-                "/main/java/view/images/right.gif", "/main/java/view/images/up.gif"
+                "/main/java/view/images/down.gif",
+                "/main/java/view/images/ghost_orange.gif",
+                "/main/java/view/images/ghost_blue.gif",
+                "/main/java/view/images/ghost_pink.gif",
+                "/main/java/view/images/ghost_red.gif",
+                "/main/java/view/images/heart.png",
+                "/main/java/view/images/left.gif",
+                "/main/java/view/images/pacman.png",
+                "/main/java/view/images/right.gif",
+                "/main/java/view/images/up.gif"
         };
 
         for (int i = 0; i < imageNames.length; i++) {
