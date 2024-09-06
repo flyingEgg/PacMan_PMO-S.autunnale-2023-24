@@ -32,16 +32,15 @@ public class Model {
         this.paused = false;
         this.gameOver = false;
         this.lives = 3;
-        this.grid = new Grid();
         this.score = 0;
-        initializeGame();
-        this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, this);
-    }
-
-    private void initializeGame() {
-        this.pacman = new Pacman(this.grid.getPacmanStartPosition().getX(), this.grid.getPacmanStartPosition().getY());
+        this.superModeMoves = 0;
+        this.grid = new Grid();
         this.ghosts = new ArrayList<>();
-        initializeGhosts(); // Inizializza i fantasmi
+        initializeGhosts();
+        this.pacman = new Pacman(grid.getPacmanStartPosition());
+        this.grid.setPacman(pacman);
+        this.grid.setGhosts(ghosts);
+        this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, this);
     }
 
     public void setGamePanel(GamePanel gamePanel) {
@@ -57,11 +56,11 @@ public class Model {
     }
 
     public void notifyScoreChanged() {
-        listeners.stream().forEach(lis -> lis.onScoreChanged(score));
+        listeners.forEach(lis -> lis.onScoreChanged(score));
     }
 
     public void notifyLivesChanged() {
-        listeners.stream().forEach(lis -> lis.onLivesChanged(lives));
+        listeners.forEach(lis -> lis.onLivesChanged(lives));
     }
 
     public void startStopGame(boolean onGoing) {
@@ -106,18 +105,18 @@ public class Model {
         this.score = 0;
         this.lives = 3;
         this.gameOver = false;
-        this.pacman = new Pacman(this.grid.getPacmanStartPosition().getX(), this.grid.getPacmanStartPosition().getY());
-        initializeGhosts();
+        this.pacman.resetPosition(grid.getPacmanStartPosition());
+        resetGhosts();
     }
 
     public void loseLife() {
         this.lives--;
         if (this.lives <= 0) {
             setGameOver(true);
+        } else {
+            this.pacman.resetPosition(grid.getPacmanStartPosition());
+            notifyLivesChanged();
         }
-
-        this.pacman = new Pacman(this.grid.getPacmanStartPosition().getX(), this.grid.getPacmanStartPosition().getY());
-        notifyLivesChanged();
     }
 
     public int getLives() {
@@ -153,7 +152,10 @@ public class Model {
     }
 
     public void eatGhost(Position ghostPosition) {
-        Ghost ghost = ghosts.stream().filter(g -> g.getPosition().equals(ghostPosition)).findFirst().orElse(null);
+        Ghost ghost = ghosts.stream()
+                .filter(g -> g.getPosition().equals(ghostPosition))
+                .findFirst()
+                .orElse(null);
         if (ghost != null) {
             incrementScore(200); // Aggiungi punti per ogni fantasma mangiato
             ghosts.remove(ghost);
@@ -188,15 +190,16 @@ public class Model {
 
     private void initializeGhosts() {
         for (int i = 0; i < GhostColor.values().length; i++) {
-            int x = this.grid.getGhostStartPositions().get(i).getX();
-            int y = this.grid.getGhostStartPositions().get(i).getY();
-            Ghost ghost = new Ghost(x, y, GhostColor.values()[i]);
-
-            // Assegna la strategia di movimento, ad esempio, in modalità normale:
+            Ghost ghost = new Ghost(
+                    grid.getGhostStartPositions().get(i),
+                    GhostColor.values()[i]);
             ghost.setMovementStrategy(new GhostChaseStrategy(ghost, grid, this, this.gamePanel));
-
-            this.grid.addComponent(ghost);
-            this.ghosts.add(ghost); // Aggiungi il fantasma alla lista dei fantasmi
+            ghosts.add(ghost);
         }
+    }
+
+    private void resetGhosts() {
+        ghosts.clear();
+        initializeGhosts();
     }
 }

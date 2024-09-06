@@ -84,8 +84,7 @@ public class View extends JFrame {
         if (infoPanel != null) {
             remove(infoPanel);
         }
-        gamePanel = new GamePanel(model.getGrid(), model, model.getPacman(), model.getGhosts(),
-                images);
+        gamePanel = new GamePanel(model, model.getPacman(), model.getGhosts(), images);
         infoPanel = new InfoPanel(model);
         add(gamePanel, BorderLayout.CENTER);
         add(infoPanel, BorderLayout.EAST);
@@ -96,19 +95,22 @@ public class View extends JFrame {
 
     private void loadImages() {
         images = new HashMap<>();
-        String[] imageNames = { "down", "ghost_orange", "ghost_blue", "ghost_pink", "ghost_red", "heart", "left",
-                "pacman", "right", "up" };
+        String[] imageNames = { "wall", "smallDot", "bigDot", "ghost_orange", "ghost_blue", "ghost_pink", "ghost_red",
+                "heart", "pacman", "left", "right", "up", "down" };
         String[] imagePaths = {
-                "/main/java/view/images/down.gif",
+                "/main/java/view/images/wall.png",
+                "/main/java/view/images/smallDot.png",
+                "/main/java/view/images/bigDot.png",
                 "/main/java/view/images/ghost_orange.gif",
                 "/main/java/view/images/ghost_blue.gif",
                 "/main/java/view/images/ghost_pink.gif",
                 "/main/java/view/images/ghost_red.gif",
                 "/main/java/view/images/heart.png",
-                "/main/java/view/images/left.gif",
                 "/main/java/view/images/pacman.png",
+                "/main/java/view/images/left.gif",
                 "/main/java/view/images/right.gif",
-                "/main/java/view/images/up.gif"
+                "/main/java/view/images/up.gif",
+                "/main/java/view/images/down.gif"
         };
 
         for (int i = 0; i < imageNames.length; i++) {

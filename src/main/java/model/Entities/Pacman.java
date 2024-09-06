@@ -1,18 +1,20 @@
 package main.java.model.Entities;
 
+import main.java.controller.Strategies.PacmanMovementStrategy;
 import main.java.model.Grid;
 import main.java.model.API.Direction;
+import main.java.model.API.Position;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 
 public class Pacman extends AbstractEntity {
-    private boolean superMode;
     private Direction direction;
+    private boolean superMode;
 
-    public Pacman(int x, int y) {
-        super(x, y);
+    public Pacman(Position position) {
+        super(position);
         this.direction = Direction.RIGHT;
         this.superMode = false;
     }
@@ -20,6 +22,7 @@ public class Pacman extends AbstractEntity {
     @Override
     public void draw(Graphics2D g2d, Map<String, ImageIcon> images) {
         ImageIcon pacmanImage = images.get("right");
+
         switch (direction) {
             case RIGHT -> pacmanImage = images.get("right");
             case LEFT -> pacmanImage = images.get("left");
@@ -28,7 +31,8 @@ public class Pacman extends AbstractEntity {
         }
 
         if (pacmanImage != null) {
-            g2d.drawImage(pacmanImage.getImage(), x * Grid.CELL_SIZE, y * Grid.CELL_SIZE, null);
+            g2d.drawImage(pacmanImage.getImage(), position.getX() * Grid.CELL_SIZE, position.getY() * Grid.CELL_SIZE,
+                    null);
         } else {
             System.out.println("Pacman image not found!");
         }
@@ -44,5 +48,9 @@ public class Pacman extends AbstractEntity {
 
     public void setDirection(Direction d) {
         this.direction = d;
+    }
+
+    public void resetPosition(Position newPosition) {
+        setPosition(newPosition);
     }
 }

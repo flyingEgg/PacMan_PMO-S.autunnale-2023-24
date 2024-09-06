@@ -1,6 +1,7 @@
 package main.java.model.Entities;
 
 import main.java.model.Model;
+import main.java.model.API.Position;
 import main.java.model.Grid;
 import main.java.controller.Strategies.GhostFleeStrategy;
 import main.java.controller.Strategies.GhostMovementStrategy;
@@ -17,24 +18,37 @@ public class Ghost extends AbstractEntity {
     private Model model;
     private GamePanel gamePanel;
 
-    public Ghost(int x, int y, GhostColor c) {
-        super(x, y);
-        this.color = c;
-        this.movementStrategy = null; // O altra strategia
+    public Ghost(Position position, GhostColor color) {
+        super(position);
+        this.color = color;
+        this.movementStrategy = null;
     }
 
     @Override
     public void draw(Graphics2D g2d, Map<String, ImageIcon> images) {
+        ImageIcon ghostImage = null;
+
         switch (this.color) {
-            case BLUE -> g2d.drawImage(images.get("ghost_blue").getImage(), x * 20, y * 20, null);
-            case ORANGE -> g2d.drawImage(images.get("ghost_orange").getImage(), x * 20, y * 20, null);
-            case PINK -> g2d.drawImage(images.get("ghost_pink").getImage(), x * 20, y * 20, null);
-            case RED -> g2d.drawImage(images.get("ghost_red").getImage(), x * 20, y * 20, null);
+            case BLUE -> ghostImage = images.get("ghost_blue");
+            case ORANGE -> ghostImage = images.get("ghost_orange");
+            case PINK -> ghostImage = images.get("ghost_pink");
+            case RED -> ghostImage = images.get("ghost_red");
+        }
+
+        if (ghostImage != null) {
+            g2d.drawImage(ghostImage.getImage(), position.getX() * Grid.CELL_SIZE, position.getY() * Grid.CELL_SIZE,
+                    null);
+        } else {
+            System.out.println("Ghost image not found for color: " + color);
         }
     }
 
     public void move() {
-        movementStrategy.move(movementStrategy.determineNextDirection());
+        if (movementStrategy != null) {
+            movementStrategy.move(movementStrategy.determineNextDirection());
+        } else {
+            System.out.println("Movement strategy is not set for ghost.");
+        }
     }
 
     public GhostMovementStrategy getMovementStrategy() {
@@ -44,13 +58,13 @@ public class Ghost extends AbstractEntity {
     public void setMovementStrategy(GhostMovementStrategy strategy) {
         this.movementStrategy = strategy;
         if (strategy != null) {
-            System.out.println("Strategia di movimento per il fantasma impostata correttamente.");
+            System.out.println("Movement strategy set successfully for ghost.");
         }
     }
 
     public void runAway() {
-        System.out.println("Fantasma alla posizione " + getPosition() + " sta scappando!");
-        setMovementStrategy(new GhostFleeStrategy(this, grid, model, gamePanel)); // Cambia strategia per fuggire
+        System.out.println("Ghost at position " + getPosition() + " is running away!");
+        setMovementStrategy(new GhostFleeStrategy(this, grid, model, gamePanel)); // Change strategy to flee
     }
 
     public GhostColor getColor() {

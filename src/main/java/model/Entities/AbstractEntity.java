@@ -3,34 +3,32 @@ package main.java.model.Entities;
 import java.awt.*;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
+
 import main.java.model.API.MapComponent;
 import main.java.model.API.Position;
 
-import javax.swing.*;
-
 public abstract class AbstractEntity implements MapComponent {
-    protected int x;
-    protected int y;
+    protected Position position;
 
-    public AbstractEntity(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public AbstractEntity(Position position) {
+        this.position = position;
     }
 
     public int getX() {
-        return x;
+        return position.getX();
     }
 
     public void setX(int x) {
-        this.x = x;
+        position = new Position(x, position.getY());
     }
 
     public int getY() {
-        return y;
+        return position.getY();
     }
 
     public void setY(int y) {
-        this.y = y;
+        position = new Position(position.getX(), y);
     }
 
     @Override
@@ -38,11 +36,10 @@ public abstract class AbstractEntity implements MapComponent {
 
     @Override
     public Position getPosition() {
-        return new Position(x, y);
+        return position;
     }
 
     public void setPosition(Position position) {
-        this.x = position.getX();
-        this.y = position.getY();
+        this.position = position;
     }
 }

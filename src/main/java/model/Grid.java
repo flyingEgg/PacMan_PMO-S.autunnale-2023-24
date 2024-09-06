@@ -1,26 +1,21 @@
 package main.java.model;
 
-import java.awt.Graphics2D;
+import java.util.*;
+/* 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+*/
 
-import javax.swing.ImageIcon;
-
-import main.java.model.API.MapComponent;
 import main.java.model.API.Position;
 import main.java.model.Composite.BigDot;
 import main.java.model.Composite.EmptySpace;
 import main.java.model.Composite.SmallDot;
 import main.java.model.Composite.Wall;
 import main.java.model.Entities.Ghost;
-import main.java.model.Entities.GhostColor;
 import main.java.model.Entities.Pacman;
 
 public class Grid extends AbsGrid {
@@ -94,7 +89,15 @@ public class Grid extends AbsGrid {
         super(COLUMNS, ROWS);
         this.smallDotMap = new HashMap<>();
         initializeExcludedPositions();
-        initializeMap();
+        initializeEmptyMap();
+    }
+
+    public void setPacman(Pacman pacman) {
+        addComponent(pacman);
+    }
+
+    public void setGhosts(List<Ghost> ghosts) {
+        ghosts.forEach(this::addComponent);
     }
 
     public Set<Position> getWallPositions() {
@@ -115,31 +118,17 @@ public class Grid extends AbsGrid {
 
     private void initializeExcludedPositions() {
         excludedPositions = new HashSet<>();
-
-        // Aggiungi posizioni dei muri
         addPositions(WALL_POSITIONS);
-
-        // Aggiungi posizioni dei Big Dot
         addPositions(BIG_DOT_POSITIONS);
-
-        // Aggiungi posizione di Pac-Man
         excludedPositions.add(PACMAN_START_POSITION);
-
-        // Aggiungi posizioni di spawn dei fantasmi
         excludedPositions.addAll(Arrays.asList(GHOST_SPAWN_POSITIONS));
-
-        // Aggiungi altre posizioni escluse
         addPositions(OTHER_EXCLUDED_POSITIONS);
-
-        // Aggiungi posizioni per teletrasporto
         addPositions(MAGIC_COORDS);
-
     }
 
-    protected void initializeMap() {
+    private void initializeEmptyMap() {
         SmallDot smallDot;
 
-        // Inizializza la griglia con spazi vuoti e Small Dot
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 Position currentPosition = new Position(j, i);
@@ -153,8 +142,6 @@ public class Grid extends AbsGrid {
         }
 
         addWallsToGrid();
-        addPacmanToGrid();
-        addGhostsToGrid();
         addBigDotsToGrid();
     }
 
@@ -168,44 +155,24 @@ public class Grid extends AbsGrid {
 
     private void addWallsToGrid() {
         Arrays.stream(WALL_POSITIONS)
-                .map(pos -> new Wall(new Position(pos[0], pos[1])))
-                .forEach(this::addComponent);
-    }
-
-    private void addPacmanToGrid() {
-        addComponent(new Pacman(PACMAN_START_POSITION.getX(), PACMAN_START_POSITION.getY()));
-    }
-
-    private void addGhostsToGrid() {
-        IntStream.range(0, GHOST_SPAWN_POSITIONS.length).mapToObj(i -> {
-            Position pos = GHOST_SPAWN_POSITIONS[i];
-            GhostColor color = GhostColor.values()[i % GhostColor.values().length];
-            Ghost ghost = new Ghost(pos.getX(), pos.getY(), color);
-            return ghost;
-        }).forEach(this::addComponent);
+                .forEach(position -> addComponent(new Wall(new Position(position[0], position[1]))));
     }
 
     private void addBigDotsToGrid() {
         Arrays.stream(BIG_DOT_POSITIONS)
-                .map(pos -> new BigDot(new Position(pos[0], pos[1])))
-                .forEach(this::addComponent);
+                .forEach(position -> addComponent(new BigDot(new Position(position[0], position[1]))));
     }
 
-    public void drawGrid(Graphics2D g2d, Map<String, ImageIcon> images) {
-        for (int i = 0; i < getRows(); i++) {
-            for (int j = 0; j < getColumns(); j++) {
-                Position pos = new Position(j, i);
-                Optional<MapComponent> component = getComponentByPosition(pos);
-                component.ifPresent(mapComponent -> mapComponent.draw(g2d, images));
-            }
+    private Set<Position> getBidimensionalArray(int[][] positions) {
+        Set<Position> set = new HashSet<>();
+        for (int[] pos : positions) {
+            set.add(new Position(pos[0], pos[1]));
         }
+        return set;
     }
 
-    private void addPositions(int[][] positionsArray) {
-        Arrays.stream(positionsArray).forEach(pos -> excludedPositions.add(new Position(pos[0], pos[1])));
-    }
-
-    private Set<Position> getBidimensionalArray(int[][] ARR) {
-        return Arrays.stream(ARR).map(p -> new Position(p[0], p[1])).collect(Collectors.toSet());
+    private void addPositions(int[][] positions) {
+        Arrays.stream(positions)
+                .forEach(pos -> excludedPositions.add(new Position(pos[0], pos[1])));
     }
 }

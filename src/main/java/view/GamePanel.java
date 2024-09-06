@@ -1,25 +1,33 @@
 package main.java.view;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
-import main.java.model.Model;
 import main.java.model.Grid;
+import main.java.model.Model;
+import main.java.model.API.MapComponent;
+import main.java.model.API.Position;
+import main.java.model.Composite.BigDot;
+import main.java.model.Composite.SmallDot;
+import main.java.model.Composite.Wall;
 import main.java.model.Entities.Ghost;
 import main.java.model.Entities.Pacman;
 
-import java.awt.*;
-
 public class GamePanel extends JPanel {
-    private Grid grid;
     private Pacman pacman;
     private List<Ghost> ghosts;
     private final Map<String, ImageIcon> images;
+    private final Model model; // Se necessario per accedere alla grid e altri dati
 
-    public GamePanel(Grid grid, Model model, Pacman pacman, List<Ghost> ghosts, Map<String, ImageIcon> images) {
-        this.grid = grid;
+    public GamePanel(Model model, Pacman pacman, List<Ghost> ghosts, Map<String, ImageIcon> images) {
+        this.model = model;
         this.pacman = pacman;
         this.ghosts = ghosts;
         this.images = images;
@@ -30,18 +38,50 @@ public class GamePanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        if (grid != null && images != null) {
-            grid.drawGrid(g2d, images); // Metodo per disegnare la griglia
-            pacman.draw(g2d, images); // Metodo per disegnare Pacman
-            for (Ghost ghost : ghosts) {
-                ghost.draw(g2d, images); // Metodo per disegnare ogni fantasma
+
+        // Disegna la griglia e i componenti
+        drawGrid(g2d);
+        pacman.draw(g2d, images);
+        for (Ghost ghost : ghosts) {
+            ghost.draw(g2d, images);
+        }
+    }
+
+    private void drawGrid(Graphics2D g2d) {
+        // Disegna tutte le componenti della griglia
+        for (int i = 0; i < model.getGrid().getRows(); i++) {
+            for (int j = 0; j < model.getGrid().getColumns(); j++) {
+                Position pos = new Position(j, i);
+                Optional<MapComponent> component = model.getGrid().getComponentByPosition(pos);
+
+                if (component.isPresent()) {
+                    ImageIcon icon = null;
+                    if (component.get() instanceof Wall) {
+                        icon = images.get("wall");
+                    } else if (component.get() instanceof SmallDot) {
+                        icon = images.get("smallDot");
+                    } else if (component.get() instanceof BigDot) {
+                        icon = images.get("bigDot");
+                    }
+
+                    if (icon != null) {
+                        g2d.drawImage(icon.getImage(), j * Grid.CELL_SIZE, i * Grid.CELL_SIZE, null);
+                    } else {
+                        System.out.println("Immagine non trovata per la chiave: " + getImageKey(component.get()));
+                    }
+                }
             }
         }
     }
 
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(grid.getColumns() * Grid.CELL_SIZE,
-                grid.getRows() * Grid.CELL_SIZE);
+    private String getImageKey(MapComponent component) {
+        if (component instanceof Wall) {
+            return "wall";
+        } else if (component instanceof SmallDot) {
+            return "smallDot";
+        } else if (component instanceof BigDot) {
+            return "bigDot";
+        }
+        return "unknown";
     }
 }
