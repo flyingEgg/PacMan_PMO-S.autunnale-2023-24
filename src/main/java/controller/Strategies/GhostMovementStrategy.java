@@ -10,6 +10,9 @@ import main.java.view.GamePanel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Random;
 
 import javax.swing.Timer;
 
@@ -19,43 +22,126 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     protected final Model model;
     protected final GamePanel gamePanel;
     protected Timer movementTimer;
+    private int speed;
+    private final Random rand;
 
     public GhostMovementStrategy(Ghost ghost, Grid grid, Model model, GamePanel gamePanel) {
         this.ghost = ghost;
         this.grid = grid;
         this.model = model;
         this.gamePanel = gamePanel;
+        this.speed = 1;
+        this.rand = new Random();
         initializeMovementTimer();
     }
 
     private void initializeMovementTimer() {
-        movementTimer = new Timer(400, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                moveAutomatically();
-            }
-        });
+        movementTimer = new Timer(400, e -> moveAutomatically());
         movementTimer.start();
     }
 
     private void moveAutomatically() {
-        Direction direction = determineNextDirection();
-        if (direction != null) {
-            move(direction);
-            // Ridisegna dopo il movimento automatico
-            if (gamePanel != null) {
-                System.out.println("Eseguo il repaint di gamePanel");
-                gamePanel.repaint(); // Esegui il repaint se gamePanel è stato inizializzato
-            } else {
-                // System.out.println("GamePanel non inizializzato!");
+        if (isCollidingWithWall()) {
+            reverseDirection();
+        }
+
+        if (isSnappedToGrid()) {
+            changeDirection();
+        }
+
+        Direction direction = ghost.getDirection();
+        move(direction);
+
+        if (gamePanel != null) {
+            gamePanel.repaint();
+        }
+    }
+
+    protected void changeDirection() {
+        Direction currentDirection = ghost.getDirection();
+
+        if(rand.nextInt(3) == 0){
+            if (currentDirection == Direction.UP || currentDirection == Direction.DOWN) {
+                if (rand.nextInt(2) == 0 && canMoveLeft()) {
+                    ghost.setDirection(Direction.LEFT);
+                } else if (canMoveRight()) {
+                    ghost.setDirection(Direction.RIGHT);
+                }
+            } else if (currentDirection == Direction.LEFT || currentDirection == Direction.RIGHT) {
+                if (rand.nextInt(2) == 0 && canMoveUp()) {
+                    ghost.setDirection(Direction.UP);
+                } else if (canMoveDown()) {
+                    ghost.setDirection(Direction.DOWN);
+                }
             }
         }
+    }
+
+    // da chiamare al cambio di livello per aumentare la velocità
+    public void setSpeed(int s){
+        this.speed = s;
+    }
+
+    protected boolean canMoveLeft() {
+        Position leftPos = calculateNewPosition(Direction.LEFT);
+        return isValidPosition(leftPos);
+    }
+
+    protected boolean canMoveRight() {
+        Position rightPos = calculateNewPosition(Direction.RIGHT);
+        return isValidPosition(rightPos);
+    }
+
+    protected boolean canMoveUp() {
+        Position upPos = calculateNewPosition(Direction.UP);
+        return isValidPosition(upPos);
+    }
+
+    protected boolean canMoveDown() {
+        Position downPos = calculateNewPosition(Direction.DOWN);
+        return isValidPosition(downPos);
+    }
+
+    protected boolean isCollidingWithWall(){
+        Position nextPosition = calculateNewPosition(ghost.getDirection());
+        return !isValidPosition(nextPosition);  // se isValidPosition restituisce "false",
+    }                                           // significa che è non valida, e quindi c'è un muro
+
+    protected boolean isSnappedToGrid(){
+        int x = ghost.getX();
+        int y = ghost.getY();
+        return (x % Grid.CELL_SIZE == 0) && (y % Grid.CELL_SIZE == 0);
+    }
+
+    protected void reverseDirection() {
+        Direction currDirection = ghost.getDirection();
+        Direction revDirection = switch (currDirection){
+            case UP -> Direction.DOWN;
+            case DOWN ->Direction.UP;
+            case LEFT ->Direction.RIGHT;
+            case RIGHT ->Direction.LEFT;
+        };
+        ghost.setDirection(revDirection);
     }
 
     public abstract Direction determineNextDirection();
 
     @Override
-    public abstract void move(Direction direction);
+    public void move(Direction direction){
+        Position newPos = calculateNewPosition(direction);
+        if(isValidPosition(newPos)){
+            ghost.setPosition(newPos);
+        }
+    }
+
+    @Override
+    public Optional<Position> handleMagicCoords(Position ghostPos){ // RIPETIZIONE!!!
+        Map<Position, Position> magicCoordsMap = Map.of(
+                new Position(9, 0), new Position(9, 17),
+                new Position(9, 18), new Position(9, 1));
+
+        return Optional.ofNullable(magicCoordsMap.get(ghostPos));
+    }
 
     protected boolean isValidPosition(Position position) {
         int x = position.getX();
@@ -68,11 +154,16 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
         int newX = ghost.getX();
         int newY = ghost.getY();
 
+        if( direction == null ){
+            System.out.println("Direction null. Imposto default UP");
+            direction = Direction.UP;
+        }
+
         switch (direction) {
-            case UP -> newY -= 1;
-            case DOWN -> newY += 1;
-            case LEFT -> newX -= 1;
-            case RIGHT -> newX += 1;
+            case UP -> newY -= speed;
+            case DOWN -> newY += speed;
+            case LEFT -> newX -= speed;
+            case RIGHT -> newX += speed;
         }
 
         return new Position(newX, newY);
