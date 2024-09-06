@@ -114,7 +114,8 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
         }
     }
 
-    private Optional<Position> handleMagicCoords(Position pacPos) {
+    @Override
+    public Optional<Position> handleMagicCoords(Position pacPos) {
         Map<Position, Position> magicCoordsMap = Map.of(
                 new Position(9, 0), new Position(9, 17),
                 new Position(9, 18), new Position(9, 1));
