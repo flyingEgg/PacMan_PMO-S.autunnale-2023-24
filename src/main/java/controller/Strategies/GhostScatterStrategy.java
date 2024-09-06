@@ -14,15 +14,15 @@ public class GhostScatterStrategy extends GhostMovementStrategy {
 
     public GhostScatterStrategy(Ghost ghost, Grid grid, Model model, GamePanel gamePanel) {
         super(ghost, grid, model, gamePanel);
-        this.scatterTarget = getScatterTarget(ghost.getColor(), grid);
+        this.scatterTarget = determineScatterTarget(ghost.getColor(), grid);
     }
 
-    private Position getScatterTarget(GhostColor color, Grid grid) {
+    private Position determineScatterTarget(GhostColor color, Grid grid) {
         return switch (color) {
-            case RED -> new Position(0, 0); // Angolo in alto a sinistra
-            case ORANGE -> new Position(grid.getColumns() - 1, 0); // Angolo in alto a destra
-            case PINK -> new Position(0, grid.getRows() - 1); // Angolo in basso a sinistra
-            case BLUE -> new Position(grid.getColumns() - 1, grid.getRows() - 1); // Angolo in basso a destra
+            case RED -> new Position(0, 0);
+            case ORANGE -> new Position(grid.getColumns() - 1, 0);
+            case PINK -> new Position(0, grid.getRows() - 1);
+            case BLUE -> new Position(grid.getColumns() - 1, grid.getRows() - 1);
         };
     }
 

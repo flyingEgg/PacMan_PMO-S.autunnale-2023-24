@@ -12,14 +12,16 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 public class InfoPanel extends JPanel implements GameStatisticsListener {
-    private static final Font LABEL_FONT; // Modificato da static final Font a static Font per inizializzazione
-                                          // differita
+    private static final Font LABEL_FONT; // Static Font for lazy initialization
     private static final String SCORE_TEXT = "Score: ";
+    private static final String SUPERMODE_TEXT = "Supermode: ";
     private Model model;
     private JLabel scoreLabel;
+    private JLabel superModeLabel;
     private ArrayList<JLabel> lifeIcons;
     private JPanel livesPanel;
     private ImageIcon heartIcon;
+    private Boolean isAnimating = false;
 
     static {
         Font tempFont = null;
@@ -28,7 +30,7 @@ public class InfoPanel extends JPanel implements GameStatisticsListener {
                 tempFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
                 GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
                 ge.registerFont(tempFont);
-                tempFont = tempFont.deriveFont(Font.BOLD, 20); // Imposta la dimensione del font
+                tempFont = tempFont.deriveFont(Font.BOLD, 20); // Set font size
             } else {
                 System.err.println("Font file not found.");
                 tempFont = new Font("Arial", Font.BOLD, 20);
@@ -49,20 +51,20 @@ public class InfoPanel extends JPanel implements GameStatisticsListener {
         this.model.addStatisticsListener(this);
     }
 
-    // Inizializza le icone di vita (heart.png)
+    // Initialize life icons (heart.png)
     private void initializeIcons() {
         heartIcon = new ImageIcon(getClass().getResource("/main/java/view/images/heart.png"));
         lifeIcons = new ArrayList<>();
         livesPanel = new JPanel();
         livesPanel.setBackground(Color.BLACK);
-        livesPanel.setLayout(new FlowLayout(FlowLayout.LEFT)); // Aggiunto layout per allineare le icone
+        livesPanel.setLayout(new FlowLayout(FlowLayout.LEFT)); // Layout to align icons
         updateLivesIcons(this.model.getLives());
     }
 
-    // Aggiunge le icone di vita basate sul numero di vite
+    // Update life icons based on the number of lives
     private void updateLivesIcons(int lives) {
-        livesPanel.removeAll(); // Pulisce il pannello prima di aggiungere le nuove icone
-        lifeIcons.clear(); // Pulisce la lista
+        livesPanel.removeAll(); // Clear panel before adding new icons
+        lifeIcons.clear(); // Clear the list
 
         for (int i = 0; i < lives; i++) {
             JLabel lifeLabel = new JLabel(heartIcon);
@@ -73,69 +75,96 @@ public class InfoPanel extends JPanel implements GameStatisticsListener {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 2; // Posiziona il livesPanel sopra al punteggio
+        gbc.gridwidth = 2; // Place livesPanel above the score
         add(livesPanel, gbc);
 
         livesPanel.revalidate();
         livesPanel.repaint();
     }
 
-    // Inizializza le etichette per il punteggio
+    // Initialize labels for score and supermode
     private void initializeLabels() {
         scoreLabel = new JLabel(SCORE_TEXT + this.model.getScore());
         scoreLabel.setFont(LABEL_FONT);
         scoreLabel.setForeground(Color.YELLOW);
 
+        superModeLabel = new JLabel(SUPERMODE_TEXT + "Not active");
+        superModeLabel.setFont(LABEL_FONT);
+        superModeLabel.setForeground(Color.GREEN);
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
-        gbc.gridwidth = 2; // Posiziona il punteggio sotto al pannello delle vite
+        gbc.gridwidth = 2; // Place scoreLabel below the livesPanel
         add(scoreLabel, gbc);
+
+        gbc.gridy = 2;
+        add(superModeLabel, gbc);
 
         setPreferredSize(new Dimension(150, 100));
     }
 
-    // Imposta il punteggio con l'animazione
+    // Set score with animation
     public void setScore(int score) {
         scoreLabel.setText(SCORE_TEXT + score);
-        if (score == 100 || score == 200 || score == 500 || score % 1000 == 0) { // Controllo per attivare l'animazione
+
+        // Check for animation trigger and ensure no animation is currently running
+        if ((score == 100 || score == 200 || score == 500 || score % 1000 == 0) && !isAnimating) {
+            isAnimating = true;
             animateScoreChange();
         }
     }
 
-    // Aggiorna le icone delle vite quando il numero cambia
+    // Update life icons when the number of lives changes
     public void setLives(int lives) {
         updateLivesIcons(lives);
     }
 
-    // Animazione quando il punteggio cambia
+    // Set supermode status
+    public void setSuperModeStatus(int movesRemaining) {
+        if (movesRemaining > 0) {
+            superModeLabel.setText(SUPERMODE_TEXT + "Active (" + movesRemaining + " moves remaining)");
+            superModeLabel.setForeground(Color.RED);
+        } else {
+            superModeLabel.setText(SUPERMODE_TEXT + "Not active");
+            superModeLabel.setForeground(Color.GREEN);
+        }
+    }
+
+    // Animate score change
     private void animateScoreChange() {
         Timer timer = new Timer(100, new ActionListener() {
             int count = 0;
 
             public void actionPerformed(ActionEvent e) {
+                // Alternate the score label color for the animation effect
                 if (count % 2 == 0) {
                     scoreLabel.setForeground(Color.YELLOW);
                 } else {
                     scoreLabel.setForeground(Color.RED);
                 }
                 count++;
-                if (count > 6)
+                // Stop the timer and reset isAnimating flag after animation is done
+                if (count > 6) { // Adjust the number of animation steps as needed
                     ((Timer) e.getSource()).stop();
+                    isAnimating = false; // Reset flag after animation
+                }
             }
         });
         timer.start();
     }
 
-    // Listener per il cambiamento del punteggio
+    // Listener for score change
     @Override
     public void onScoreChanged(int newScore) {
+        System.out.println("Score changed: " + newScore); // Debug
         SwingUtilities.invokeLater(() -> setScore(newScore));
     }
 
-    // Listener per il cambiamento delle vite
+    // Listener for lives change
     @Override
     public void onLivesChanged(int newLives) {
+        System.out.println("Lives changed: " + newLives); // Debug
         SwingUtilities.invokeLater(() -> setLives(newLives));
     }
 }

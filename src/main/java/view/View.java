@@ -20,24 +20,30 @@ import javax.swing.JPanel;
 import main.java.controller.Controller;
 import main.java.model.Model;
 import main.java.model.API.Direction;
-import main.java.model.Entities.Pacman;
 import main.java.model.Exceptions.IllegalEntityMovementException;
 
 public class View extends JFrame {
     private Controller controller;
-    private Pacman pacman;
     private Model model;
-
     private Map<String, ImageIcon> images;
     private GamePanel gamePanel;
     private InfoPanel infoPanel;
     private MainMenu mainMenu;
 
-    public View(Controller controller) {
+    public View(Model model, Controller controller) {
+        this.model = model;
         this.controller = controller;
-        this.model = controller.getModel();
-        this.pacman = model.getPacman();
+    }
 
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+
+    public GamePanel getGamePanel() {
+        return gamePanel;
+    }
+
+    public void initializeView() {
         loadImages();
         setupWindow();
         setupStatusBar();
@@ -77,7 +83,7 @@ public class View extends JFrame {
         });
     }
 
-    public void showGameWindow(Model model) {
+    public void showGameWindow() {
         if (gamePanel != null) {
             remove(gamePanel);
         }
@@ -117,9 +123,7 @@ public class View extends JFrame {
             try {
                 BufferedImage image = ImageIO
                         .read(Objects.requireNonNull(getClass().getResourceAsStream(imagePaths[i])));
-
-                ImageIcon icon = new ImageIcon(image);
-                images.put(imageNames[i], icon);
+                images.put(imageNames[i], new ImageIcon(image));
             } catch (IOException | NullPointerException e) {
                 System.out.println("Errore nel caricamento dell'immagine: " + imagePaths[i] + " - " + e.getMessage());
             }
@@ -127,22 +131,20 @@ public class View extends JFrame {
     }
 
     private void handleKeyPress(KeyEvent e) {
-        Direction direction = null;
-
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_UP -> direction = Direction.UP;
-            case KeyEvent.VK_DOWN -> direction = Direction.DOWN;
-            case KeyEvent.VK_RIGHT -> direction = Direction.RIGHT;
-            case KeyEvent.VK_LEFT -> direction = Direction.LEFT;
-        }
-        this.pacman.setDirection(direction);
+        Direction direction = switch (e.getKeyCode()) {
+            case KeyEvent.VK_UP -> Direction.UP;
+            case KeyEvent.VK_DOWN -> Direction.DOWN;
+            case KeyEvent.VK_RIGHT -> Direction.RIGHT;
+            case KeyEvent.VK_LEFT -> Direction.LEFT;
+            default -> null;
+        };
 
         if (direction != null) {
             try {
                 controller.movePacman(direction);
-                gamePanel.repaint(); // da fixare
+                gamePanel.repaint();
                 checkForGameOver();
-            } catch (IllegalEntityMovementException iemE) {
+            } catch (IllegalEntityMovementException ex) {
                 System.out.println("Pacman ha colpito un muro: " + switchDirezione(direction));
             }
         }
@@ -152,15 +154,12 @@ public class View extends JFrame {
         if (model.isGameOver()) {
             JOptionPane.showMessageDialog(this, "Game Over! Your score: " + model.getScore());
             resetGame();
-            gamePanel.repaint(); // da fixare
         }
     }
 
     public void resetGame() {
-        this.model = new Model();
-        this.pacman = model.getPacman();
-        // controller.resetGame();
-        showGameWindow(controller.getModel());
+        model.resetGame();
+        showGameWindow();
     }
 
     private String switchDirezione(Direction d) {
@@ -170,10 +169,6 @@ public class View extends JFrame {
             case RIGHT -> "a destra";
             case LEFT -> "a sinistra";
         };
-    }
-
-    public void setController(Controller controller) {
-        this.controller = controller;
     }
 
     public void showMainMenu() {
@@ -190,6 +185,12 @@ public class View extends JFrame {
         if (infoPanel != null) {
             infoPanel.setLives(model.getLives());
             infoPanel.setScore(model.getScore());
+        }
+    }
+
+    public void updateSuperModeStatus(int movesRemaining) {
+        if (infoPanel != null) {
+            infoPanel.setSuperModeStatus(movesRemaining);
         }
     }
 }

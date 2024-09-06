@@ -81,7 +81,11 @@ public class GamePanel extends JPanel {
             return "smallDot";
         } else if (component instanceof BigDot) {
             return "bigDot";
+        } else if (component instanceof Ghost) {
+            Ghost ghost = (Ghost) component;
+            return "ghost" + ghost.getColor().name().toLowerCase(); // Adatta a seconda dei nomi delle immagini
         }
+        System.out.println("Unknown component: " + component.getClass().getSimpleName());
         return "unknown";
     }
 }

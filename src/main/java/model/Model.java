@@ -2,8 +2,11 @@ package main.java.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import main.java.controller.Strategies.GhostChaseStrategy;
+import main.java.controller.Strategies.GhostFleeStrategy;
 import main.java.controller.Strategies.PacmanMovementStrategy;
 import main.java.model.API.Direction;
 import main.java.model.API.GameStatisticsListener;
@@ -55,7 +58,9 @@ public class Model {
     }
 
     public void movePacman(Direction direction) {
-        pacmanMovementStrategy.move(direction);
+        pacmanMovementStrategy.move(direction); // Let strategy handle movement
+
+        // Handle game logic related to movement
         if (isSuperModeActive()) {
             decrementSuperModeMoves();
         }
@@ -99,14 +104,17 @@ public class Model {
 
     private void setGhostsScaredMode(boolean scared) {
         for (Ghost ghost : ghosts) {
-            ghost.setScaredMode(scared);
+            if (scared) {
+                ghost.setMovementStrategy(new GhostFleeStrategy(ghost, grid, this, gamePanel));
+            } else {
+                ghost.setMovementStrategy(new GhostChaseStrategy(ghost, grid, this, gamePanel));
+            }
         }
     }
 
     public void eatGhost(Position ghostPosition) {
         Ghost ghostToRemove = null;
 
-        // Trova il fantasma alla posizione data
         for (Ghost ghost : ghosts) {
             if (ghost.getPosition().equals(ghostPosition)) {
                 ghostToRemove = ghost;
@@ -115,16 +123,10 @@ public class Model {
         }
 
         if (ghostToRemove != null) {
-            // Rimuovi il fantasma dalla griglia
             grid.removeComponent(ghostToRemove);
             ghosts.remove(ghostToRemove);
             System.out.println("Fantasma alla posizione " + ghostPosition + " è stato mangiato!");
-
-            // Opzionalmente, incrementa il punteggio o attiva altri eventi
-            incrementScore(200); // Incremento del punteggio per aver mangiato un fantasma
-
-            // Se si desidera resettare il fantasma o aggiungere nuovi fantasmi, è possibile
-            // farlo qui
+            incrementScore(200);
         } else {
             System.out.println("Nessun fantasma trovato alla posizione " + ghostPosition);
         }
@@ -151,6 +153,14 @@ public class Model {
             this.pacman.resetPosition(grid.getPacmanStartPosition());
             notifyLivesChanged();
         }
+    }
+
+    public Optional<Position> handleMagicCoords(Position pos) {
+        Map<Position, Position> magicCoordsMap = Map.of(
+                new Position(9, 0), new Position(9, 17),
+                new Position(9, 18), new Position(9, 1));
+
+        return Optional.ofNullable(magicCoordsMap.get(pos));
     }
 
     public void startStopGame(boolean onGoing) {

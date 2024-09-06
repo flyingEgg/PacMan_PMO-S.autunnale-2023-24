@@ -8,13 +8,8 @@ import main.java.model.API.Position;
 import main.java.model.Entities.Ghost;
 import main.java.view.GamePanel;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
-
 import javax.swing.Timer;
+import java.util.Random;
 
 public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     protected final Ghost ghost;
@@ -60,7 +55,7 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     protected void changeDirection() {
         Direction currentDirection = ghost.getDirection();
 
-        if(rand.nextInt(3) == 0){
+        if (rand.nextInt(3) == 0) {
             if (currentDirection == Direction.UP || currentDirection == Direction.DOWN) {
                 if (rand.nextInt(2) == 0 && canMoveLeft()) {
                     ghost.setDirection(Direction.LEFT);
@@ -77,8 +72,8 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
         }
     }
 
-    // da chiamare al cambio di livello per aumentare la velocità
-    public void setSpeed(int s){
+    // Called when the level changes to increase speed
+    public void setSpeed(int s) {
         this.speed = s;
     }
 
@@ -102,12 +97,12 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
         return isValidPosition(downPos);
     }
 
-    protected boolean isCollidingWithWall(){
+    protected boolean isCollidingWithWall() {
         Position nextPosition = calculateNewPosition(ghost.getDirection());
-        return !isValidPosition(nextPosition);  // se isValidPosition restituisce "false",
-    }                                           // significa che è non valida, e quindi c'è un muro
+        return !isValidPosition(nextPosition); // If isValidPosition returns false, it means there's a wall
+    }
 
-    protected boolean isSnappedToGrid(){
+    protected boolean isSnappedToGrid() {
         int x = ghost.getX();
         int y = ghost.getY();
         return (x % Grid.CELL_SIZE == 0) && (y % Grid.CELL_SIZE == 0);
@@ -115,11 +110,11 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
 
     protected void reverseDirection() {
         Direction currDirection = ghost.getDirection();
-        Direction revDirection = switch (currDirection){
+        Direction revDirection = switch (currDirection) {
             case UP -> Direction.DOWN;
-            case DOWN ->Direction.UP;
-            case LEFT ->Direction.RIGHT;
-            case RIGHT ->Direction.LEFT;
+            case DOWN -> Direction.UP;
+            case LEFT -> Direction.RIGHT;
+            case RIGHT -> Direction.LEFT;
         };
         ghost.setDirection(revDirection);
     }
@@ -127,20 +122,11 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     public abstract Direction determineNextDirection();
 
     @Override
-    public void move(Direction direction){
-        Position newPos = calculateNewPosition(direction);
-        if(isValidPosition(newPos)){
-            ghost.setPosition(newPos);
-        }
-    }
-
-    @Override
-    public Optional<Position> handleMagicCoords(Position ghostPos){ // RIPETIZIONE!!!
-        Map<Position, Position> magicCoordsMap = Map.of(
-                new Position(9, 0), new Position(9, 17),
-                new Position(9, 18), new Position(9, 1));
-
-        return Optional.ofNullable(magicCoordsMap.get(ghostPos));
+    public void move(Direction direction) {
+        Position newPosition = calculateNewPosition(direction);
+        model.handleMagicCoords(newPosition).ifPresentOrElse(
+                teleportPosition -> ghost.setPosition(teleportPosition),
+                () -> ghost.setPosition(newPosition));
     }
 
     protected boolean isValidPosition(Position position) {
@@ -154,8 +140,8 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
         int newX = ghost.getX();
         int newY = ghost.getY();
 
-        if( direction == null ){
-            System.out.println("Direction null. Imposto default UP");
+        if (direction == null) {
+            System.out.println("Direction null. Setting default to UP");
             direction = Direction.UP;
         }
 

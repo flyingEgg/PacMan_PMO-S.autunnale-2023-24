@@ -12,7 +12,6 @@ import java.util.Set;
 
 import main.java.model.API.Position;
 import main.java.model.Composite.BigDot;
-import main.java.model.Composite.EmptySpace;
 import main.java.model.Composite.SmallDot;
 import main.java.model.Composite.Wall;
 import main.java.model.Entities.Ghost;
@@ -89,7 +88,7 @@ public class Grid extends AbsGrid {
         super(COLUMNS, ROWS);
         this.smallDotMap = new HashMap<>();
         initializeExcludedPositions();
-        initializeEmptyMap();
+        initializeMap();
     }
 
     public void setPacman(Pacman pacman) {
@@ -126,13 +125,12 @@ public class Grid extends AbsGrid {
         addPositions(MAGIC_COORDS);
     }
 
-    private void initializeEmptyMap() {
+    private void initializeMap() {
         SmallDot smallDot;
 
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 Position currentPosition = new Position(j, i);
-                addComponent(new EmptySpace(currentPosition));
                 if (!excludedPositions.contains(currentPosition)) {
                     smallDot = new SmallDot(currentPosition);
                     addComponent(smallDot);
