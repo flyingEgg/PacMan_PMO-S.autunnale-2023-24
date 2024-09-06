@@ -38,6 +38,7 @@ public class Pacman extends AbstractEntity {
         }
     }
 
+
     public void setSuperMode(boolean superMode) {
         this.superMode = superMode;
     }
@@ -46,6 +47,13 @@ public class Pacman extends AbstractEntity {
         return superMode;
     }
 
+    @Override
+    public Direction getDirection() {
+        return direction;
+    }
+
+
+    @Override
     public void setDirection(Direction d) {
         this.direction = d;
     }
