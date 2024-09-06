@@ -1,5 +1,6 @@
 package main.java.model.Entities;
 
+import main.java.model.API.Direction;
 import main.java.model.Model;
 import main.java.model.API.Position;
 import main.java.model.Grid;
@@ -41,6 +42,16 @@ public class Ghost extends AbstractEntity {
         } else {
             System.out.println("Ghost image not found for color: " + color);
         }
+    }
+
+    @Override
+    public Direction getDirection() {
+        return null;
+    }
+
+    @Override
+    public void setDirection(Direction d) {
+
     }
 
     public void move() {
