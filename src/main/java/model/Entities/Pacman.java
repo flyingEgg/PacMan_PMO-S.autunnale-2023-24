@@ -1,6 +1,5 @@
 package main.java.model.Entities;
 
-import main.java.controller.Strategies.PacmanMovementStrategy;
 import main.java.model.Grid;
 import main.java.model.API.Direction;
 import main.java.model.API.Position;
@@ -38,7 +37,6 @@ public class Pacman extends AbstractEntity {
         }
     }
 
-
     public void setSuperMode(boolean superMode) {
         this.superMode = superMode;
     }
@@ -51,7 +49,6 @@ public class Pacman extends AbstractEntity {
     public Direction getDirection() {
         return direction;
     }
-
 
     @Override
     public void setDirection(Direction d) {
