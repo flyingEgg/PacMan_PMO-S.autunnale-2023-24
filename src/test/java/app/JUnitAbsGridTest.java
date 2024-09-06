@@ -11,30 +11,31 @@ import main.java.model.Entities.Pacman;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JUnitAbsGridTest {
-    private Grid pacmanGrid;
+    private Grid grid;
 
     @BeforeEach
     public void setUp() {
-        pacmanGrid = new Grid();
+        grid = new Grid();
     }
 
     @Test
     public void testGridInitialization() {
-        assertNotNull(pacmanGrid);
-        assertEquals(21, pacmanGrid.getColumns());
-        assertEquals(19, pacmanGrid.getRows());
+        assertNotNull(grid);
+        assertEquals(21, grid.getColumns());
+        assertEquals(19, grid.getRows());
     }
 
     @Test
     public void testPacmanPosition() {
         Position pacmanStartPosition = new Position(11, 9);
-        Optional<MapComponent> component = pacmanGrid.getComponentByPosition(pacmanStartPosition);
+        Optional<MapComponent> component = grid.getComponentByPosition(pacmanStartPosition);
 
         assertTrue(component.isPresent());
         assertInstanceOf(Pacman.class, component.get(), "Expected Pacman at position " + pacmanStartPosition);
@@ -47,7 +48,7 @@ public class JUnitAbsGridTest {
         };
 
         Arrays.stream(wallPositions).forEach(pos -> {
-            Optional<MapComponent> component = pacmanGrid.getComponentByPosition(new Position(pos[0], pos[1]));
+            Optional<MapComponent> component = grid.getComponentByPosition(new Position(pos[0], pos[1]));
 
             assertTrue(component.isPresent());
             assertInstanceOf(Wall.class, component.get(), "Expected a Wall at position " + pos[0] + ", " + pos[1]);
@@ -61,7 +62,7 @@ public class JUnitAbsGridTest {
         };
 
         Arrays.stream(bigDotPositions).forEach(pos -> {
-            Optional<MapComponent> component = pacmanGrid.getComponentByPosition(new Position(pos[0], pos[1]));
+            Optional<MapComponent> component = grid.getComponentByPosition(new Position(pos[0], pos[1]));
 
             assertTrue(component.isPresent());
             assertInstanceOf(BigDot.class, component.get(), "Expected a BigDot at position " + pos[0] + ", " + pos[1]);
@@ -71,7 +72,7 @@ public class JUnitAbsGridTest {
     @Test
     public void testSmallDotPosition() {
         Position smallDotPosition = new Position(3, 17);
-        Optional<MapComponent> component = pacmanGrid.getComponentByPosition(smallDotPosition);
+        Optional<MapComponent> component = grid.getComponentByPosition(smallDotPosition);
 
         assertTrue(component.isPresent());
         assertInstanceOf(SmallDot.class, component.get(), "Expected a SmallDot at position" + smallDotPosition);
