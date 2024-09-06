@@ -16,21 +16,14 @@ public class GhostChaseStrategy extends GhostMovementStrategy {
     @Override
     public Direction determineNextDirection() {
         Position pacmanPosition = model.getPacman().getPosition(); // Ottieni la posizione di Pacman
+        int diffX = pacmanPosition.getX() - ghost.getX();
+        int diffY = pacmanPosition.getY() - ghost.getY();
 
-        if (ghost.getX() > pacmanPosition.getX())
-            return Direction.LEFT;
-        if (ghost.getX() < pacmanPosition.getX())
-            return Direction.RIGHT;
-        if (ghost.getY() > pacmanPosition.getY())
-            return Direction.UP;
-        return Direction.DOWN;
-    }
 
-    @Override
-    public void move(Direction direction) {
-        Position newPosition = calculateNewPosition(direction);
-        if (isValidPosition(newPosition)) {
-            ghost.setPosition(newPosition);
-        }
+
+        if (Math.abs(diffX) > Math.abs(diffY))
+            return diffX > 0 ? Direction.RIGHT : Direction.LEFT;
+        else
+            return diffX > 0 ? Direction.DOWN : Direction.UP;
     }
 }
