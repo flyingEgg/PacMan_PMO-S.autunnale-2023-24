@@ -22,10 +22,6 @@ public abstract class Dot implements MapComponent {
     public abstract void draw(Graphics2D g2d, Map<String, ImageIcon> images);
 
     public void collect(Model model) {
-        if (isEaten()) {
-            return; // Do nothing if the dot is already eaten
-        }
-
         this.eaten = true;
         onCollect(model); // Call the method for additional logic
     }
