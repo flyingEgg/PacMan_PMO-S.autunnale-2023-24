@@ -11,6 +11,7 @@ import main.java.controller.Strategies.PacmanMovementStrategy;
 import main.java.model.API.Direction;
 import main.java.model.API.GameStatisticsListener;
 import main.java.model.API.Position;
+import main.java.model.Composite.Dot;
 import main.java.model.Entities.Ghost;
 import main.java.model.Entities.GhostColor;
 import main.java.model.Entities.Pacman;
@@ -63,6 +64,18 @@ public class Model {
         // Handle game logic related to movement
         if (isSuperModeActive()) {
             decrementSuperModeMoves();
+        }
+    }
+
+    public void handleSmallDotEat(){
+        Position pacPos = pacman.getPosition();
+        Dot smallDot = grid.getSmallDotAtPosition(pacPos);
+
+        if(smallDot != null && !smallDot.isEaten()){
+            smallDot.collect(this);
+            if(gamePanel != null){
+                gamePanel.repaint();
+            }
         }
     }
 
