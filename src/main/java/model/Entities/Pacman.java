@@ -20,14 +20,12 @@ public class Pacman extends AbstractEntity {
 
     @Override
     public void draw(Graphics2D g2d, Map<String, ImageIcon> images) {
-        ImageIcon pacmanImage = images.get("right"); // Default direction
-
-        switch (direction) {
-            case RIGHT -> pacmanImage = images.get("right");
-            case LEFT -> pacmanImage = images.get("left");
-            case UP -> pacmanImage = images.get("up");
-            case DOWN -> pacmanImage = images.get("down");
-        }
+        ImageIcon pacmanImage = switch (direction) {
+            case RIGHT -> images.get("right");
+            case LEFT -> images.get("left");
+            case UP -> images.get("up");
+            case DOWN -> images.get("down");
+        };
 
         if (pacmanImage != null) {
             g2d.drawImage(pacmanImage.getImage(), position.getX() * Grid.CELL_SIZE, position.getY() * Grid.CELL_SIZE,

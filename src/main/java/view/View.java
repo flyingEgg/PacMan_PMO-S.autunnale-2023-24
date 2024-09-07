@@ -139,6 +139,8 @@ public class View extends JFrame {
             default -> null;
         };
 
+        model.getPacman().setDirection(direction);
+
         if (direction != null) {
             try {
                 controller.movePacman(direction);
@@ -162,8 +164,8 @@ public class View extends JFrame {
         showGameWindow();
     }
 
-    private String switchDirezione(Direction d) {
-        return switch (d) {
+    private String switchDirezione(Direction direction) {
+        return switch (direction) {
             case UP -> "sopra";
             case DOWN -> "sotto";
             case RIGHT -> "a destra";
