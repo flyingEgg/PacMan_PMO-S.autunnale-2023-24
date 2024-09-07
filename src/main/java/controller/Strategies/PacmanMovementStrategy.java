@@ -41,6 +41,8 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
             model.handleMagicCoords(newPosition).                                   // re-renderizzazione di Pacman
                     ifPresentOrElse(this::redrawPacman,
                             () -> redrawPacman(newPosition));
+
+            model.handleSmallDotEat();
         } else {
             throw new IllegalEntityMovementException("Invalid movement for Pacman");
         }
