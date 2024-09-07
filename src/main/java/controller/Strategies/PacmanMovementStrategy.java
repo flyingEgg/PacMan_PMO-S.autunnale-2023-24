@@ -43,9 +43,7 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
 
     private void handleTeleportation(Position newPosition) {
         // Use Model to handle magic coordinates (teleportation)
-        model.handleMagicCoords(newPosition).ifPresent(teleportPosition -> {
-            redrawPacman(teleportPosition);
-        });
+        model.handleMagicCoords(newPosition).ifPresent(this::redrawPacman);
     }
 
     private void redrawPacman(Position pacPos) {
