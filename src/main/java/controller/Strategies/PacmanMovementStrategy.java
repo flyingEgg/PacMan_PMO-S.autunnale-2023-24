@@ -8,6 +8,9 @@ import main.java.model.API.Position;
 import main.java.model.Entities.Pacman;
 import main.java.model.Exceptions.IllegalEntityMovementException;
 
+import java.util.EnumMap;
+import java.util.Map;
+
 public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
     private final Pacman pacman;
     private final Grid grid;
@@ -21,37 +24,36 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
 
     @Override
     public void move(Direction direction) {
-        int newX = pacman.getX();
-        int newY = pacman.getY();
+        Map<Direction, int[]> directionMap = new EnumMap<>(Direction.class);        // Mappa dei cambiamenti di direzione
+        directionMap.put(Direction.UP, new int[]{0, -1});
+        directionMap.put(Direction.DOWN, new int[]{0, 1});
+        directionMap.put(Direction.LEFT, new int[]{-1, 0});
+        directionMap.put(Direction.RIGHT, new int[]{1, 0});
 
-        switch (direction) {
-            case UP -> newY -= 1;
-            case DOWN -> newY += 1;
-            case LEFT -> newX -= 1;
-            case RIGHT -> newX += 1;
-        }
+        int[] delta = directionMap.get(direction);
+        int newX = pacman.getX() + delta[0];
+        int newY = pacman.getY() + delta[1];
 
         Position newPosition = new Position(newX, newY);
 
-        if (isValidPosition(newPosition)) {
-            handleTeleportation(newPosition); // Check for and handle teleportation
-            redrawPacman(newPosition);
+
+        if (isValidPosition(newPosition)) {                                         // Validazione della posizione e
+            model.handleMagicCoords(newPosition).                                   // re-renderizzazione di Pacman
+                    ifPresentOrElse(this::redrawPacman,
+                            () -> redrawPacman(newPosition));
         } else {
             throw new IllegalEntityMovementException("Invalid movement for Pacman");
         }
     }
 
     private void handleTeleportation(Position newPosition) {
-        // Use Model to handle magic coordinates (teleportation)
-        model.handleMagicCoords(newPosition).ifPresent(teleportPosition -> {
-            redrawPacman(teleportPosition);
-        });
+        model.handleMagicCoords(newPosition).ifPresent(teleportPosition -> redrawPacman(teleportPosition));
     }
 
     private void redrawPacman(Position pacPos) {
-        this.grid.removeComponent(pacman); // Remove Pacman from current position
-        this.pacman.setPosition(pacPos); // Set new position for Pacman
-        this.grid.addComponent(pacman);
+        this.grid.removeComponent(pacman);  // Rimuove Pacman dalla posizione attuale
+        this.pacman.setPosition(pacPos);    // Imposta una posizione nuova
+        this.grid.addComponent(pacman);     // Aggiunge Pacman alla nuova posizione
     }
 
     private boolean isValidPosition(Position position) {
