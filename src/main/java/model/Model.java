@@ -22,13 +22,13 @@ public class Model {
     private boolean paused;
     private boolean gameOver;
     private int score, lives, dotsEaten;
-    private Grid grid;
-    private Pacman pacman;
-    private List<Ghost> ghosts;
-    private List<GameStatisticsListener> listeners = new ArrayList<>();
+    private final Grid grid;
+    private final Pacman pacman;
+    private final List<Ghost> ghosts;
+    private final List<GameStatisticsListener> listeners = new ArrayList<>();
     private int superModeMoves;
     private GamePanel gamePanel;
-    private PacmanMovementStrategy pacmanMovementStrategy;
+    private final PacmanMovementStrategy pacmanMovementStrategy;
 
     public Model() {
         this.onGoing = false;
@@ -72,22 +72,20 @@ public class Model {
         Position pacPos = pacman.getPosition();
         Dot smallDot = grid.getSmallDotAtPosition(pacPos);
 
-        if(smallDot != null && !smallDot.isEaten()){
-            this.dotsEaten++;
-            smallDot.collect(this);
-            if(gamePanel != null){
-                gamePanel.repaint();
-            }
-        }
+        handleDotEat(smallDot);
     }
 
     public void handleBigDotEat(){
         Position pacPos = pacman.getPosition();
         Dot bigDot = grid.getBigDotAtPosition(pacPos);
 
-        if(bigDot != null && !bigDot.isEaten()){
+        handleDotEat(bigDot);
+    }
+
+    private void handleDotEat(Dot dot){
+        if(dot != null && !dot.isEaten()){
             this.dotsEaten++;
-            bigDot.collect(this);
+            dot.collect(this);
             if(gamePanel != null){
                 gamePanel.repaint();
             }
