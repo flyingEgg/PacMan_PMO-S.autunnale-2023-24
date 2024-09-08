@@ -21,7 +21,7 @@ public class Model {
     private boolean onGoing;
     private boolean paused;
     private boolean gameOver;
-    private int score, lives;
+    private int score, lives, dotsEaten;
     private Grid grid;
     private Pacman pacman;
     private List<Ghost> ghosts;
@@ -34,6 +34,7 @@ public class Model {
         this.onGoing = false;
         this.paused = false;
         this.gameOver = false;
+        this.dotsEaten = 0;
         this.lives = 3;
         this.score = 0;
         this.superModeMoves = 0;
@@ -72,11 +73,16 @@ public class Model {
         Dot smallDot = grid.getSmallDotAtPosition(pacPos);
 
         if(smallDot != null && !smallDot.isEaten()){
+            this.dotsEaten++;
             smallDot.collect(this);
             if(gamePanel != null){
                 gamePanel.repaint();
             }
         }
+    }
+
+    public void handleBigDotEat(){
+
     }
 
     private void initializeGhosts() {
