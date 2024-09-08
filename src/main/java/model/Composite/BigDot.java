@@ -9,8 +9,7 @@ import java.util.Map;
 import javax.swing.*;
 
 public class BigDot extends Dot {
-    private static final int POINTS = 0; // BigDot non contribuisce al punteggio direttamente
-    private boolean eaten;
+    private static final int POINTS = 50; // Punti per SmallDot
 
     public BigDot(Position position) {
         super(position, POINTS); // 0 points for a big dot
@@ -24,17 +23,8 @@ public class BigDot extends Dot {
     }
 
     @Override
-    public Position getPosition() {
-        return position;
-    }
-
-    @Override
-    public boolean isEaten() {
-        return eaten;
-    }
-
-    @Override
     protected void onCollect(Model model) {
+        model.incrementScore(points);
         model.activateSuperMode(20);
         model.getGrid().removeComponent(this);
         this.eaten = true;

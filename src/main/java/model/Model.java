@@ -82,7 +82,16 @@ public class Model {
     }
 
     public void handleBigDotEat(){
+        Position pacPos = pacman.getPosition();
+        Dot bigDot = grid.getBigDotAtPosition(pacPos);
 
+        if(bigDot != null && !bigDot.isEaten()){
+            this.dotsEaten++;
+            bigDot.collect(this);
+            if(gamePanel != null){
+                gamePanel.repaint();
+            }
+        }
     }
 
     private void initializeGhosts() {

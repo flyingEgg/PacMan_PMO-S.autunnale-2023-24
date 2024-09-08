@@ -147,6 +147,15 @@ public class Grid extends AbsGrid {
         return smallDotMap.get(pos);
     }
 
+    public BigDot getBigDotAtPosition(Position pos) {
+        Optional<int[]> matchingPosition = Arrays.stream(BIG_DOT_POSITIONS).
+                filter(coords -> coords[0] == pos.getX() && coords[1] == pos.getY()).
+                findFirst();
+
+        return matchingPosition.map(coords -> new BigDot(new Position(coords[0], coords[1]))).
+                orElse(null);
+    }
+
     public void removeDotFromMap(Position pos) {
         this.smallDotMap.remove(pos);
     }
