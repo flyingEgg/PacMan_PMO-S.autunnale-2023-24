@@ -30,7 +30,6 @@ public class SmallDot extends Dot {
         model.incrementScore(points);
         model.getGrid().removeComponent(this); // Rimuovi il punto dalla griglia
         model.getGrid().removeDotFromMap(this.getPosition()); // Rimuovi il punto dalla mappa dei punti
-        System.out.println("Small dot collected at position: " + getPosition());
         model.notifyScoreChanged(); // Notifica il cambio di punteggio
     }
 }
