@@ -42,9 +42,7 @@ public class GamePanel extends JPanel {
         // Disegna la griglia e i componenti
         drawGrid(g2d);
         pacman.draw(g2d, images);
-        for (Ghost ghost : ghosts) {
-            ghost.draw(g2d, images);
-        }
+        ghosts.stream().forEach(ghost -> ghost.draw(g2d, images));
     }
 
     private void drawGrid(Graphics2D g2d) {
@@ -55,17 +53,25 @@ public class GamePanel extends JPanel {
                 Optional<MapComponent> component = model.getGrid().getComponentByPosition(pos);
 
                 if (component.isPresent()) {
-                    ImageIcon icon = null;
+                    ImageIcon icon = null,
+                            uninitialisedIcon = new ImageIcon();        // Icona non inizializzata per bypassare if-else statement
+                    boolean shouldBypassCondition =  component.get() instanceof Pacman ||
+                            component.get() instanceof Ghost;
+
                     if (component.get() instanceof Wall) {
                         icon = images.get("wall");
                     } else if (component.get() instanceof SmallDot) {
                         icon = images.get("smallDot");
                     } else if (component.get() instanceof BigDot) {
                         icon = images.get("bigDot");
+                    } else if (shouldBypassCondition) {
+                        icon = uninitialisedIcon;
                     }
 
                     if (icon != null) {
-                        g2d.drawImage(icon.getImage(), j * Grid.CELL_SIZE, i * Grid.CELL_SIZE, null);
+                        if(!icon.equals(uninitialisedIcon)){
+                            g2d.drawImage(icon.getImage(), j * Grid.CELL_SIZE, i * Grid.CELL_SIZE, null);
+                        }
                     } else {
                         System.out.println("Immagine non trovata per la chiave: " + getImageKey(component.get()));
                     }
