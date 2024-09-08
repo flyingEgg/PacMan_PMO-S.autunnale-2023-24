@@ -145,16 +145,20 @@ public class View extends JFrame {
             try {
                 controller.movePacman(direction);
                 gamePanel.repaint();
-                checkForGameOver();
+
+                winOrGameOver();
             } catch (IllegalEntityMovementException ex) {
                 System.out.println("Pacman ha colpito un muro: " + switchDirezione(direction));
             }
         }
     }
 
-    private void checkForGameOver() {
+    private void winOrGameOver() {
         if (model.isGameOver()) {
             JOptionPane.showMessageDialog(this, "Game Over! Your score: " + model.getScore());
+            resetGame();
+        } else if (model.isWin()){
+            JOptionPane.showMessageDialog(this, "Congrats! You won! " + model.getScore());
             resetGame();
         }
     }

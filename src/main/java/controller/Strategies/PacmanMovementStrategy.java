@@ -44,6 +44,8 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
 
             model.handleSmallDotEat();
             model.handleBigDotEat();
+
+            model.winGame();
         } else {
             throw new IllegalEntityMovementException("Invalid movement for Pacman");
         }

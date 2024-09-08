@@ -18,10 +18,11 @@ import main.java.model.Entities.Pacman;
 import main.java.view.GamePanel;
 
 public class Model {
-    private static final int MAX_DOTS = 176;
+    private static final int MAX_DOTS = 177;  // Numero totale dei dots nella mappa
     private boolean onGoing;
     private boolean paused;
     private boolean gameOver;
+    private boolean win;
     private int score, lives, dotsEaten;
     private final Grid grid;
     private final Pacman pacman;
@@ -160,6 +161,13 @@ public class Model {
         }
     }
 
+    public void winGame(){
+        if(this.dotsEaten == MAX_DOTS){
+            this.win = true;
+            resetGame();
+        }
+    }
+
     public void incrementScore(int points) {
         score += points;
         notifyScoreChanged();
@@ -168,7 +176,9 @@ public class Model {
     public void resetGame() {
         this.score = 0;
         this.lives = 3;
+        this.dotsEaten = 0;
         this.gameOver = false;
+        this.win = false;
         this.pacman.resetPosition(grid.getPacmanStartPosition());
         resetGhosts();
     }
@@ -218,6 +228,10 @@ public class Model {
 
     public boolean isGameOver() {
         return gameOver;
+    }
+
+    public boolean isWin(){
+        return win;
     }
 
     public boolean isSuperModeActive() {
