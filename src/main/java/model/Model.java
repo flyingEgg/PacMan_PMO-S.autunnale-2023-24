@@ -18,6 +18,7 @@ import main.java.model.Entities.Pacman;
 import main.java.view.GamePanel;
 
 public class Model {
+    private static final int MAX_DOTS = 176;
     private boolean onGoing;
     private boolean paused;
     private boolean gameOver;
@@ -85,6 +86,7 @@ public class Model {
     private void handleDotEat(Dot dot){
         if(dot != null && !dot.isEaten()){
             this.dotsEaten++;
+            System.out.println(dotsEaten);
             dot.collect(this);
             if(gamePanel != null){
                 gamePanel.repaint();
