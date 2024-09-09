@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class InfoPanel extends JPanel implements GameStatisticsListener {
     private static final Font LABEL_FONT; // Static Font for lazy initialization
@@ -53,7 +54,7 @@ public class InfoPanel extends JPanel implements GameStatisticsListener {
 
     // Initialize life icons (heart.png)
     private void initializeIcons() {
-        heartIcon = new ImageIcon(getClass().getResource("/main/java/view/images/heart.png"));
+        heartIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/main/java/view/images/heart.png")));
         lifeIcons = new ArrayList<>();
         livesPanel = new JPanel();
         livesPanel.setBackground(Color.BLACK);
