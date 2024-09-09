@@ -73,7 +73,7 @@ public class Controller {
     }
 
     public void resetGame() {
-        model.resetGame();
+        //model.resetGame();
         view.showGameWindow(); // Show the game window after resetting the game
         view.updateInfoPanel(); // Update the info panel with the reset game state
     }

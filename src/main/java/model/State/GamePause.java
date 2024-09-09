@@ -28,6 +28,6 @@ public class GamePause implements GameState {
 
     public void quit() {
         exitState();
-        this.partita.resetGame();
+        //this.partita.resetGame();
     }
 }
