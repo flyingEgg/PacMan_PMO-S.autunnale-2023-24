@@ -1,5 +1,6 @@
 package main.java.controller.Strategies;
 
+import main.java.model.Exceptions.IllegalEntityMovementException;
 import main.java.model.Grid;
 import main.java.model.Model;
 import main.java.model.API.Direction;
@@ -31,21 +32,28 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     }
 
     private void initializeMovementTimer() {
-        movementTimer = new Timer(400, e -> moveAutomatically());
+        movementTimer = new Timer(800, e -> moveAutomatically());
         movementTimer.start();
     }
 
     private void moveAutomatically() {
-        if (isCollidingWithWall()) {
+
+        Position nextPosition = calculateNewPosition(ghost.getDirection());
+
+        if (!isValidPosition(nextPosition)) {
             reverseDirection();
+            nextPosition = calculateNewPosition(ghost.getDirection());
+        }
+
+        if (isValidPosition(nextPosition)) {
+            ghost.setPosition(nextPosition);
+        } else {
+            System.out.println("ATTENZIONE: Un fantasma sta tentando di accedere ad una posizione illegale: " + nextPosition);
         }
 
         if (isSnappedToGrid()) {
             changeDirection();
         }
-
-        Direction direction = ghost.getDirection();
-        move(direction);
 
         if (gamePanel != null) {
             gamePanel.repaint();
@@ -57,15 +65,15 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
 
         if (rand.nextInt(3) == 0) {
             if (currentDirection == Direction.UP || currentDirection == Direction.DOWN) {
-                if (rand.nextInt(2) == 0 && canMoveLeft()) {
+                if (rand.nextInt(2) == 0 && canMove(Direction.LEFT)) {
                     ghost.setDirection(Direction.LEFT);
-                } else if (canMoveRight()) {
+                } else if (canMove(Direction.RIGHT)) {
                     ghost.setDirection(Direction.RIGHT);
                 }
             } else if (currentDirection == Direction.LEFT || currentDirection == Direction.RIGHT) {
-                if (rand.nextInt(2) == 0 && canMoveUp()) {
+                if (rand.nextInt(2) == 0 && canMove(Direction.UP)) {
                     ghost.setDirection(Direction.UP);
-                } else if (canMoveDown()) {
+                } else if (canMove(Direction.DOWN)) {
                     ghost.setDirection(Direction.DOWN);
                 }
             }
@@ -77,35 +85,18 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
         this.speed = s;
     }
 
-    protected boolean canMoveLeft() {
-        Position leftPos = calculateNewPosition(Direction.LEFT);
-        return isValidPosition(leftPos);
-    }
-
-    protected boolean canMoveRight() {
-        Position rightPos = calculateNewPosition(Direction.RIGHT);
-        return isValidPosition(rightPos);
-    }
-
-    protected boolean canMoveUp() {
-        Position upPos = calculateNewPosition(Direction.UP);
-        return isValidPosition(upPos);
-    }
-
-    protected boolean canMoveDown() {
-        Position downPos = calculateNewPosition(Direction.DOWN);
-        return isValidPosition(downPos);
-    }
-
-    protected boolean isCollidingWithWall() {
-        Position nextPosition = calculateNewPosition(ghost.getDirection());
-        return !isValidPosition(nextPosition); // If isValidPosition returns false, it means there's a wall
+    protected boolean canMove(Direction direction) {
+        Position position = calculateNewPosition(direction);
+        return isValidPosition(position);
     }
 
     protected boolean isSnappedToGrid() {
         int x = ghost.getX();
         int y = ghost.getY();
-        return (x % Grid.CELL_SIZE == 0) && (y % Grid.CELL_SIZE == 0);
+
+        boolean snapped = (x % Grid.CELL_SIZE == 0) && (y % Grid.CELL_SIZE == 0);
+        System.out.println("Ghost at " + ghost.getPosition() + " snapped to grid: " + snapped);
+        return snapped;
     }
 
     protected void reverseDirection() {
@@ -116,6 +107,9 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
             case LEFT -> Direction.RIGHT;
             case RIGHT -> Direction.LEFT;
         };
+
+        System.out.println("Reverse: " + currDirection + " -> " + revDirection);
+
         ghost.setDirection(revDirection);
     }
 
@@ -132,24 +126,29 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     protected boolean isValidPosition(Position position) {
         int x = position.getX();
         int y = position.getY();
-        return x >= 0 && x < grid.getColumns() && y >= 0 && y < grid.getRows()
-                && !grid.getWallPositions().contains(position);
+
+        boolean withinBounds = (x >= 0 && x < grid.getColumns() && y >= 0 && y < grid.getRows());
+        boolean isNotWall = !grid.getWallPositions().contains(position);
+
+        return withinBounds && isNotWall;
     }
 
     protected Position calculateNewPosition(Direction direction) {
         int newX = ghost.getX();
         int newY = ghost.getY();
 
-        if (direction == null) {
+        /*if (direction == null) {
             System.out.println("Direction null. Setting default to UP");
             direction = Direction.UP;
-        }
+        }*/
 
-        switch (direction) {
-            case UP -> newY -= speed;
-            case DOWN -> newY += speed;
-            case LEFT -> newX -= speed;
-            case RIGHT -> newX += speed;
+        if (direction != null) {
+            switch (direction) {
+                case UP -> newY -= 1;
+                case DOWN -> newY += 1;
+                case LEFT -> newX -= 1;
+                case RIGHT -> newX += 1;
+            }
         }
 
         return new Position(newX, newY);
