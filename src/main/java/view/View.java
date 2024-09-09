@@ -134,13 +134,13 @@ public class View extends JFrame {
             default -> null;
         };
 
-        model.getPacman().setDirection(direction);
+
 
         if (direction != null) {
+            model.getPacman().setDirection(direction);
             try {
                 controller.movePacman(direction);
                 gamePanel.repaint();
-
                 winOrGameOver();
             } catch (IllegalEntityMovementException ex) {
                 System.out.println("Pacman ha colpito un muro: " + switchDirezione(direction));
