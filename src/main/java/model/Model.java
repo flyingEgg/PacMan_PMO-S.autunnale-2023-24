@@ -18,19 +18,19 @@ import main.java.model.Entities.Pacman;
 import main.java.view.GamePanel;
 
 public class Model {
-    private static final int MAX_DOTS = 177;  // Numero totale dei dots nella mappa
+    private static final int MAX_DOTS = 176;  // Numero totale dei dots nella mappa
     private boolean onGoing;
     private boolean paused;
     private boolean gameOver;
     private boolean win;
     private int score, lives, dotsEaten;
-    private final Grid grid;
+    private Grid grid;
     private final Pacman pacman;
     private final List<Ghost> ghosts;
     private final List<GameStatisticsListener> listeners = new ArrayList<>();
     private int superModeMoves;
     private GamePanel gamePanel;
-    private final PacmanMovementStrategy pacmanMovementStrategy;
+    private PacmanMovementStrategy pacmanMovementStrategy;
 
     public Model() {
         this.onGoing = false;
@@ -108,6 +108,11 @@ public class Model {
         initializeGhosts();
     }
 
+    private void resetPacman() {
+        this.pacman.resetPosition(grid.getPacmanStartPosition());
+        this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, this);
+    }
+
     public void activateSuperMode(int moves) {
         this.superModeMoves = moves;
         pacman.setSuperMode(true);
@@ -164,7 +169,7 @@ public class Model {
     public void winGame(){
         if(this.dotsEaten == MAX_DOTS){
             this.win = true;
-            resetGame();
+            //resetGame();
         }
     }
 
@@ -173,13 +178,16 @@ public class Model {
         notifyScoreChanged();
     }
 
-    public void resetGame() {
-        this.score = 0;
+    public void resetGame(boolean win) {
+        if(!win)
+            this.score = 0;
         this.lives = 3;
         this.dotsEaten = 0;
         this.gameOver = false;
+        this.onGoing = true;
         this.win = false;
-        this.pacman.resetPosition(grid.getPacmanStartPosition());
+        this.grid = new Grid();
+        resetPacman();
         resetGhosts();
     }
 
