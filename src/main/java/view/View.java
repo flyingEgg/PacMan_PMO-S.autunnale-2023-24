@@ -140,6 +140,7 @@ public class View extends JFrame {
             model.getPacman().setDirection(direction);
             try {
                 controller.movePacman(direction);
+                controller.moveGhosts();
                 gamePanel.repaint();
                 winOrGameOver();
             } catch (IllegalEntityMovementException ex) {
