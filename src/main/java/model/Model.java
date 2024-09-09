@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import main.java.controller.Strategies.GhostChaseStrategy;
 import main.java.controller.Strategies.GhostFleeStrategy;
+import main.java.controller.Strategies.GhostScatterStrategy;
 import main.java.controller.Strategies.PacmanMovementStrategy;
 import main.java.model.API.Direction;
 import main.java.model.API.GameStatisticsListener;
@@ -70,6 +71,12 @@ public class Model {
         }
     }
 
+    public void moveGhosts(){
+        for(Ghost g : ghosts){
+            g.move();
+        }
+    }
+
     public void handleSmallDotEat(){
         Position pacPos = pacman.getPosition();
         Dot smallDot = grid.getSmallDotAtPosition(pacPos);
@@ -98,7 +105,7 @@ public class Model {
     private void initializeGhosts() {
         for (int i = 0; i < GhostColor.values().length; i++) {
             Ghost ghost = new Ghost(grid.getGhostStartPositions().get(i), GhostColor.values()[i]);
-            ghost.setMovementStrategy(new GhostChaseStrategy(ghost, grid, this, this.gamePanel));
+            ghost.setMovementStrategy(new GhostScatterStrategy(ghost, grid, this, this.gamePanel));
             ghosts.add(ghost);
         }
     }
