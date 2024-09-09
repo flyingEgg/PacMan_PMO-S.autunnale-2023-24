@@ -28,26 +28,18 @@ public class Controller {
         return view;
     }
 
-    public void pauseGame() {
-        model.pauseUnpauseGame(true);
-        view.updateInfoPanel(); // Update the info panel to reflect the paused state
-    }
-
-    public void resumeGame() {
-        model.pauseUnpauseGame(false);
-        view.updateInfoPanel(); // Update the info panel to reflect the resumed state
-    }
-
-    public void stopGame() {
-        model.setGameOver(true);
-        view.updateInfoPanel(); // Update the info panel to show the game over status
-    }
-
     public void movePacman(Direction direction) {
         if (model.isOnGoing() && !model.isPaused()) {
             model.movePacman(direction);
             checkForCollisions();
             view.updateInfoPanel(); // Update the info panel after Pacman moves
+            view.getGamePanel().repaint(); // Repaint the game panel to reflect changes
+        }
+    }
+
+    public void moveGhosts(){
+        if (model.isOnGoing() && !model.isPaused()) {
+            model.moveGhosts();
             view.getGamePanel().repaint(); // Repaint the game panel to reflect changes
         }
     }
@@ -70,12 +62,6 @@ public class Controller {
     public void activateSuperMode(int moves) {
         model.activateSuperMode(moves);
         view.updateInfoPanel(); // Update the info panel to reflect super mode status
-    }
-
-    public void resetGame() {
-        //model.resetGame();
-        view.showGameWindow(); // Show the game window after resetting the game
-        view.updateInfoPanel(); // Update the info panel with the reset game state
     }
 
     public void setView(View view) {
