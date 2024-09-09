@@ -27,6 +27,7 @@ public class GamePanel extends JPanel {
     private final Model model; // Se necessario per accedere alla grid e altri dati
 
     public GamePanel(Model model, Pacman pacman, List<Ghost> ghosts, Map<String, ImageIcon> images) {
+        setDoubleBuffered(true);
         this.model = model;
         this.pacman = pacman;
         this.ghosts = ghosts;
