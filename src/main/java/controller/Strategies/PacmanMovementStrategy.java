@@ -51,10 +51,6 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
         }
     }
 
-    private void handleTeleportation(Position newPosition) {
-        model.handleMagicCoords(newPosition).ifPresent(teleportPosition -> redrawPacman(teleportPosition));
-    }
-
     private void redrawPacman(Position pacPos) {
         this.grid.removeComponent(pacman);  // Rimuove Pacman dalla posizione attuale
         this.pacman.setPosition(pacPos);    // Imposta una posizione nuova
