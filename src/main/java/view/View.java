@@ -11,11 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import main.java.controller.Controller;
 import main.java.model.Model;
@@ -24,7 +20,7 @@ import main.java.model.Exceptions.IllegalEntityMovementException;
 
 public class View extends JFrame {
     private Controller controller;
-    private Model model;
+    private final Model model;
     private Map<String, ImageIcon> images;
     private GamePanel gamePanel;
     private InfoPanel infoPanel;
@@ -54,7 +50,7 @@ public class View extends JFrame {
         setTitle("Pacman");
 
         try {
-            BufferedImage icon = ImageIO.read(getClass().getResource("/main/java/view/images/right.gif"));
+            BufferedImage icon = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/java/view/images/right.gif")));
             setIconImage(icon);
         } catch (IOException e) {
             System.out.println("Errore nel caricamento dell'icona: " + e.getMessage());
@@ -121,10 +117,9 @@ public class View extends JFrame {
 
         for (int i = 0; i < imageNames.length; i++) {
             try {
-                BufferedImage image = ImageIO
-                        .read(Objects.requireNonNull(getClass().getResourceAsStream(imagePaths[i])));
-                images.put(imageNames[i], new ImageIcon(image));
-            } catch (IOException | NullPointerException e) {
+                ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource(imagePaths[i])));
+                images.put(imageNames[i], icon);
+            } catch (NullPointerException e) {
                 System.out.println("Errore nel caricamento dell'immagine: " + imagePaths[i] + " - " + e.getMessage());
             }
         }
@@ -156,15 +151,15 @@ public class View extends JFrame {
     private void winOrGameOver() {
         if (model.isGameOver()) {
             JOptionPane.showMessageDialog(this, "Game Over! Your score: " + model.getScore());
-            resetGame();
+            resetStats(false);
         } else if (model.isWin()){
             JOptionPane.showMessageDialog(this, "Congrats! You won! " + model.getScore());
-            resetGame();
+            resetStats(true);
         }
     }
 
-    public void resetGame() {
-        model.resetGame();
+    public void resetStats(boolean win) {
+        model.resetGame(win);
         showGameWindow();
     }
 
