@@ -123,7 +123,7 @@ public class Model {
     public void activateSuperMode(int moves) {
         this.superModeMoves = moves;
         pacman.setSuperMode(true);
-        setGhostsScaredMode(true);
+        enableDisableScare(true);
         System.out.println("Supermode attivata! Mosse rimanenti: " + superModeMoves);
     }
 
@@ -139,17 +139,18 @@ public class Model {
 
     public void deactivateSuperMode() {
         pacman.setSuperMode(false);
-        setGhostsScaredMode(false);
+        enableDisableScare(false);
         System.out.println("Supermode disattivata. I fantasmi tornano alla normalità.");
     }
 
-    private void setGhostsScaredMode(boolean scared) {
+    private void enableDisableScare(boolean scared) {
         for (Ghost ghost : ghosts) {
             if (scared) {
                 ghost.setMovementStrategy(new GhostFleeStrategy(ghost, grid, this, gamePanel));
             } else {
                 ghost.setMovementStrategy(new GhostChaseStrategy(ghost, grid, this, gamePanel));
             }
+            ghost.setScared(scared);
         }
     }
 
