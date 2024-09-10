@@ -98,7 +98,7 @@ public class View extends JFrame {
     private void loadImages() {
         images = new HashMap<>();
         String[] imageNames = { "wall", "smallDot", "bigDot", "ghost_orange", "ghost_blue", "ghost_pink", "ghost_red",
-                "heart", "pacman", "left", "right", "up", "down" };
+                "ghost_scared", "heart", "pacman", "left", "right", "up", "down" };
         String[] imagePaths = {
                 "/main/java/view/images/wall_x.png",
                 "/main/java/view/images/smallDot.png",
@@ -107,6 +107,7 @@ public class View extends JFrame {
                 "/main/java/view/images/ghost_blue.gif",
                 "/main/java/view/images/ghost_pink.gif",
                 "/main/java/view/images/ghost_red.gif",
+                "/main/java/view/images/ghost_scared.gif",
                 "/main/java/view/images/heart.png",
                 "/main/java/view/images/pacman.png",
                 "/main/java/view/images/left.gif",
