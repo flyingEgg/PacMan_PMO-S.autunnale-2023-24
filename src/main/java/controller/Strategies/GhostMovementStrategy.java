@@ -10,40 +10,61 @@ import main.java.model.Entities.Ghost;
 import main.java.view.GamePanel;
 
 import javax.swing.Timer;
+import java.util.List;
 import java.util.Random;
 
 public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
-    protected final Ghost ghost;
-    protected final Grid grid;
-    protected final Model model;
-    protected final GamePanel gamePanel;
-    protected Timer movementTimer;
+    private final Grid grid;
+    private final GamePanel gamePanel;
+    private final List<Direction> initialMoves;
+    private int initialMoveIndex = 0;
     private final Random rand;
+    protected final Ghost ghost;
+    protected final Model model;
 
     public GhostMovementStrategy(Ghost ghost, Grid grid, Model model, GamePanel gamePanel) {
         this.ghost = ghost;
         this.grid = grid;
         this.model = model;
         this.gamePanel = gamePanel;
+        this.initialMoves = determineInitialMoves();
         this.rand = new Random();
-        initializeMovementTimer();
+        //initializeMovementTimer();
     }
 
     private void initializeMovementTimer() {
-        movementTimer = new Timer(800, e -> moveAutomatically());
+        Timer movementTimer = new Timer(800, e -> movementService());
         movementTimer.start();
     }
 
-    private void moveAutomatically() {
+
+    public void movementService() {
         try {
-            if (isSnappedToGrid()) {
-                changeDirection();  // Change direction when ghost snaps to grid
+            if (initialMoveIndex < initialMoves.size()) {
+                Direction initialDirection = initialMoves.get(initialMoveIndex);
+                if (canMove(initialDirection)) {
+                    move(initialDirection);
+                    this.initialMoveIndex++;
+                    System.out.println("Indice initial move per il fantasma "+ghost.getColor()+" "+initialMoveIndex);
+                } else {
+                    reverseDirection();
+                }
+            } else {
+
+                if (isSnappedToGrid()) {
+                    changeDirection();  // Change direction when ghost snaps to grid
+                }
+
+                Direction direction = determineNextDirection();
+                if(canMove(direction)){
+                    ghost.setDirection(direction);
+                    move(direction);
+                } else {
+                    reverseDirection();
+                }
             }
 
-            Direction direction = ghost.getDirection();
-            move(direction);
-
-        }catch (IllegalEntityMovementException e){
+        } catch (IllegalEntityMovementException e) {
             reverseDirection();
             //System.out.println(e.getMessage());
         }
@@ -83,7 +104,7 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
         return !isValidPosition(nextPosition);  // Return true if the next position is invalid (i.e., collides with a wall)
     }
 
-    protected boolean isSnappedToGrid() {
+    private boolean isSnappedToGrid() {
         int x = ghost.getX();
         int y = ghost.getY();
 
@@ -91,7 +112,7 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
         return (x % Grid.CELL_SIZE == 0) && (y % Grid.CELL_SIZE == 0);
     }
 
-    protected void reverseDirection() {
+    private void reverseDirection() {
         Direction currDirection = ghost.getDirection();
         Direction revDirection = switch (currDirection) {
             case UP -> Direction.DOWN;
@@ -105,40 +126,40 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
         ghost.setDirection(revDirection);
     }
 
+    private List<Direction> determineInitialMoves() {
+        return switch (ghost.getColor()) {
+            case BLUE -> List.of(Direction.LEFT, Direction.UP, Direction.UP);
+            case RED -> List.of(Direction.LEFT, Direction.LEFT, Direction.DOWN, Direction.LEFT);
+            case PINK -> List.of(Direction.UP, Direction.LEFT, Direction.LEFT);
+            case ORANGE -> List.of(Direction.DOWN, Direction.LEFT, Direction.LEFT, Direction.DOWN);
+        };
+    }
+
     public abstract Direction determineNextDirection();
 
     @Override
     public void move(Direction direction) {
         Position newPosition = calculateNewPosition(direction);
 
-        if(isValidPosition(newPosition)){
+        if (isValidPosition(newPosition)) {
             model.handleMagicCoords(newPosition).ifPresentOrElse(
                     teleportPosition -> ghost.setPosition(teleportPosition),
                     () -> ghost.setPosition(newPosition));
-        }else {
-            throw new IllegalEntityMovementException("Invalid movement for Ghost "+this.ghost.toString());
+        } else {
+            throw new IllegalEntityMovementException("Invalid movement for Ghost " + this.ghost.toString());
         }
 
     }
 
-    protected boolean isValidPosition(Position position) {
-        int x = position.getX();
-        int y = position.getY();
-
-        boolean withinBounds = (x >= 0 && x < grid.getColumns() && y >= 0 && y < grid.getRows());
-        boolean isNotWall = !grid.getWallPositions().contains(position);
-
-        return withinBounds && isNotWall;
+    private boolean isPositionOccupiedByGhost(Position position) {
+        List<Ghost> ghosts = model.getGhosts();
+        return ghosts.stream()
+                .anyMatch(g -> !g.equals(this.ghost) && g.getPosition().equals(position));
     }
 
-    protected Position calculateNewPosition(Direction direction) {
+    private Position calculateNewPosition(Direction direction) {
         int newX = ghost.getX();
         int newY = ghost.getY();
-
-        /*if (direction == null) {
-            System.out.println("Direction null. Setting default to UP");
-            direction = Direction.UP;
-        }*/
 
         if (direction != null) {
             switch (direction) {
@@ -150,5 +171,16 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
         }
 
         return new Position(newX, newY);
+    }
+
+    protected boolean isValidPosition(Position position) {
+        int x = position.getX();
+        int y = position.getY();
+
+        boolean withinBounds = (x >= 0 && x < grid.getColumns() && y >= 0 && y < grid.getRows());
+        boolean isNotWall = !grid.getWallPositions().contains(position);
+        boolean isNotOccupiedByGhost = !isPositionOccupiedByGhost(position);
+
+        return withinBounds && isNotWall && isNotOccupiedByGhost;
     }
 }
