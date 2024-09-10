@@ -47,7 +47,7 @@ public class Ghost extends AbstractEntity {
         if (movementStrategy != null) {
             Direction nextDirection = movementStrategy.determineNextDirection();
             setDirection(nextDirection); // Aggiorna la direzione
-            movementStrategy.move(nextDirection);
+            movementStrategy.movementService(); // was: move(nextDirection);
         } else {
             System.out.println("Movement strategy is not set for ghost.");
         }
