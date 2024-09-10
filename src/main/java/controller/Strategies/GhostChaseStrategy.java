@@ -19,10 +19,21 @@ public class GhostChaseStrategy extends GhostMovementStrategy {
         int diffX = pacmanPosition.getX() - ghost.getX();
         int diffY = pacmanPosition.getY() - ghost.getY();
 
+        Direction nextDirection;
         if (Math.abs(diffX) > Math.abs(diffY)) {
-            return diffX > 0 ? Direction.RIGHT : Direction.LEFT;
+            nextDirection = diffX > 0 ? Direction.RIGHT : Direction.LEFT;
         } else {
-            return diffY > 0 ? Direction.DOWN : Direction.UP;
+            nextDirection = diffY > 0 ? Direction.DOWN : Direction.UP;
         }
+
+        if(!canMove(nextDirection)){
+            if(nextDirection.equals(Direction.LEFT) || nextDirection.equals(Direction.RIGHT)){
+                nextDirection = diffY > 0 ? Direction.DOWN : Direction.UP;
+            } else {
+                nextDirection = diffX > 0 ? Direction.RIGHT : Direction.LEFT;
+            }
+        }
+
+        return nextDirection;
     }
 }
