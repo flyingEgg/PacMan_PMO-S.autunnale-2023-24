@@ -18,7 +18,6 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     protected final Model model;
     protected final GamePanel gamePanel;
     protected Timer movementTimer;
-    private int speed;
     private final Random rand;
 
     public GhostMovementStrategy(Ghost ghost, Grid grid, Model model, GamePanel gamePanel) {
@@ -26,7 +25,6 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
         this.grid = grid;
         this.model = model;
         this.gamePanel = gamePanel;
-        this.speed = 1;
         this.rand = new Random();
         initializeMovementTimer();
     }
@@ -37,22 +35,17 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     }
 
     private void moveAutomatically() {
+        try {
+            if (isSnappedToGrid()) {
+                changeDirection();  // Change direction when ghost snaps to grid
+            }
 
-        Position nextPosition = calculateNewPosition(ghost.getDirection());
+            Direction direction = ghost.getDirection();
+            move(direction);
 
-        if (!isValidPosition(nextPosition)) {
+        }catch (IllegalEntityMovementException e){
             reverseDirection();
-            nextPosition = calculateNewPosition(ghost.getDirection());
-        }
-
-        if (isValidPosition(nextPosition)) {
-            ghost.setPosition(nextPosition);
-        } else {
-            System.out.println("ATTENZIONE: Un fantasma sta tentando di accedere ad una posizione illegale: " + nextPosition);
-        }
-
-        if (isSnappedToGrid()) {
-            changeDirection();
+            //System.out.println(e.getMessage());
         }
 
         if (gamePanel != null) {
@@ -80,23 +73,22 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
         }
     }
 
-    // Called when the level changes to increase speed
-    public void setSpeed(int s) {
-        this.speed = s;
-    }
-
     protected boolean canMove(Direction direction) {
         Position position = calculateNewPosition(direction);
         return isValidPosition(position);
+    }
+
+    protected boolean isCollidingWithWall() {
+        Position nextPosition = calculateNewPosition(ghost.getDirection());
+        return !isValidPosition(nextPosition);  // Return true if the next position is invalid (i.e., collides with a wall)
     }
 
     protected boolean isSnappedToGrid() {
         int x = ghost.getX();
         int y = ghost.getY();
 
-        boolean snapped = (x % Grid.CELL_SIZE == 0) && (y % Grid.CELL_SIZE == 0);
-        System.out.println("Ghost at " + ghost.getPosition() + " snapped to grid: " + snapped);
-        return snapped;
+        // System.out.println("Ghost at " + ghost.getPosition() + " snapped to grid: " + snapped);
+        return (x % Grid.CELL_SIZE == 0) && (y % Grid.CELL_SIZE == 0);
     }
 
     protected void reverseDirection() {
@@ -108,7 +100,7 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
             case RIGHT -> Direction.LEFT;
         };
 
-        System.out.println("Reverse: " + currDirection + " -> " + revDirection);
+        // System.out.println("Reverse: " + currDirection + " -> " + revDirection);
 
         ghost.setDirection(revDirection);
     }
@@ -118,9 +110,15 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     @Override
     public void move(Direction direction) {
         Position newPosition = calculateNewPosition(direction);
-        model.handleMagicCoords(newPosition).ifPresentOrElse(
-                teleportPosition -> ghost.setPosition(teleportPosition),
-                () -> ghost.setPosition(newPosition));
+
+        if(isValidPosition(newPosition)){
+            model.handleMagicCoords(newPosition).ifPresentOrElse(
+                    teleportPosition -> ghost.setPosition(teleportPosition),
+                    () -> ghost.setPosition(newPosition));
+        }else {
+            throw new IllegalEntityMovementException("Invalid movement for Ghost "+this.ghost.toString());
+        }
+
     }
 
     protected boolean isValidPosition(Position position) {
