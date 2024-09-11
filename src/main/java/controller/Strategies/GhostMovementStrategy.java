@@ -1,5 +1,6 @@
 package main.java.controller.Strategies;
 
+import main.java.model.Entities.GhostColor;
 import main.java.model.Exceptions.IllegalEntityMovementException;
 import main.java.model.Grid;
 import main.java.model.Model;
@@ -11,12 +12,14 @@ import main.java.view.GamePanel;
 
 import javax.swing.Timer;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     private final Grid grid;
     private final GamePanel gamePanel;
     private final List<Direction> initialMoves;
+    private final Map<GhostColor, Position> initialPositionsMap;
     private int initialMoveIndex = 0;
     private final Random rand;
     protected final Ghost ghost;
@@ -28,6 +31,7 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
         this.model = model;
         this.gamePanel = gamePanel;
         this.initialMoves = determineInitialMoves();
+        this.initialPositionsMap = determinePositionsMap();
         this.rand = new Random();
         //initializeMovementTimer();
     }
@@ -40,7 +44,8 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
 
     public void movementService() {
         try {
-            if (initialMoveIndex < initialMoves.size()) {
+            if (!this.ghost.getPosition().equals(this.initialPositionsMap.get(this.ghost.getColor())) &&
+                    initialMoveIndex < initialMoves.size()) {
                 Direction initialDirection = initialMoves.get(initialMoveIndex);
                 if (canMove(initialDirection)) {
                     move(initialDirection);
@@ -97,11 +102,6 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     protected boolean canMove(Direction direction) {
         Position position = calculateNewPosition(direction);
         return isValidPosition(position);
-    }
-
-    protected boolean isCollidingWithWall() {
-        Position nextPosition = calculateNewPosition(ghost.getDirection());
-        return !isValidPosition(nextPosition);  // Return true if the next position is invalid (i.e., collides with a wall)
     }
 
     private boolean isSnappedToGrid() {
@@ -182,5 +182,12 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
         boolean isNotOccupiedByGhost = !isPositionOccupiedByGhost(position);
 
         return withinBounds && isNotWall && isNotOccupiedByGhost;
+    }
+
+    private Map<GhostColor, Position> determinePositionsMap(){
+        return Map.of(GhostColor.BLUE, new Position(11, 7),
+                GhostColor.RED, new Position(8, 6),
+                GhostColor.PINK, new Position(7, 9),
+                GhostColor.ORANGE, new Position(8, 7));
     }
 }
