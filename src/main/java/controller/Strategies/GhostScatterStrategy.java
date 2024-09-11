@@ -12,8 +12,8 @@ public class GhostScatterStrategy extends GhostMovementStrategy {
 
     private final Position scatterTarget;
 
-    public GhostScatterStrategy(Ghost ghost, Grid grid, Model model, GamePanel gamePanel) {
-        super(ghost, grid, model, gamePanel);
+    public GhostScatterStrategy(Ghost ghost, Grid grid, Model model, GamePanel gamePanel, boolean newStrat) {
+        super(ghost, grid, model, gamePanel, newStrat);
         this.scatterTarget = determineScatterTarget(ghost.getColor(), grid);
     }
 
