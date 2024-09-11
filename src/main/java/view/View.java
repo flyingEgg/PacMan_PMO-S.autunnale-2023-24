@@ -50,13 +50,14 @@ public class View extends JFrame {
         setTitle("Pacman");
 
         try {
-            BufferedImage icon = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/java/view/images/right.gif")));
+            BufferedImage icon = ImageIO
+                    .read(Objects.requireNonNull(getClass().getResource("/main/java/view/images/right.gif")));
             setIconImage(icon);
         } catch (IOException e) {
             System.out.println("Errore nel caricamento dell'icona: " + e.getMessage());
         }
 
-        setSize(600, 445);
+        setSize(666, 445);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -135,8 +136,6 @@ public class View extends JFrame {
             default -> null;
         };
 
-
-
         if (direction != null) {
             model.getPacman().setDirection(direction);
             try {
@@ -154,7 +153,7 @@ public class View extends JFrame {
         if (model.isGameOver()) {
             JOptionPane.showMessageDialog(this, "Game Over! Your score: " + model.getScore());
             resetStats(false);
-        } else if (model.isWin()){
+        } else if (model.isWin()) {
             JOptionPane.showMessageDialog(this, "Congrats! You won! " + model.getScore());
             resetStats(true);
         }
@@ -194,6 +193,7 @@ public class View extends JFrame {
     public void updateSuperModeStatus(int movesRemaining) {
         if (infoPanel != null) {
             infoPanel.setSuperModeStatus(movesRemaining);
+            infoPanel.repaint(); // Assicura che venga ridisegnato
         }
     }
 }

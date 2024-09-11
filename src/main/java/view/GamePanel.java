@@ -3,6 +3,7 @@ package main.java.view;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,10 +41,14 @@ public class GamePanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
+        // Abilita l'antialiasing per un rendering più fluido
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
         // Disegna la griglia e i componenti
         drawGrid(g2d);
         pacman.draw(g2d, images);
-        ghosts.stream().forEach(ghost -> ghost.draw(g2d, images));
+        ghosts.forEach(ghost -> ghost.draw(g2d, images));
     }
 
     private void drawGrid(Graphics2D g2d) {
@@ -55,8 +60,9 @@ public class GamePanel extends JPanel {
 
                 if (component.isPresent()) {
                     ImageIcon icon = null,
-                            uninitialisedIcon = new ImageIcon();        // Icona non inizializzata per bypassare if-else statement
-                    boolean shouldBypassCondition =  component.get() instanceof Pacman ||
+                            uninitialisedIcon = new ImageIcon(); // Icona non inizializzata per bypassare if-else
+                                                                 // statement
+                    boolean shouldBypassCondition = component.get() instanceof Pacman ||
                             component.get() instanceof Ghost;
 
                     if (component.get() instanceof Wall) {
@@ -70,7 +76,7 @@ public class GamePanel extends JPanel {
                     }
 
                     if (icon != null) {
-                        if(!icon.equals(uninitialisedIcon)){
+                        if (!icon.equals(uninitialisedIcon)) {
                             g2d.drawImage(icon.getImage(), j * Grid.CELL_SIZE, i * Grid.CELL_SIZE, null);
                         }
                     } else {

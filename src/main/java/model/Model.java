@@ -31,7 +31,7 @@ public class Model {
     private final Pacman pacman;
     private final List<Ghost> ghosts;
     private final List<GameStatisticsListener> listeners = new ArrayList<>();
-    private int superModeMoves;
+    private int superModeMovesRemaining;
     private GamePanel gamePanel;
     private PacmanMovementStrategy pacmanMovementStrategy;
 
@@ -42,7 +42,7 @@ public class Model {
         this.dotsEaten = 0;
         this.lives = 3;
         this.score = 0;
-        this.superModeMoves = 0;
+        this.superModeMovesRemaining = 0;
         this.grid = new Grid();
         this.ghosts = new ArrayList<>();
         initializeGhosts();
@@ -64,12 +64,16 @@ public class Model {
         listeners.forEach(lis -> lis.onLivesChanged(lives));
     }
 
+    public void notifySuperModeStatusChanged(int movesRemaining) {
+        listeners.forEach(listener -> listener.onSuperModeStatusChanged(movesRemaining));
+    }
+
     public void movePacman(Direction direction) {
         pacmanMovementStrategy.move(direction); // Let strategy handle movement
 
         // Handle game logic related to movement
         if (isSuperModeActive()) {
-            decrementSuperModeMoves();
+            decrementSuperModeMovesRemaining();
         }
     }
 
@@ -124,19 +128,19 @@ public class Model {
     }
 
     public void activateSuperMode(int moves) {
-        this.superModeMoves = moves;
+        this.superModeMovesRemaining = moves;
         pacman.setSuperMode(true);
         enableDisableScare(true);
-        System.out.println("Supermode attivata! Mosse rimanenti: " + superModeMoves);
+        System.out.println("Supermode attivata! Mosse rimanenti: " + superModeMovesRemaining);
     }
 
-    public void decrementSuperModeMoves() {
-        if (superModeMoves > 0) {
-            superModeMoves--;
-            System.out.println("Mosse rimanenti in Supermode: " + superModeMoves);
-            if (superModeMoves == 0) {
+    public void decrementSuperModeMovesRemaining() {
+        if (superModeMovesRemaining > 0) {
+            superModeMovesRemaining--;
+            if (superModeMovesRemaining == 0) {
                 deactivateSuperMode();
             }
+            notifySuperModeStatusChanged(superModeMovesRemaining);
         }
     }
 
@@ -254,7 +258,7 @@ public class Model {
     }
 
     public boolean isSuperModeActive() {
-        return superModeMoves > 0;
+        return superModeMovesRemaining > 0;
     }
 
     public void setGamePanel(GamePanel gamePanel) {
