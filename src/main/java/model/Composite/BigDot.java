@@ -23,8 +23,9 @@ public class BigDot extends Dot {
 
     @Override
     protected void onCollect(Model model) {
-        model.incrementScore(points); // Aumenta il punteggio
-        model.activateSuperMode(20); // Attiva la supermode
-        System.out.println("BigDot mangiato alla posizione: " + getPosition());
+        model.incrementScore(points);
+        model.activateSuperMode(20);
+        model.getGrid().removeComponent(this);
+        System.out.println("Big dot collected at position: " + getPosition());
     }
 }
