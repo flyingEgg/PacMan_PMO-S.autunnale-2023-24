@@ -1,9 +1,6 @@
 package main.java.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import main.java.controller.Strategies.GhostChaseStrategy;
 import main.java.controller.Strategies.GhostFleeStrategy;
@@ -13,27 +10,36 @@ import main.java.model.API.Direction;
 import main.java.model.API.GameStatisticsListener;
 import main.java.model.API.Position;
 import main.java.model.Composite.BigDot;
-import main.java.model.Composite.Dot;
 import main.java.model.Composite.SmallDot;
 import main.java.model.Entities.Ghost;
 import main.java.model.Entities.GhostColor;
 import main.java.model.Entities.Pacman;
 import main.java.view.GamePanel;
 
+import javax.swing.*;
+import javax.swing.Timer;
+
 public class Model {
     private static final int MAX_DOTS = 176; // Numero totale dei dots nella mappa
+
+    private boolean gameOver;
     private boolean onGoing;
     private boolean paused;
-    private boolean gameOver;
     private boolean win;
-    private int score, lives, dotsEaten;
+    private int dotsEaten;
+    private int lives;
+    private int score;
+    private int superModeMovesRemaining;
     private Grid grid;
+    private GamePanel gamePanel;
+    private PacmanMovementStrategy pacmanMovementStrategy;
     private final Pacman pacman;
     private final List<Ghost> ghosts;
     private final List<GameStatisticsListener> listeners = new ArrayList<>();
-    private int superModeMovesRemaining;
-    private GamePanel gamePanel;
-    private PacmanMovementStrategy pacmanMovementStrategy;
+
+    private Timer chaseTimer;
+    private Timer scatterTimer;
+    private Random randTime;
 
     public Model() {
         this.onGoing = false;
@@ -50,6 +56,39 @@ public class Model {
         this.grid.setPacman(pacman);
         this.grid.setGhosts(ghosts);
         this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, this);
+        this.randTime = new Random();
+        initChaseTimer();
+        initScatterTimer();
+    }
+
+    private void initChaseTimer() {
+        this.chaseTimer = new Timer(this.randTime.nextInt(5000, 8000), e -> changeStrategy(true));
+        this.chaseTimer.start();
+    }
+
+    private void initScatterTimer() {
+        this.scatterTimer = new Timer(this.randTime.nextInt(1700, 2000), e -> changeStrategy(false));
+        this.scatterTimer.start();
+    }
+
+    private void stopTimers() {
+        this.scatterTimer.stop();
+        this.chaseTimer.stop();
+    }
+
+    private void changeStrategy(boolean chasing) {
+        String newStrat;
+
+        for (Ghost ghost : ghosts) {
+            if (chasing) {
+                ghost.setMovementStrategy(new GhostScatterStrategy(ghost, grid, this, gamePanel, false));
+                newStrat = "scatter";
+            } else {
+                ghost.setMovementStrategy(new GhostChaseStrategy(ghost, grid, this, gamePanel, false));
+                newStrat = "chase";
+            }
+            System.out.println("Strategia " + ghost.getColor() + " cambiata in " + newStrat);
+        }
     }
 
     public void addStatisticsListener(GameStatisticsListener lis) {
@@ -112,7 +151,11 @@ public class Model {
     private void initializeGhosts() {
         for (int i = 0; i < GhostColor.values().length; i++) {
             Ghost ghost = new Ghost(grid.getGhostStartPositions().get(i), GhostColor.values()[i]);
-            ghost.setMovementStrategy(new GhostChaseStrategy(ghost, grid, this, this.gamePanel));
+            ghost.setMovementStrategy(new GhostChaseStrategy(ghost,
+                    grid,
+                    this,
+                    this.gamePanel,
+                    true));
             ghosts.add(ghost);
         }
     }
@@ -124,7 +167,9 @@ public class Model {
 
     private void resetPacman() {
         this.pacman.resetPosition(grid.getPacmanStartPosition());
-        this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, this);
+        this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman,
+                grid,
+                this);
     }
 
     public void activateSuperMode(int moves) {
@@ -153,9 +198,21 @@ public class Model {
     private void enableDisableScare(boolean scared) {
         for (Ghost ghost : ghosts) {
             if (scared) {
-                ghost.setMovementStrategy(new GhostFleeStrategy(ghost, grid, this, gamePanel));
+                ghost.setMovementStrategy(new GhostFleeStrategy(ghost,
+                        grid,
+                        this,
+                        gamePanel,
+                        false));
+                System.out.println("settato flee");
+                stopTimers();
             } else {
-                ghost.setMovementStrategy(new GhostChaseStrategy(ghost, grid, this, gamePanel));
+                ghost.setMovementStrategy(new GhostChaseStrategy(ghost,
+                        grid,
+                        this,
+                        gamePanel,
+                        false));
+                initChaseTimer();
+                initScatterTimer();
             }
             ghost.setScared(scared);
         }

@@ -9,8 +9,8 @@ import main.java.view.GamePanel;
 
 public class GhostChaseStrategy extends GhostMovementStrategy {
 
-    public GhostChaseStrategy(Ghost ghost, Grid grid, Model model, GamePanel gamePanel) {
-        super(ghost, grid, model, gamePanel);
+    public GhostChaseStrategy(Ghost ghost, Grid grid, Model model, GamePanel gamePanel, boolean newStrat) {
+        super(ghost, grid, model, gamePanel, newStrat);
     }
 
     @Override
