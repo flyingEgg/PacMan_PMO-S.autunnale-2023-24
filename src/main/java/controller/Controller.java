@@ -59,11 +59,6 @@ public class Controller {
         }
     }
 
-    public void activateSuperMode(int moves) {
-        model.activateSuperMode(moves);
-        view.updateInfoPanel(); // Update the info panel to reflect super mode status
-    }
-
     public void setView(View view) {
         this.view = view;
     }
