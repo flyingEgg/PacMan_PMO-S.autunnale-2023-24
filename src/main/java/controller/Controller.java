@@ -30,8 +30,10 @@ public class Controller {
 
     public void movePacman(Direction direction) {
         if (model.isOnGoing() && !model.isPaused()) {
-            model.movePacman(direction);
             checkForCollisions();
+            model.movePacman(direction);
+            checkForCollisions();           // DA RIVEDERE
+
             view.updateInfoPanel(); // Update the info panel after Pacman moves
             view.getGamePanel().repaint(); // Repaint the game panel to reflect changes
         }
