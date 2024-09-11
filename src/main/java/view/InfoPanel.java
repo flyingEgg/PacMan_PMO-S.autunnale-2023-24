@@ -23,6 +23,7 @@ public class InfoPanel extends JPanel implements GameStatisticsListener {
     private JPanel livesPanel;
     private ImageIcon heartIcon;
     private Boolean isAnimating = false;
+    private String statusText = "Not Active"; // disattivata di default
 
     static {
         Font tempFont = null;
@@ -77,7 +78,7 @@ public class InfoPanel extends JPanel implements GameStatisticsListener {
         gbc.weighty = 1.0; // Push superModeLabel to the bottom
         gbc.anchor = GridBagConstraints.CENTER; // Center horizontally
         superModeLabel = new JLabel(
-                "<html>" + SUPERMODE_TEXT + "<div style='text-align: center;'>Not active</div></html>");
+                "<html><div style='text-align: center;'>" + SUPERMODE_TEXT + "<br>" + statusText + "</div></html>");
         superModeLabel.setFont(LABEL_FONT);
         superModeLabel.setForeground(new Color(173, 255, 47));
         superModeLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -129,7 +130,6 @@ public class InfoPanel extends JPanel implements GameStatisticsListener {
     }
 
     public void setSuperModeStatus(int movesRemaining) {
-        String statusText;
         if (movesRemaining > 0) {
             statusText = "Active<br>" + movesRemaining + " moves left";
             superModeLabel.setForeground(Color.RED);
