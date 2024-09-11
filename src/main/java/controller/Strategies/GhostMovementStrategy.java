@@ -18,21 +18,23 @@ import java.util.Random;
 public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     private final Grid grid;
     private final GamePanel gamePanel;
-    private final List<Direction> initialMoves;
-    private final Map<GhostColor, Position> initialPositionsMap;
-    private int initialMoveIndex = 0;
     private final Random rand;
+    private final  List<Direction> initialMoves;
+    private final  Map<GhostColor, Position> initialPositionsMap;
+    private boolean newStrat;
+    private int initialMoveIndex = 0;
     protected final Ghost ghost;
     protected final Model model;
 
-    public GhostMovementStrategy(Ghost ghost, Grid grid, Model model, GamePanel gamePanel) {
+    public GhostMovementStrategy(Ghost ghost, Grid grid, Model model, GamePanel gamePanel, boolean ns) {
         this.ghost = ghost;
         this.grid = grid;
         this.model = model;
         this.gamePanel = gamePanel;
+        this.rand = new Random();
         this.initialMoves = determineInitialMoves();
         this.initialPositionsMap = determinePositionsMap();
-        this.rand = new Random();
+        this.newStrat = ns;
         // initializeMovementTimer();
     }
 
@@ -45,7 +47,8 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
         try {
             // Gestisci il movimento iniziale
             if (!this.ghost.getPosition().equals(this.initialPositionsMap.get(this.ghost.getColor())) &&
-                    initialMoveIndex < initialMoves.size()) {
+                    this.initialMoveIndex < this.initialMoves.size() &&
+                    this.newStrat) {
                 Direction initialDirection = initialMoves.get(initialMoveIndex);
                 if (canMove(initialDirection)) {
                     move(initialDirection);
