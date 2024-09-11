@@ -15,14 +15,36 @@ public class GhostFleeStrategy extends GhostMovementStrategy {
 
     @Override
     public Direction determineNextDirection() {
-        Position pacmanPosition = model.getPacman().getPosition();
+        Position currentPosition = ghost.getPosition();
 
-        if (ghost.getX() > pacmanPosition.getX())
-            return Direction.RIGHT;
-        if (ghost.getX() < pacmanPosition.getX())
-            return Direction.LEFT;
-        if (ghost.getY() > pacmanPosition.getY())
-            return Direction.DOWN;
-        return Direction.UP;
+        // Blocco del movimento in (8, 9) se non in stato di spawn
+        if (!ghost.isInSpawn() && currentPosition.equals(new Position(8, 9))) {
+            return null; // Blocco del movimento
+        }
+
+        // Logica per fuggire da Pacman
+        Position pacmanPosition = model.getPacman().getPosition();
+        int diffX = ghost.getX() - pacmanPosition.getX();
+        int diffY = ghost.getY() - pacmanPosition.getY();
+
+        Direction nextDirection;
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            nextDirection = diffX > 0 ? Direction.LEFT : Direction.RIGHT;
+        } else {
+            nextDirection = diffY > 0 ? Direction.UP : Direction.DOWN;
+        }
+
+        // Controlla se il fantasma può muoversi in quella direzione
+        if (!canMove(nextDirection)) {
+            // Prova a cambiare asse se la direzione scelta non è valida
+            if (nextDirection == Direction.LEFT || nextDirection == Direction.RIGHT) {
+                nextDirection = diffY > 0 ? Direction.UP : Direction.DOWN;
+            } else {
+                nextDirection = diffX > 0 ? Direction.LEFT : Direction.RIGHT;
+            }
+        }
+
+        return canMove(nextDirection) ? nextDirection : findAlternativeDirection(); // Usa findAlternativeDirection se
+                                                                                    // la direzione non è valida
     }
 }

@@ -24,11 +24,11 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
 
     @Override
     public void move(Direction direction) {
-        Map<Direction, int[]> directionMap = new EnumMap<>(Direction.class);        // Mappa dei cambiamenti di direzione
-        directionMap.put(Direction.UP, new int[]{0, -1});
-        directionMap.put(Direction.DOWN, new int[]{0, 1});
-        directionMap.put(Direction.LEFT, new int[]{-1, 0});
-        directionMap.put(Direction.RIGHT, new int[]{1, 0});
+        Map<Direction, int[]> directionMap = new EnumMap<>(Direction.class); // Mappa dei cambiamenti di direzione
+        directionMap.put(Direction.UP, new int[] { 0, -1 });
+        directionMap.put(Direction.DOWN, new int[] { 0, 1 });
+        directionMap.put(Direction.LEFT, new int[] { -1, 0 });
+        directionMap.put(Direction.RIGHT, new int[] { 1, 0 });
 
         int[] delta = directionMap.get(direction);
         int newX = pacman.getX() + delta[0];
@@ -36,15 +36,12 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
 
         Position newPosition = new Position(newX, newY);
 
-
-        if (isValidPosition(newPosition)) {                                         // Validazione della posizione e
-            model.handleMagicCoords(newPosition).                                   // re-renderizzazione di Pacman
+        if (isValidPosition(newPosition)) { // Validazione della posizione e
+            model.handleMagicCoords(newPosition). // re-renderizzazione di Pacman
                     ifPresentOrElse(this::redrawPacman,
                             () -> redrawPacman(newPosition));
 
-            model.handleSmallDotEat();
-            model.handleBigDotEat();
-
+            model.handleDotEat();
             model.winGame();
         } else {
             throw new IllegalEntityMovementException("Invalid movement for Pacman");
@@ -52,9 +49,9 @@ public class PacmanMovementStrategy implements MovementStrategy<Pacman> {
     }
 
     private void redrawPacman(Position pacPos) {
-        this.grid.removeComponent(pacman);  // Rimuove Pacman dalla posizione attuale
-        this.pacman.setPosition(pacPos);    // Imposta una posizione nuova
-        this.grid.addComponent(pacman);     // Aggiunge Pacman alla nuova posizione
+        this.grid.removeComponent(pacman); // Rimuove Pacman dalla posizione attuale
+        this.pacman.setPosition(pacPos); // Imposta una posizione nuova
+        this.grid.addComponent(pacman); // Aggiunge Pacman alla nuova posizione
     }
 
     private boolean isValidPosition(Position position) {

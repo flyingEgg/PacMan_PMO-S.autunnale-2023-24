@@ -33,7 +33,7 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
         this.initialMoves = determineInitialMoves();
         this.initialPositionsMap = determinePositionsMap();
         this.rand = new Random();
-        //initializeMovementTimer();
+        // initializeMovementTimer();
     }
 
     private void initializeMovementTimer() {
@@ -41,37 +41,34 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
         movementTimer.start();
     }
 
-
     public void movementService() {
         try {
+            // Gestisci il movimento iniziale
             if (!this.ghost.getPosition().equals(this.initialPositionsMap.get(this.ghost.getColor())) &&
                     initialMoveIndex < initialMoves.size()) {
                 Direction initialDirection = initialMoves.get(initialMoveIndex);
                 if (canMove(initialDirection)) {
                     move(initialDirection);
                     this.initialMoveIndex++;
-                    System.out.println("Indice initial move per il fantasma "+ghost.getColor()+" "+initialMoveIndex);
                 } else {
                     reverseDirection();
                 }
             } else {
-
+                // Quando il fantasma è sulla griglia, verifica il movimento
                 if (isSnappedToGrid()) {
-                    changeDirection();  // Change direction when ghost snaps to grid
+                    changeDirection(); // Cambia direzione se è "allineato" alla griglia
                 }
 
                 Direction direction = determineNextDirection();
-                if(canMove(direction)){
+                if (direction != null && canMove(direction)) {
                     ghost.setDirection(direction);
                     move(direction);
                 } else {
                     reverseDirection();
                 }
             }
-
         } catch (IllegalEntityMovementException e) {
             reverseDirection();
-            //System.out.println(e.getMessage());
         }
 
         if (gamePanel != null) {
@@ -108,22 +105,31 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
         int x = ghost.getX();
         int y = ghost.getY();
 
-        // System.out.println("Ghost at " + ghost.getPosition() + " snapped to grid: " + snapped);
+        // System.out.println("Ghost at " + ghost.getPosition() + " snapped to grid: " +
+        // snapped);
         return (x % Grid.CELL_SIZE == 0) && (y % Grid.CELL_SIZE == 0);
     }
 
     private void reverseDirection() {
         Direction currDirection = ghost.getDirection();
-        Direction revDirection = switch (currDirection) {
-            case UP -> Direction.DOWN;
-            case DOWN -> Direction.UP;
-            case LEFT -> Direction.RIGHT;
-            case RIGHT -> Direction.LEFT;
-        };
 
-        // System.out.println("Reverse: " + currDirection + " -> " + revDirection);
+        if (currDirection != null) {
+            Direction revDirection = switch (currDirection) {
+                case UP -> Direction.DOWN;
+                case DOWN -> Direction.UP;
+                case LEFT -> Direction.RIGHT;
+                case RIGHT -> Direction.LEFT;
+            };
 
-        ghost.setDirection(revDirection);
+            ghost.setDirection(revDirection);
+        } else {
+            // Se la direzione è null, scegli una direzione basata sulla posizione del
+            // fantasma
+            Direction newDirection = determineNextDirection(); // Determina la prossima direzione valida
+            if (newDirection != null) {
+                ghost.setDirection(newDirection); // Imposta la nuova direzione
+            }
+        }
     }
 
     private List<Direction> determineInitialMoves() {
@@ -184,10 +190,20 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
         return withinBounds && isNotWall && isNotOccupiedByGhost;
     }
 
-    private Map<GhostColor, Position> determinePositionsMap(){
+    private Map<GhostColor, Position> determinePositionsMap() {
         return Map.of(GhostColor.BLUE, new Position(11, 7),
                 GhostColor.RED, new Position(8, 6),
                 GhostColor.PINK, new Position(7, 9),
                 GhostColor.ORANGE, new Position(8, 7));
+    }
+
+    protected Direction findAlternativeDirection() {
+        Direction[] directions = Direction.values();
+        for (Direction dir : directions) {
+            if (canMove(dir)) {
+                return dir;
+            }
+        }
+        return null; // Non dovrebbe accadere se la logica è corretta
     }
 }

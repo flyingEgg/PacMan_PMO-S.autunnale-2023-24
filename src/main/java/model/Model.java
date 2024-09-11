@@ -12,14 +12,16 @@ import main.java.controller.Strategies.PacmanMovementStrategy;
 import main.java.model.API.Direction;
 import main.java.model.API.GameStatisticsListener;
 import main.java.model.API.Position;
+import main.java.model.Composite.BigDot;
 import main.java.model.Composite.Dot;
+import main.java.model.Composite.SmallDot;
 import main.java.model.Entities.Ghost;
 import main.java.model.Entities.GhostColor;
 import main.java.model.Entities.Pacman;
 import main.java.view.GamePanel;
 
 public class Model {
-    private static final int MAX_DOTS = 176;  // Numero totale dei dots nella mappa
+    private static final int MAX_DOTS = 176; // Numero totale dei dots nella mappa
     private boolean onGoing;
     private boolean paused;
     private boolean gameOver;
@@ -71,32 +73,33 @@ public class Model {
         }
     }
 
-    public void moveGhosts(){
-        for(Ghost g : ghosts){
+    public void moveGhosts() {
+        for (Ghost g : ghosts) {
             g.move();
         }
     }
 
-    public void handleSmallDotEat(){
+    public void handleDotEat() {
         Position pacPos = pacman.getPosition();
-        Dot smallDot = grid.getSmallDotAtPosition(pacPos);
 
-        handleDotEat(smallDot);
-    }
-
-    public void handleBigDotEat(){
-        Position pacPos = pacman.getPosition();
-        Dot bigDot = grid.getBigDotAtPosition(pacPos);
-
-        handleDotEat(bigDot);
-    }
-
-    private void handleDotEat(Dot dot){
-        if(dot != null && !dot.isEaten()){
+        // Gestisci SmallDot
+        SmallDot smallDot = grid.getSmallDotAtPosition(pacPos);
+        if (smallDot != null) {
             this.dotsEaten++;
-            System.out.println(dotsEaten);
-            dot.collect(this);
-            if(gamePanel != null){
+            smallDot.collect(this);
+            grid.removeDotFromMap(pacPos); // Rimuovi il dot dalla mappa
+            if (gamePanel != null) {
+                gamePanel.repaint();
+            }
+        }
+
+        // Gestisci BigDot
+        BigDot bigDot = grid.getBigDotAtPosition(pacPos);
+        if (bigDot != null) {
+            this.dotsEaten++;
+            bigDot.collect(this);
+            grid.removeDotFromMap(pacPos); // Rimuovi il dot dalla mappa
+            if (gamePanel != null) {
                 gamePanel.repaint();
             }
         }
@@ -174,10 +177,10 @@ public class Model {
         }
     }
 
-    public void winGame(){
-        if(this.dotsEaten == MAX_DOTS){
+    public void winGame() {
+        if (this.dotsEaten == MAX_DOTS) {
             this.win = true;
-            //resetGame();
+            // resetGame();
         }
     }
 
@@ -187,7 +190,7 @@ public class Model {
     }
 
     public void resetGame(boolean win) {
-        if(!win)
+        if (!win)
             this.score = 0;
         this.lives = 3;
         this.dotsEaten = 0;
@@ -246,7 +249,7 @@ public class Model {
         return gameOver;
     }
 
-    public boolean isWin(){
+    public boolean isWin() {
         return win;
     }
 

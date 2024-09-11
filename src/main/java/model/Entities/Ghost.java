@@ -14,12 +14,14 @@ public class Ghost extends AbstractEntity {
     private GhostMovementStrategy movementStrategy;
     private boolean scared;
     private Direction direction;
+    private boolean inSpawn;
 
     public Ghost(Position position, GhostColor color) {
         super(position);
         this.color = color;
         this.scared = false;
         this.direction = Direction.UP; // Direzione predefinita
+        this.inSpawn = true;
     }
 
     @Override
@@ -82,5 +84,13 @@ public class Ghost extends AbstractEntity {
     @Override
     public Direction getDirection() {
         return this.direction; // Ritorna la direzione corrente
+    }
+
+    public boolean isInSpawn() {
+        return inSpawn;
+    }
+
+    public void setInSpawn(boolean inSpawn) {
+        this.inSpawn = inSpawn;
     }
 }

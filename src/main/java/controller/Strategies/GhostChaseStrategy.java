@@ -15,6 +15,20 @@ public class GhostChaseStrategy extends GhostMovementStrategy {
 
     @Override
     public Direction determineNextDirection() {
+        Position currentPosition = ghost.getPosition();
+
+        // Se il fantasma ha raggiunto (7, 9), disabilita lo stato di spawn
+        if (currentPosition.equals(new Position(7, 9))) {
+            ghost.setInSpawn(false);
+        }
+
+        // Se il fantasma non è in spawn e tenta di entrare in (8, 9), blocca il
+        // movimento
+        if (!ghost.isInSpawn() && currentPosition.equals(new Position(8, 9))) {
+            return null; // Blocco del movimento
+        }
+
+        // Logica standard per l'inseguimento
         Position pacmanPosition = model.getPacman().getPosition();
         int diffX = pacmanPosition.getX() - ghost.getX();
         int diffY = pacmanPosition.getY() - ghost.getY();
@@ -26,14 +40,17 @@ public class GhostChaseStrategy extends GhostMovementStrategy {
             nextDirection = diffY > 0 ? Direction.DOWN : Direction.UP;
         }
 
-        if(!canMove(nextDirection)){
-            if(nextDirection.equals(Direction.LEFT) || nextDirection.equals(Direction.RIGHT)){
+        // Controlla se il fantasma può muoversi in quella direzione
+        if (!canMove(nextDirection)) {
+            // Prova a cambiare asse se la direzione scelta non è valida
+            if (nextDirection == Direction.LEFT || nextDirection == Direction.RIGHT) {
                 nextDirection = diffY > 0 ? Direction.DOWN : Direction.UP;
             } else {
                 nextDirection = diffX > 0 ? Direction.RIGHT : Direction.LEFT;
             }
         }
 
-        return nextDirection;
+        return canMove(nextDirection) ? nextDirection : findAlternativeDirection(); // Usa findAlternativeDirection se
+                                                                                    // la direzione non è valida
     }
 }

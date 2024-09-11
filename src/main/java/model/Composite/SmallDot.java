@@ -27,9 +27,8 @@ public class SmallDot extends Dot {
 
     @Override
     protected void onCollect(Model model) {
-        model.incrementScore(points);
-        model.getGrid().removeComponent(this); // Rimuovi il punto dalla griglia
-        model.getGrid().removeDotFromMap(this.getPosition()); // Rimuovi il punto dalla mappa dei punti
-        model.notifyScoreChanged(); // Notifica il cambio di punteggio
+        model.incrementScore(points); // Aumenta il punteggio
+        model.notifyScoreChanged(); // Notifica il cambiamento di punteggio
+        System.out.println("SmallDot mangiato alla posizione: " + getPosition());
     }
 }

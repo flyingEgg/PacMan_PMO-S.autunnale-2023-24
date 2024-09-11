@@ -23,6 +23,7 @@ public class Grid extends AbsGrid {
     private static final int ROWS = 19; // Numero di righe della griglia
     private Set<Position> excludedPositions;
     private Map<Position, SmallDot> smallDotMap;
+    private Map<Position, BigDot> bigDotMap;
 
     // Posizi oni d ei m uri
     private static final int[][] WALL_POSITIONS = {
@@ -87,6 +88,7 @@ public class Grid extends AbsGrid {
     public Grid() {
         super(COLUMNS, ROWS);
         this.smallDotMap = new HashMap<>();
+        this.bigDotMap = new HashMap<>();
         initializeExcludedPositions();
         initializeMap();
     }
@@ -143,31 +145,31 @@ public class Grid extends AbsGrid {
         addBigDotsToGrid();
     }
 
+    private void addBigDotsToGrid() {
+        Arrays.stream(BIG_DOT_POSITIONS)
+                .forEach(position -> {
+                    BigDot bigDot = new BigDot(new Position(position[0], position[1]));
+                    addComponent(bigDot);
+                    bigDotMap.put(bigDot.getPosition(), bigDot); // Aggiungi BigDot alla mappa
+                });
+    }
+
     public SmallDot getSmallDotAtPosition(Position pos) {
-        return smallDotMap.get(pos);
+        return smallDotMap.get(pos); // Ottieni SmallDot dalla mappa
     }
 
     public BigDot getBigDotAtPosition(Position pos) {
-        Optional<int[]> matchingPosition = Arrays.stream(BIG_DOT_POSITIONS).
-                filter(coords -> coords[0] == pos.getX() && coords[1] == pos.getY()).
-                findFirst();
-
-        return matchingPosition.map(coords -> new BigDot(new Position(coords[0], coords[1]))).
-                orElse(null);
+        return bigDotMap.get(pos); // Ottieni BigDot dalla mappa
     }
 
     public void removeDotFromMap(Position pos) {
-        this.smallDotMap.remove(pos);
+        smallDotMap.remove(pos); // Rimuovi SmallDot
+        bigDotMap.remove(pos); // Rimuovi BigDot
     }
 
     private void addWallsToGrid() {
         Arrays.stream(WALL_POSITIONS)
                 .forEach(position -> addComponent(new Wall(new Position(position[0], position[1]))));
-    }
-
-    private void addBigDotsToGrid() {
-        Arrays.stream(BIG_DOT_POSITIONS)
-                .forEach(position -> addComponent(new BigDot(new Position(position[0], position[1]))));
     }
 
     private Set<Position> getBidimensionalArray(int[][] positions) {
