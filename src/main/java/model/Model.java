@@ -20,6 +20,8 @@ import main.java.model.Entities.GhostColor;
 import main.java.model.Entities.Pacman;
 import main.java.view.GamePanel;
 
+import javax.swing.*;
+
 public class Model {
     private static final int MAX_DOTS = 176; // Numero totale dei dots nella mappa
     private boolean onGoing;
@@ -50,6 +52,33 @@ public class Model {
         this.grid.setPacman(pacman);
         this.grid.setGhosts(ghosts);
         this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, this);
+        chaseTimer();
+        scatterTimer();
+    }
+
+    private void chaseTimer() {
+        Timer movementTimer = new Timer(10000, e -> changeStrategy(true));
+        movementTimer.start();
+    }
+
+    private void scatterTimer() {
+        Timer movementTimer = new Timer(3500, e -> changeStrategy(false));
+        movementTimer.start();
+    }
+
+    private void changeStrategy(boolean chasing){
+        String newStrat;
+
+        for (Ghost ghost : ghosts) {
+            if(chasing){
+                ghost.setMovementStrategy(new GhostScatterStrategy(ghost, grid, this, gamePanel));
+                newStrat = "scatter";
+            } else {
+                ghost.setMovementStrategy(new GhostChaseStrategy(ghost, grid, this, gamePanel));
+                newStrat = "chase";
+            }
+            System.out.println("Strategia "+ghost.getColor()+" cambiata in "+newStrat);
+        }
     }
 
     public void addStatisticsListener(GameStatisticsListener lis) {
