@@ -105,7 +105,7 @@ public class Model {
     private void initializeGhosts() {
         for (int i = 0; i < GhostColor.values().length; i++) {
             Ghost ghost = new Ghost(grid.getGhostStartPositions().get(i), GhostColor.values()[i]);
-            ghost.setMovementStrategy(new GhostScatterStrategy(ghost, grid, this, this.gamePanel));
+            ghost.setMovementStrategy(new GhostChaseStrategy(ghost, grid, this, this.gamePanel));
             ghosts.add(ghost);
         }
     }
