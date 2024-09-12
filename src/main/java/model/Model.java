@@ -17,7 +17,6 @@ import main.java.model.Entities.GhostColor;
 import main.java.model.Entities.Pacman;
 import main.java.view.GamePanel;
 
-import javax.swing.*;
 import javax.swing.Timer;
 
 public class Model {
@@ -273,13 +272,13 @@ public class Model {
             this.pacman.setPosition(grid.getPacmanStartPosition());
             IntStream.range(0, ghosts.size()).
                     forEach(i -> ghosts.get(i).setPosition(grid.getGhostStartPositions().get(i)));
-            restartGhosts();
+            onPacmanKilled();
 
             notifyLivesChanged();
         }
     }
 
-    private void restartGhosts(){
+    private void onPacmanKilled(){
         stopTimers();
         ghosts.forEach(g -> g.setMovementStrategy(new GhostChaseStrategy(g,
                 grid,
