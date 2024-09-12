@@ -60,8 +60,8 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     public abstract Direction determineNextDirection();
 
     /**
-     * Gestisce il servizio di movimento, inclusa l'inizializzazione dei timer e la
-     * gestione dei movimenti.
+     * Gestisce il movimento del fantasma secondo la strategia corrente e aggiorna
+     * il pannello di gioco.
      */
     public void movementService() {
         // Inizializza i timer per le strategie se necessario
@@ -71,19 +71,38 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
         }
 
         try {
+            // Gestisci il movimento iniziale
             if (shouldPerformInitialMove()) {
-                performInitialMove();
+                // Controlla se il fantasma è nella posizione iniziale
+                Position initialPosition = initialPositionsMap.get(ghost.getColor());
+                if (!ghost.getPosition().equals(initialPosition)) {
+                    performInitialMove(); // Esegui il movimento iniziale
+                } else {
+                    // Quando il fantasma è sulla griglia, verifica il movimento
+                    if (isSnappedToGrid()) {
+                        changeDirection(); // Cambia direzione se è "allineato" alla griglia
+                    }
+
+                    Direction direction = determineNextDirection();
+                    if (direction != null && canMove(direction)) {
+                        ghost.setDirection(direction);
+                        move(direction);
+                    } else {
+                        reverseDirection();
+                    }
+                }
             } else {
+                // Quando il fantasma è sulla griglia, verifica il movimento
                 if (isSnappedToGrid()) {
-                    changeDirection(); // Cambia direzione se il fantasma è allineato alla griglia
+                    changeDirection(); // Cambia direzione se è "allineato" alla griglia
                 }
 
                 Direction direction = determineNextDirection();
-                if (canMove(direction)) {
+                if (direction != null && canMove(direction)) {
                     ghost.setDirection(direction);
                     move(direction);
                 } else {
-                    reverseDirection(); // Inverti la direzione se non è valida
+                    reverseDirection();
                 }
             }
         } catch (IllegalEntityMovementException e) {
@@ -307,8 +326,17 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
      * Esegue il movimento iniziale del fantasma.
      */
     private void performInitialMove() {
-        Direction direction = initialMoves.get(initialMoveIndex++);
-        ghost.setDirection(direction);
-        move(direction);
+        Direction direction = initialMoves.get(initialMoveIndex);
+        if (canMove(direction)) {
+            ghost.setDirection(direction);
+            move(direction);
+            initialMoveIndex = (initialMoveIndex + 1) % initialMoves.size();
+        } else {
+            Direction alternativeDirection = findAlternativeDirection();
+            if (alternativeDirection != null) {
+                ghost.setDirection(alternativeDirection);
+                move(alternativeDirection);
+            }
+        }
     }
 }
