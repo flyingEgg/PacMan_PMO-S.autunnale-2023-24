@@ -40,7 +40,7 @@ public class Model {
 
     private Timer chaseTimer;
     private Timer scatterTimer;
-    private Random random;
+    private final Random random;
 
     public Model() {
         this.onGoing = false;
@@ -58,6 +58,8 @@ public class Model {
         this.grid.setGhosts(ghosts);
         this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, this);
         this.random = new Random();
+        initChaseTimer();
+        initScatterTimer();
     }
 
     private void initChaseTimer() {
@@ -210,8 +212,8 @@ public class Model {
                         this,
                         gamePanel,
                         false));
-                initChaseTimer();
-                initScatterTimer();
+                this.chaseTimer.start();
+                this.scatterTimer.start();
             }
             ghost.setScared(scared);
         }
