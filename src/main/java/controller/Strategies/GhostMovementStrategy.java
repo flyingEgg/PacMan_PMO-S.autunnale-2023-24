@@ -10,7 +10,6 @@ import main.java.model.API.MovementStrategy;
 import main.java.model.API.Position;
 import main.java.model.Entities.Ghost;
 
-import javax.swing.Timer;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -35,12 +34,6 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
         this.initialMoves = determineInitialMoves();
         this.initialPositionsMap = determinePositionsMap();
         this.newStrat = ns;
-        // initializeMovementTimer();
-    }
-
-    private void initializeMovementTimer() {
-        Timer movementTimer = new Timer(800, e -> movementService());
-        movementTimer.start();
     }
 
     public void movementService() {
