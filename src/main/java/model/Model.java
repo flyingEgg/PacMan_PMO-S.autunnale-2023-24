@@ -58,16 +58,14 @@ public class Model {
         this.grid.setGhosts(ghosts);
         this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, this);
         this.random = new Random();
-        initChaseTimer();
-        initScatterTimer();
     }
 
-    private void initChaseTimer() {
+    public void initChaseTimer() {
         this.chaseTimer = new Timer(this.random.nextInt(6000, 9000), e -> changeStrategy(true));
         this.chaseTimer.start();
     }
 
-    private void initScatterTimer() {
+    public void initScatterTimer() {
         this.scatterTimer = new Timer(this.random.nextInt(1700, 2000), e -> changeStrategy(false));
         this.scatterTimer.start();
     }
@@ -157,6 +155,7 @@ public class Model {
                     this,
                     this.gamePanel,
                     true));
+            ghost.getMovementStrategy().setMovStratId(i);
             ghosts.add(ghost);
         }
     }

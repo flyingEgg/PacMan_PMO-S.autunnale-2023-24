@@ -24,6 +24,7 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     private int initialMoveIndex = 0;
     protected final Ghost ghost;
     protected final Model model;
+    private int movStratId;
 
     public GhostMovementStrategy(Ghost ghost, Grid grid, Model model, GamePanel gamePanel, boolean ns) {
         this.ghost = ghost;
@@ -37,6 +38,11 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     }
 
     public void movementService() {
+        if(movStratId == 3){
+            this.model.initChaseTimer();
+            this.model.initScatterTimer();
+        }
+
         try {
             // Gestisci il movimento iniziale
             if (!this.ghost.getPosition().equals(this.initialPositionsMap.get(this.ghost.getColor())) &&
@@ -201,5 +207,9 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
             }
         }
         return null; // Non dovrebbe accadere se la logica è corretta
+    }
+
+    public void setMovStratId(int ghostId){
+        this.movStratId = ghostId;
     }
 }
