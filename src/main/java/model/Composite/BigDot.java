@@ -1,12 +1,13 @@
 package main.java.model.Composite;
 
-import main.java.model.Model;
-import main.java.model.API.Position;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+
+import main.java.model.Model;
+import main.java.model.API.Position;
 
 /**
  * Rappresenta un grande punto nel gioco, che offre più punti e attiva la super

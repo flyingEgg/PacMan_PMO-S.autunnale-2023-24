@@ -1,13 +1,17 @@
 package main.java.view.GUI;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.ImageObserver;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.HashSet;
 import java.util.Set;
+
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 import main.java.model.Model;
 import main.java.model.API.MapComponent;

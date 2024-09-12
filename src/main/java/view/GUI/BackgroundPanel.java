@@ -1,10 +1,10 @@
 package main.java.view.GUI;
 
-import javax.swing.JPanel;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.Dimension;
+
+import javax.swing.JPanel;
 
 /**
  * Un pannello che visualizza un'immagine di sfondo.

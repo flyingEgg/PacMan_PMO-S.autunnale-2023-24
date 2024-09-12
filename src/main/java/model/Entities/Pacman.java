@@ -1,12 +1,13 @@
 package main.java.model.Entities;
 
+import java.awt.Graphics2D;
+import java.util.Map;
+
+import javax.swing.ImageIcon;
+
 import main.java.model.API.Direction;
 import main.java.model.API.Position;
 import main.java.model.Grid.Grid;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.Map;
 
 /**
  * Rappresenta il personaggio di Pacman nel gioco.

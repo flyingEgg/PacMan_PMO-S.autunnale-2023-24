@@ -1,13 +1,14 @@
 package main.java.model.Entities;
 
+import java.awt.Graphics2D;
+import java.util.Map;
+
+import javax.swing.ImageIcon;
+
+import main.java.controller.Strategies.GhostMovementStrategy;
 import main.java.model.API.Direction;
 import main.java.model.API.Position;
 import main.java.model.Grid.Grid;
-import main.java.controller.Strategies.GhostMovementStrategy;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.Map;
 
 /**
  * Rappresenta un fantasma nel gioco.

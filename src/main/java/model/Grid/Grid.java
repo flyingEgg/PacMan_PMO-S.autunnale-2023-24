@@ -1,6 +1,12 @@
 package main.java.model.Grid;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import main.java.model.API.Position;
 import main.java.model.Composite.BigDot;
 import main.java.model.Composite.SmallDot;

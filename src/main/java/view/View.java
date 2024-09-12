@@ -11,7 +11,10 @@ import java.util.Map;
 import java.util.Objects;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import main.java.controller.Controller;
 import main.java.model.Model;

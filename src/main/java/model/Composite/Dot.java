@@ -1,12 +1,13 @@
 package main.java.model.Composite;
 
+import java.awt.Graphics2D;
+import java.util.Map;
+
+import javax.swing.ImageIcon;
+
 import main.java.model.Model;
 import main.java.model.API.MapComponent;
 import main.java.model.API.Position;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.Map;
 
 /**
  * Rappresenta un punto nel gioco, che può essere raccolto dal giocatore.

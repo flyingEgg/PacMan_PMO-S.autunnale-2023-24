@@ -1,8 +1,10 @@
 package main.java.model.Entities;
 
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.util.Map;
+
 import javax.swing.ImageIcon;
+
 import main.java.model.API.Direction;
 import main.java.model.API.MapComponent;
 import main.java.model.API.Position;

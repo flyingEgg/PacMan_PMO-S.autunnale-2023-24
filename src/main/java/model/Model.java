@@ -1,7 +1,13 @@
 package main.java.model;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Random;
 import java.util.stream.IntStream;
+
+import javax.swing.Timer;
 
 import main.java.controller.Strategies.GhostChaseStrategy;
 import main.java.controller.Strategies.GhostFleeStrategy;
@@ -17,7 +23,6 @@ import main.java.model.Entities.GhostColor;
 import main.java.model.Entities.Pacman;
 import main.java.model.Grid.Grid;
 import main.java.view.GUI.GamePanel;
-import javax.swing.Timer;
 
 public class Model {
     private static final int MAX_DOTS = 176; // Numero totale dei dots nella mappa
