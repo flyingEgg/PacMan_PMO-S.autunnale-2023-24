@@ -19,7 +19,9 @@ import javax.swing.JPanel;
 import main.java.controller.Controller;
 
 /**
- * La schermata di Game Over che viene visualizzata quando il gioco è finito.
+ * Classe che rappresenta la schermata di Game Over.
+ * Consente di visualizzare il punteggio finale e aggiornare l'high score se
+ * necessario.
  */
 public class GameOverScreen extends JFrame {
     private final Controller controller;
@@ -34,6 +36,7 @@ public class GameOverScreen extends JFrame {
     public GameOverScreen(Controller controller, int score) {
         this.controller = controller;
         this.score = score;
+
         setupGameOverScreen();
     }
 
@@ -55,7 +58,7 @@ public class GameOverScreen extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Pannello sfondo
+        // Pannello di sfondo
         BackgroundPanel backgroundPanel = new BackgroundPanel();
         try {
             BufferedImage backgroundImage = ImageIO
@@ -66,16 +69,29 @@ public class GameOverScreen extends JFrame {
         }
         backgroundPanel.setLayout(new BorderLayout());
 
-        // Pannello punteggio e pulsanti
+        // Controlla e aggiorna l'high score
+        int highScore = controller.getHighScore(); // Ottieni l'high score attuale
+        if (score > highScore) {
+            controller.updateHighScore(score); // Aggiorna l'high score
+            highScore = score; // Aggiorna la variabile locale
+        }
+
+        // Pannello per punteggio e pulsanti
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(false);
 
-        // Label del punteggio
+        // Etichetta del punteggio finale
         JLabel scoreLabel = new JLabel("Your Score: " + score);
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 28));
         scoreLabel.setForeground(Color.YELLOW);
         scoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Etichetta dell'high score
+        JLabel highScoreLabel = new JLabel("High Score: " + highScore);
+        highScoreLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        highScoreLabel.setForeground(Color.CYAN); // Colore per evidenziare l'high score
+        highScoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Creazione pulsanti
         JButton restartButton = new RoundedButton("Restart Game");
@@ -99,6 +115,7 @@ public class GameOverScreen extends JFrame {
         // Aggiungi componenti al pannello
         panel.add(Box.createVerticalStrut(50));
         panel.add(scoreLabel);
+        panel.add(highScoreLabel); // Aggiungi l'etichetta dell'high score
         panel.add(Box.createVerticalGlue());
         panel.add(restartButton);
         panel.add(Box.createVerticalStrut(20)); // Spazio tra i pulsanti

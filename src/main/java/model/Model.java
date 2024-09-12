@@ -1,5 +1,10 @@
 package main.java.model;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +35,7 @@ public class Model {
     private static final int CHASE_INTERVAL_MAX = 9000;
     private static final int SCATTER_INTERVAL_MIN = 1700;
     private static final int SCATTER_INTERVAL_MAX = 2000;
+    private static final String HIGHSCORE_FILE = "highscore.txt";
 
     private boolean gameOver;
     private boolean onGoing;
@@ -37,6 +43,7 @@ public class Model {
     private int dotsEaten;
     private int lives;
     private int score;
+    private int highScore;
     private int superModeMovesRemaining;
     private Grid grid;
     private GamePanel gamePanel;
@@ -58,6 +65,7 @@ public class Model {
         this.dotsEaten = 0;
         this.lives = 3;
         this.score = 0;
+        this.highScore = readHighScoreFromFile();
         this.superModeMovesRemaining = 0;
         this.grid = new Grid();
         this.ghosts = new ArrayList<>();
@@ -155,6 +163,59 @@ public class Model {
      */
     public void notifySuperModeStatusChanged(int movesRemaining) {
         listeners.forEach(listener -> listener.onSuperModeStatusChanged(movesRemaining));
+    }
+
+    /**
+     * Ottiene l'high score attuale.
+     *
+     * @return l'high score
+     */
+    public int getHighScore() {
+        return highScore;
+    }
+
+    /**
+     * Aggiorna l'high score se il punteggio corrente è superiore all'high score
+     * salvato.
+     *
+     * @param score Il punteggio attuale del giocatore
+     */
+    public void updateHighScore(int score) {
+        if (score > highScore) {
+            highScore = score;
+            saveHighScoreToFile(score); // Salva il nuovo high score in un file o database
+        }
+    }
+
+    /**
+     * Carica l'high score da un file.
+     *
+     * @return L'high score salvato, o 0 se non esiste un file
+     */
+    public int readHighScoreFromFile() {
+        int highScore = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader("highscore.txt"))) {
+            String line = reader.readLine();
+            if (line != null) {
+                highScore = Integer.parseInt(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Errore nella lettura dell'high score: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Formato del punteggio non valido: " + e.getMessage());
+        }
+        return highScore;
+    }
+
+    /**
+     * Salva l'high score corrente in un file.
+     */
+    public void saveHighScoreToFile(int score) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("highscore.txt"))) {
+            writer.write(Integer.toString(score));
+        } catch (IOException e) {
+            System.out.println("Errore nel salvataggio dell'high score: " + e.getMessage());
+        }
     }
 
     /**

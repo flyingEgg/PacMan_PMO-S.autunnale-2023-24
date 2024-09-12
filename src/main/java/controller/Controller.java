@@ -113,4 +113,22 @@ public class Controller {
     public void keepPlayingWin() {
         view.resetStats(true);
     }
+
+    /**
+     * Ottiene l'high score dal model.
+     *
+     * @return l'high score
+     */
+    public int getHighScore() {
+        return model.readHighScoreFromFile();
+    }
+
+    /**
+     * Aggiorna l'high score nel model.
+     *
+     * @param score Il punteggio attuale del giocatore
+     */
+    public void updateHighScore(int score) {
+        model.updateHighScore(score);
+    }
 }

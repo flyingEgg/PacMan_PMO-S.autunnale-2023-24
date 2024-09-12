@@ -15,6 +15,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
+import javax.swing.JLabel;
+
 import main.java.controller.Controller;
 
 /**
@@ -22,6 +26,8 @@ import main.java.controller.Controller;
  */
 public class MainMenu extends JFrame {
     private final Controller controller;
+    private JLabel highScoreLabel;
+    private Preferences prefs;
 
     /**
      * Costruisce un nuovo MainMenu con il controller fornito.
@@ -30,7 +36,9 @@ public class MainMenu extends JFrame {
      */
     public MainMenu(Controller controller) {
         this.controller = controller;
+        this.prefs = Preferences.userNodeForPackage(MainMenu.class);
         setupMenu();
+        updateHighScoreLabel();
     }
 
     /**
@@ -68,6 +76,16 @@ public class MainMenu extends JFrame {
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         buttonPanel.setOpaque(false);
 
+        // Label per visualizzare l'high score
+        highScoreLabel = new JLabel("High Score: " + getHighScore(), JLabel.CENTER);
+        highScoreLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        highScoreLabel.setForeground(Color.WHITE);
+
+        // Pannello per l'high score
+        JPanel highScorePanel = new JPanel();
+        highScorePanel.setOpaque(false);
+        highScorePanel.add(highScoreLabel);
+
         // Pulsante Start Game
         JButton startButton = new RoundedButton("Start Game");
         startButton.setBackground(new Color(34, 139, 34)); // Verde scuro
@@ -96,6 +114,9 @@ public class MainMenu extends JFrame {
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // Aggiungi il pannello dell'highscore al pannello di sfondo
+        backgroundPanel.add(highScorePanel, BorderLayout.NORTH);
+
         // Aggiungi il pannello dei pulsanti al pannello di sfondo
         backgroundPanel.add(buttonPanel, BorderLayout.CENTER);
 
@@ -103,5 +124,38 @@ public class MainMenu extends JFrame {
         add(backgroundPanel);
 
         setVisible(true);
+    }
+
+    /**
+     * Ottiene l'high score salvato localmente.
+     *
+     * @return L'high score salvato, o 0 se non è stato ancora salvato nessun
+     *         punteggio.
+     */
+    private int getHighScore() {
+        return controller.getHighScore();
+    }
+
+    /**
+     * Aggiorna l'high score se il punteggio attuale è più alto dell'high score
+     * salvato.
+     *
+     * @param score Il punteggio attuale che sarà confrontato con l'high score
+     *              salvato.
+     */
+    public void updateHighScore(int score) {
+        int highScore = controller.getHighScore();
+        if (score > highScore) {
+            controller.updateHighScore(score);
+            highScoreLabel.setText("High Score: " + score); // Aggiorna la label con il nuovo high score
+        }
+    }
+
+    /**
+     * Aggiorna il testo dell'etichetta dell'high score quando il menu principale
+     * viene mostrato.
+     */
+    private void updateHighScoreLabel() {
+        highScoreLabel.setText("High Score: " + getHighScore()); // Rilegge l'high score salvato
     }
 }
