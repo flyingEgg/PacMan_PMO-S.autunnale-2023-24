@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import main.java.model.Model;
-import main.java.model.API.Position;
+import main.java.model.Movement.Position;
 
 /**
  * Rappresenta un grande punto nel gioco, che offre più punti e attiva la super

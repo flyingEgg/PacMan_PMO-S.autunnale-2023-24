@@ -1,7 +1,7 @@
 package test.java.app;
 
 import main.java.model.API.MapComponent;
-import main.java.model.API.Position;
+import main.java.model.Movement.Position;
 import main.java.model.Composite.BigDot;
 import main.java.model.Composite.SmallDot;
 import main.java.model.Composite.Wall;
@@ -11,7 +11,6 @@ import main.java.model.Grid.Grid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 

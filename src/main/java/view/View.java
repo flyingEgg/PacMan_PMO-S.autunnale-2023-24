@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 
 import main.java.controller.Controller;
 import main.java.model.Model;
-import main.java.model.API.Direction;
+import main.java.model.Movement.Direction;
 import main.java.model.Exceptions.IllegalEntityMovementException;
 import main.java.view.GUI.GameOverScreen;
 import main.java.view.GUI.GamePanel;

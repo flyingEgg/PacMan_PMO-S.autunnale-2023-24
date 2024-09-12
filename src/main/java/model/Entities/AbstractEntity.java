@@ -5,9 +5,9 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
-import main.java.model.API.Direction;
+import main.java.model.Movement.Direction;
 import main.java.model.API.MapComponent;
-import main.java.model.API.Position;
+import main.java.model.Movement.Position;
 
 /**
  * Classe astratta che rappresenta una entità nel gioco.

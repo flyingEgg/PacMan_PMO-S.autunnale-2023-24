@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 
 import main.java.model.Model;
 import main.java.model.API.MapComponent;
-import main.java.model.API.Position;
+import main.java.model.Movement.Position;
 import main.java.model.Composite.BigDot;
 import main.java.model.Composite.SmallDot;
 import main.java.model.Composite.Wall;

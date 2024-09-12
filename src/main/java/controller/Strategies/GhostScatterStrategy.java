@@ -1,8 +1,8 @@
 package main.java.controller.Strategies;
 
 import main.java.model.Model;
-import main.java.model.API.Direction;
-import main.java.model.API.Position;
+import main.java.model.Movement.Direction;
+import main.java.model.Movement.Position;
 import main.java.model.Entities.Ghost;
 import main.java.model.Entities.GhostColor;
 import main.java.model.Grid.Grid;
