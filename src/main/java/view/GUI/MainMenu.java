@@ -15,8 +15,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import java.util.prefs.BackingStoreException;
-import java.util.prefs.Preferences;
 import javax.swing.JLabel;
 
 import main.java.controller.Controller;
@@ -27,7 +25,6 @@ import main.java.controller.Controller;
 public class MainMenu extends JFrame {
     private final Controller controller;
     private JLabel highScoreLabel;
-    private Preferences prefs;
 
     /**
      * Costruisce un nuovo MainMenu con il controller fornito.
@@ -36,7 +33,6 @@ public class MainMenu extends JFrame {
      */
     public MainMenu(Controller controller) {
         this.controller = controller;
-        this.prefs = Preferences.userNodeForPackage(MainMenu.class);
         setupMenu();
         updateHighScoreLabel();
     }
