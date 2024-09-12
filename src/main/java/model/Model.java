@@ -194,7 +194,7 @@ public class Model {
      */
     public int readHighScoreFromFile() {
         int highScore = 0;
-        try (BufferedReader reader = new BufferedReader(new FileReader("highscore.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(HIGHSCORE_FILE))) {
             String line = reader.readLine();
             if (line != null) {
                 highScore = Integer.parseInt(line);
@@ -211,7 +211,7 @@ public class Model {
      * Salva l'high score corrente in un file.
      */
     public void saveHighScoreToFile(int score) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("highscore.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(HIGHSCORE_FILE))) {
             writer.write(Integer.toString(score));
         } catch (IOException e) {
             System.out.println("Errore nel salvataggio dell'high score: " + e.getMessage());
