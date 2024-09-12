@@ -1,6 +1,7 @@
 package main.java.model;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 import main.java.controller.Strategies.GhostChaseStrategy;
 import main.java.controller.Strategies.GhostFleeStrategy;
@@ -166,7 +167,7 @@ public class Model {
     }
 
     private void resetPacman() {
-        this.pacman.resetPosition(grid.getPacmanStartPosition());
+        this.pacman.setPosition(grid.getPacmanStartPosition());
         this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman,
                 grid,
                 this);
@@ -251,9 +252,10 @@ public class Model {
     }
 
     public void resetGame(boolean win) {
-        if (!win)
+        if (!win){
             this.score = 0;
-        this.lives = 3;
+            this.lives = 3;
+        }
         this.dotsEaten = 0;
         this.gameOver = false;
         this.onGoing = true;
@@ -268,9 +270,24 @@ public class Model {
         if (this.lives <= 0) {
             setGameOver(true);
         } else {
-            this.pacman.resetPosition(grid.getPacmanStartPosition());
+            this.pacman.setPosition(grid.getPacmanStartPosition());
+            IntStream.range(0, ghosts.size()).
+                    forEach(i -> ghosts.get(i).setPosition(grid.getGhostStartPositions().get(i)));
+            restartGhosts();
+
             notifyLivesChanged();
         }
+    }
+
+    private void restartGhosts(){
+        stopTimers();
+        ghosts.forEach(g -> g.setMovementStrategy(new GhostChaseStrategy(g,
+                grid,
+                this,
+                gamePanel,
+                true)));
+        initChaseTimer();
+        initScatterTimer();
     }
 
     public Optional<Position> handleMagicCoords(Position pos) {
