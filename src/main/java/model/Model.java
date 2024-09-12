@@ -40,7 +40,7 @@ public class Model {
 
     private Timer chaseTimer;
     private Timer scatterTimer;
-    private Random randTime;
+    private Random random;
 
     public Model() {
         this.onGoing = false;
@@ -57,18 +57,16 @@ public class Model {
         this.grid.setPacman(pacman);
         this.grid.setGhosts(ghosts);
         this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, this);
-        this.randTime = new Random();
-        initChaseTimer();
-        initScatterTimer();
+        this.random = new Random();
     }
 
     private void initChaseTimer() {
-        this.chaseTimer = new Timer(this.randTime.nextInt(5000, 8000), e -> changeStrategy(true));
+        this.chaseTimer = new Timer(this.random.nextInt(6000, 9000), e -> changeStrategy(true));
         this.chaseTimer.start();
     }
 
     private void initScatterTimer() {
-        this.scatterTimer = new Timer(this.randTime.nextInt(1700, 2000), e -> changeStrategy(false));
+        this.scatterTimer = new Timer(this.random.nextInt(1700, 2000), e -> changeStrategy(false));
         this.scatterTimer.start();
     }
 
@@ -220,23 +218,45 @@ public class Model {
     }
 
     public void eatGhost(Position ghostPosition) {
-        Ghost ghostToRemove = null;
+        Ghost eatenGhost = null;
 
         for (Ghost ghost : ghosts) {
             if (ghost.getPosition().equals(ghostPosition)) {
-                ghostToRemove = ghost;
+                eatenGhost = ghost;
                 break;
             }
         }
 
-        if (ghostToRemove != null) {
-            grid.removeComponent(ghostToRemove);
-            ghosts.remove(ghostToRemove);
+        if (eatenGhost != null) {
+            relocateGhost(eatenGhost);
             System.out.println("Fantasma alla posizione " + ghostPosition + " è stato mangiato!");
             incrementScore(200);
         } else {
             System.out.println("Nessun fantasma trovato alla posizione " + ghostPosition);
         }
+    }
+
+    private void relocateGhost(Ghost g) {
+        this.grid.getGhostStartPositions().stream()
+                .filter(startPosition -> !isPositionOccupiedByGhost(startPosition))
+                .findFirst()
+                .ifPresent(g::setPosition);
+
+        g.setMovementStrategy(new GhostChaseStrategy(g,
+                grid,
+                this,
+                gamePanel,
+                false));
+        g.setScared(false);
+    }
+
+    private boolean isPositionOccupiedByGhost(Position position){
+        for (Ghost ghost : ghosts) {
+            if (ghost.getPosition().equals(position)) {
+                return true; // Position is occupied by a ghost
+            }
+        }
+        return false;
     }
 
     public void winGame() {
