@@ -52,8 +52,4 @@ public class Pacman extends AbstractEntity {
     public void setDirection(Direction d) {
         this.direction = d;
     }
-
-    public void resetPosition(Position newPosition) {
-        setPosition(newPosition);
-    }
 }
