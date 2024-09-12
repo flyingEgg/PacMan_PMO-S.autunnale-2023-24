@@ -269,13 +269,37 @@ public class Model {
     }
 
     /**
-     * Abilita o disabilita l'effetto spaventapasseri per i fantasmi.
+     * Abilita o disabilita lo stato di paura per tutti i fantasmi.
+     * 
+     * Se l'argomento {@code scared} è {@code true}, i fantasmi vengono impostati
+     * per utilizzare una strategia di movimento di fuga
+     * e i timer vengono fermati. Se l'argomento è {@code false}, i fantasmi vengono
+     * impostati per utilizzare una strategia di movimento di inseguimento
+     * e i timer per la modalità Chase e Scatter vengono avviati.
      *
-     * @param enable True per abilitare, false per disabilitare.
+     * @param scared {@code true} per attivare lo stato di paura, {@code false} per
+     *               disattivarlo
      */
-    private void enableDisableScare(boolean enable) {
+    private void enableDisableScare(boolean scared) {
         for (Ghost ghost : ghosts) {
-            ghost.setScared(enable);
+            if (scared) {
+                ghost.setMovementStrategy(new GhostFleeStrategy(ghost,
+                        grid,
+                        this,
+                        gamePanel,
+                        false));
+                System.out.println("settato flee");
+                stopTimers();
+            } else {
+                ghost.setMovementStrategy(new GhostChaseStrategy(ghost,
+                        grid,
+                        this,
+                        gamePanel,
+                        false));
+                this.chaseTimer.start();
+                this.scatterTimer.start();
+            }
+            ghost.setScared(scared);
         }
     }
 

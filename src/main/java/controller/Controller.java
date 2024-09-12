@@ -65,15 +65,21 @@ public class Controller {
     private void checkForCollisions() {
         // Controlla le collisioni tra Pacman e i fantasmi
         for (Ghost ghost : model.getGhosts()) {
+            // Verifica se la posizione di Pacman è uguale a quella del fantasma
             if (model.getPacman().getPosition().equals(ghost.getPosition())) {
+                // Se Pacman è in modalità Supermode
                 if (model.isSuperModeActive()) {
+                    // Pacman mangia il fantasma
                     model.eatGhost(ghost.getPosition());
                 } else {
+                    // Pacman perde una vita
                     model.loseLife();
                 }
-                view.updateInfoPanel(); // Aggiorna il pannello informazioni se un fantasma è stato mangiato o se è
-                                        // stata persa una vita
-                return; // Termina il controllo dopo aver gestito una collisione
+                // Aggiorna il pannello delle informazioni se un fantasma è stato mangiato o se
+                // è stata persa una vita
+                view.updateInfoPanel();
+                // Termina il controllo dopo aver gestito una collisione
+                return;
             }
         }
     }
