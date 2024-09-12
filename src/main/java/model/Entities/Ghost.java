@@ -9,6 +9,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Rappresenta un fantasma nel gioco.
+ * Gestisce la posizione, la direzione, il colore, e le strategie di movimento
+ * del fantasma.
+ */
 public class Ghost extends AbstractEntity {
     private GhostColor color;
     private GhostMovementStrategy movementStrategy;
@@ -16,6 +21,12 @@ public class Ghost extends AbstractEntity {
     private Direction direction;
     private boolean inSpawn;
 
+    /**
+     * Crea un nuovo fantasma con la posizione e il colore specificati.
+     * 
+     * @param position La posizione iniziale del fantasma.
+     * @param color    Il colore del fantasma.
+     */
     public Ghost(Position position, GhostColor color) {
         super(position);
         this.color = color;
@@ -24,6 +35,12 @@ public class Ghost extends AbstractEntity {
         this.inSpawn = true;
     }
 
+    /**
+     * Disegna il fantasma sul pannello di gioco.
+     * 
+     * @param g2d    L'oggetto Graphics2D usato per disegnare.
+     * @param images Mappa delle immagini usate per il rendering degli oggetti.
+     */
     @Override
     public void draw(Graphics2D g2d, Map<String, ImageIcon> images) {
         ImageIcon ghostImage = scared ? images.get("ghost_scared") : getGhostImage(images);
@@ -36,6 +53,12 @@ public class Ghost extends AbstractEntity {
         }
     }
 
+    /**
+     * Restituisce l'immagine del fantasma in base al colore.
+     * 
+     * @param images Mappa delle immagini usate per il rendering degli oggetti.
+     * @return L'immagine del fantasma in base al colore.
+     */
     private ImageIcon getGhostImage(Map<String, ImageIcon> images) {
         return switch (this.color) {
             case BLUE -> images.get("ghost_blue");
@@ -45,51 +68,99 @@ public class Ghost extends AbstractEntity {
         };
     }
 
+    /**
+     * Muove il fantasma secondo la strategia di movimento.
+     */
     public void move() {
         if (movementStrategy != null) {
             Direction nextDirection = movementStrategy.determineNextDirection();
             setDirection(nextDirection); // Aggiorna la direzione
-            movementStrategy.movementService(); // was: move(nextDirection);
+            movementStrategy.movementService(); // Esegui il movimento
         } else {
             System.out.println("Movement strategy is not set for ghost.");
         }
     }
 
+    /**
+     * Imposta lo stato di paura del fantasma.
+     * 
+     * @param scared True se il fantasma è spaventato, altrimenti false.
+     */
     public void setScared(boolean scared) {
         this.scared = scared;
     }
 
+    /**
+     * Restituisce lo stato di paura del fantasma.
+     * 
+     * @return True se il fantasma è spaventato, altrimenti false.
+     */
     public boolean isScared() {
         return scared;
     }
 
+    /**
+     * Restituisce il colore del fantasma.
+     * 
+     * @return Il colore del fantasma.
+     */
     public GhostColor getColor() {
         return color;
     }
 
+    /**
+     * Imposta la strategia di movimento del fantasma.
+     * 
+     * @param strategy La strategia di movimento da impostare.
+     */
     public void setMovementStrategy(GhostMovementStrategy strategy) {
         this.movementStrategy = strategy;
         System.out.println("Movement strategy set successfully for ghost.");
     }
 
+    /**
+     * Restituisce la strategia di movimento del fantasma.
+     * 
+     * @return La strategia di movimento del fantasma.
+     */
     public GhostMovementStrategy getMovementStrategy() {
         return movementStrategy;
     }
 
+    /**
+     * Imposta la direzione corrente del fantasma.
+     * 
+     * @param d La nuova direzione del fantasma.
+     */
     @Override
     public void setDirection(Direction d) {
-        this.direction = d; // Imposta la nuova direzione
+        this.direction = d;
     }
 
+    /**
+     * Restituisce la direzione corrente del fantasma.
+     * 
+     * @return La direzione corrente del fantasma.
+     */
     @Override
     public Direction getDirection() {
-        return this.direction; // Ritorna la direzione corrente
+        return this.direction;
     }
 
+    /**
+     * Restituisce se il fantasma si trova nella sua area di spawn.
+     * 
+     * @return True se il fantasma è in spawn, altrimenti false.
+     */
     public boolean isInSpawn() {
         return inSpawn;
     }
 
+    /**
+     * Imposta se il fantasma è in spawn.
+     * 
+     * @param inSpawn True se il fantasma deve essere in spawn, altrimenti false.
+     */
     public void setInSpawn(boolean inSpawn) {
         this.inSpawn = inSpawn;
     }

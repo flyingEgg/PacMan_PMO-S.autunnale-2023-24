@@ -7,32 +7,51 @@ import main.java.model.Entities.Ghost;
 import main.java.model.Grid.Grid;
 import main.java.view.GUI.GamePanel;
 
+/**
+ * Strategia di movimento per i fantasmi durante la fase di inseguimento.
+ * Il fantasma cerca di raggiungere la posizione di Pacman.
+ */
 public class GhostChaseStrategy extends GhostMovementStrategy {
 
+    /**
+     * Costruttore per inizializzare la strategia di inseguimento del fantasma.
+     * 
+     * @param ghost     Il fantasma a cui applicare la strategia.
+     * @param grid      La griglia di gioco.
+     * @param model     Il modello di gioco.
+     * @param gamePanel Il pannello di gioco.
+     * @param newStrat  Indica se utilizzare una nuova strategia.
+     */
     public GhostChaseStrategy(Ghost ghost, Grid grid, Model model, GamePanel gamePanel, boolean newStrat) {
         super(ghost, grid, model, gamePanel, newStrat);
     }
 
+    /**
+     * Determina la prossima direzione del fantasma durante la fase di inseguimento.
+     * 
+     * @return La direzione verso cui il fantasma si muoverà.
+     */
     @Override
     public Direction determineNextDirection() {
         Position currentPosition = ghost.getPosition();
 
-        // Se il fantasma ha raggiunto (7, 9), disabilita lo stato di spawn
+        // Disabilita lo stato di spawn se il fantasma raggiunge la posizione (7, 9)
         if (currentPosition.equals(new Position(7, 9))) {
             ghost.setInSpawn(false);
         }
 
-        // Se il fantasma non è in spawn e tenta di entrare in (8, 9), blocca il
-        // movimento
+        // Blocca il movimento se il fantasma è in posizione (8, 9) e non è in stato di
+        // spawn
         if (!ghost.isInSpawn() && currentPosition.equals(new Position(8, 9))) {
-            return null; // Blocco del movimento
+            return null; // Blocco del movimento per evitare il posizionamento in (8, 9)
         }
 
-        // Logica standard per l'inseguimento
+        // Logica per inseguire Pacman
         Position pacmanPosition = model.getPacman().getPosition();
         int diffX = pacmanPosition.getX() - ghost.getX();
         int diffY = pacmanPosition.getY() - ghost.getY();
 
+        // Determina la direzione verso Pacman
         Direction nextDirection;
         if (Math.abs(diffX) > Math.abs(diffY)) {
             nextDirection = diffX > 0 ? Direction.RIGHT : Direction.LEFT;
@@ -40,17 +59,16 @@ public class GhostChaseStrategy extends GhostMovementStrategy {
             nextDirection = diffY > 0 ? Direction.DOWN : Direction.UP;
         }
 
-        // Controlla se il fantasma può muoversi in quella direzione
+        // Verifica se il fantasma può muoversi nella direzione scelta
         if (!canMove(nextDirection)) {
-            // Prova a cambiare asse se la direzione scelta non è valida
-            if (nextDirection == Direction.LEFT || nextDirection == Direction.RIGHT) {
-                nextDirection = diffY > 0 ? Direction.DOWN : Direction.UP;
-            } else {
-                nextDirection = diffX > 0 ? Direction.RIGHT : Direction.LEFT;
-            }
+            // Cambia asse se la direzione non è valida
+            nextDirection = (nextDirection == Direction.LEFT || nextDirection == Direction.RIGHT)
+                    ? (diffY > 0 ? Direction.DOWN : Direction.UP)
+                    : (diffX > 0 ? Direction.RIGHT : Direction.LEFT);
         }
 
-        return canMove(nextDirection) ? nextDirection : findAlternativeDirection(); // Usa findAlternativeDirection se
-                                                                                    // la direzione non è valida
+        // Restituisce la direzione scelta se valida, altrimenti trova una direzione
+        // alternativa
+        return canMove(nextDirection) ? nextDirection : findAlternativeDirection();
     }
 }

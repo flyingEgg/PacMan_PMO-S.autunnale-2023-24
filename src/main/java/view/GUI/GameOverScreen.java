@@ -2,22 +2,33 @@ package main.java.view.GUI;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import main.java.controller.Controller;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import main.java.controller.Controller;
 
+/**
+ * La schermata di Game Over che viene visualizzata quando il gioco è finito.
+ */
 public class GameOverScreen extends JFrame {
     private final Controller controller;
     private final int score;
 
+    /**
+     * Costruisce una nuova schermata di Game Over.
+     *
+     * @param controller Il controller del gioco
+     * @param score      Il punteggio finale del giocatore
+     */
     public GameOverScreen(Controller controller, int score) {
         this.controller = controller;
         this.score = score;
         setupGameOverScreen();
     }
 
+    /**
+     * Configura e mostra la schermata di Game Over.
+     */
     public void setupGameOverScreen() {
         setTitle("Game Over");
 
@@ -74,6 +85,7 @@ public class GameOverScreen extends JFrame {
             dispose(); // Chiude la schermata di Game Over
         });
 
+        // Aggiungi componenti al pannello
         panel.add(Box.createVerticalStrut(50));
         panel.add(scoreLabel);
         panel.add(Box.createVerticalGlue());
@@ -85,8 +97,11 @@ public class GameOverScreen extends JFrame {
         restartButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         menuButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // Aggiungi il pannello al pannello di sfondo e al frame
         backgroundPanel.add(panel, BorderLayout.CENTER);
         add(backgroundPanel);
+
+        // Rendi visibile la finestra
         setVisible(true);
     }
 }

@@ -1,15 +1,13 @@
 package main.java.view.GUI;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.ImageObserver;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
+import java.util.HashSet;
+import java.util.Set;
 
 import main.java.model.Model;
 import main.java.model.API.MapComponent;
@@ -21,12 +19,26 @@ import main.java.model.Entities.Ghost;
 import main.java.model.Entities.Pacman;
 import main.java.model.Grid.Grid;
 
+/**
+ * Pannello di gioco che gestisce la visualizzazione di Pacman, dei fantasmi e
+ * della griglia.
+ */
 public class GamePanel extends JPanel {
     private Pacman pacman;
     private List<Ghost> ghosts;
     private final Map<String, ImageIcon> images;
-    private final Model model; // Se necessario per accedere alla grid e altri dati
+    private final Model model;
+    private final Set<String> loggedImageKeys = new HashSet<>();
+    private final Set<String> loggedComponentKeys = new HashSet<>();
 
+    /**
+     * Costruisce un nuovo pannello di gioco.
+     *
+     * @param model  Il modello del gioco
+     * @param pacman L'istanza di Pacman
+     * @param ghosts La lista dei fantasmi
+     * @param images La mappa delle immagini
+     */
     public GamePanel(Model model, Pacman pacman, List<Ghost> ghosts, Map<String, ImageIcon> images) {
         setDoubleBuffered(true);
         this.model = model;
@@ -51,42 +63,55 @@ public class GamePanel extends JPanel {
         ghosts.forEach(ghost -> ghost.draw(g2d, images));
     }
 
+    /**
+     * Disegna la griglia e i componenti sulla griglia di gioco.
+     *
+     * @param g2d L'oggetto Graphics2D per il rendering
+     */
     private void drawGrid(Graphics2D g2d) {
+        Grid grid = model.getGrid();
+
         // Disegna tutte le componenti della griglia
-        for (int i = 0; i < model.getGrid().getRows(); i++) {
-            for (int j = 0; j < model.getGrid().getColumns(); j++) {
+        for (int i = 0; i < grid.getRows(); i++) {
+            for (int j = 0; j < grid.getColumns(); j++) {
                 Position pos = new Position(j, i);
-                Optional<MapComponent> component = model.getGrid().getComponentByPosition(pos);
+                Optional<MapComponent> component = grid.getComponentByPosition(pos);
 
                 if (component.isPresent()) {
-                    ImageIcon icon = null,
-                            uninitialisedIcon = new ImageIcon(); // Icona non inizializzata per bypassare if-else
-                                                                 // statement
-                    boolean shouldBypassCondition = component.get() instanceof Pacman ||
-                            component.get() instanceof Ghost;
-
-                    if (component.get() instanceof Wall) {
-                        icon = images.get("wall");
-                    } else if (component.get() instanceof SmallDot) {
-                        icon = images.get("smallDot");
-                    } else if (component.get() instanceof BigDot) {
-                        icon = images.get("bigDot");
-                    } else if (shouldBypassCondition) {
-                        icon = uninitialisedIcon;
-                    }
+                    ImageIcon icon = getImageForComponent(component.get());
 
                     if (icon != null) {
-                        if (!icon.equals(uninitialisedIcon)) {
-                            g2d.drawImage(icon.getImage(), j * Grid.CELL_SIZE, i * Grid.CELL_SIZE, null);
-                        }
+                        g2d.drawImage(icon.getImage(), j * Grid.CELL_SIZE, i * Grid.CELL_SIZE, Grid.CELL_SIZE,
+                                Grid.CELL_SIZE, this);
                     } else {
-                        System.out.println("Immagine non trovata per la chiave: " + getImageKey(component.get()));
+                        String key = getImageKey(component.get());
+                        if (!loggedImageKeys.contains(key)) {
+                            System.out.println("Immagine non trovata per la chiave: " + key);
+                            loggedImageKeys.add(key);
+                        }
                     }
                 }
             }
         }
     }
 
+    /**
+     * Ottiene l'icona associata al componente.
+     *
+     * @param component Il componente della mappa
+     * @return L'icona associata al componente
+     */
+    private ImageIcon getImageForComponent(MapComponent component) {
+        String key = getImageKey(component);
+        return images.get(key);
+    }
+
+    /**
+     * Ottiene la chiave dell'immagine associata al componente.
+     *
+     * @param component Il componente della mappa
+     * @return La chiave dell'immagine
+     */
     private String getImageKey(MapComponent component) {
         if (component instanceof Wall) {
             return "wall";
@@ -96,9 +121,13 @@ public class GamePanel extends JPanel {
             return "bigDot";
         } else if (component instanceof Ghost) {
             Ghost ghost = (Ghost) component;
-            return "ghost" + ghost.getColor().name().toLowerCase(); // Adatta a seconda dei nomi delle immagini
+            return "ghost" + ghost.getColor().name().toLowerCase();
         }
-        System.out.println("Unknown component: " + component.getClass().getSimpleName());
+        String className = component.getClass().getSimpleName();
+        if (!loggedComponentKeys.contains(className)) {
+            System.out.println("Componente sconosciuto: " + className);
+            loggedComponentKeys.add(className);
+        }
         return "unknown";
     }
 }

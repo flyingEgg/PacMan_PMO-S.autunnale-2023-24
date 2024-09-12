@@ -23,7 +23,11 @@ import main.java.view.GUI.GameWonScreen;
 import main.java.view.GUI.InfoPanel;
 import main.java.view.GUI.MainMenu;
 
+/**
+ * Classe View per la visualizzazione dell'interfaccia utente del gioco.
+ */
 public class View extends JFrame {
+
     private Controller controller;
     private final Model model;
     private Map<String, ImageIcon> images;
@@ -31,19 +35,39 @@ public class View extends JFrame {
     private InfoPanel infoPanel;
     private MainMenu mainMenu;
 
+    /**
+     * Costruisce una vista con il modello e il controller specificati.
+     *
+     * @param model      l'istanza del modello
+     * @param controller l'istanza del controller
+     */
     public View(Model model, Controller controller) {
         this.model = model;
         this.controller = controller;
     }
 
+    /**
+     * Imposta il controller per la vista.
+     *
+     * @param controller il nuovo controller da impostare
+     */
     public void setController(Controller controller) {
         this.controller = controller;
     }
 
+    /**
+     * Restituisce il pannello di gioco corrente.
+     *
+     * @return il pannello di gioco
+     */
     public GamePanel getGamePanel() {
         return gamePanel;
     }
 
+    /**
+     * Inizializza la vista caricando le immagini, configurando la finestra e
+     * impostando il listener per i tasti.
+     */
     public void initializeView() {
         loadImages();
         setupWindow();
@@ -51,6 +75,9 @@ public class View extends JFrame {
         setupKeyListener();
     }
 
+    /**
+     * Configura la finestra principale dell'applicazione.
+     */
     private void setupWindow() {
         setTitle("Pacman");
 
@@ -66,16 +93,22 @@ public class View extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
-        showMainMenu();
+        showMainMenu(); // Mostra il menu principale all'avvio
     }
 
+    /**
+     * Configura la barra di stato nella parte inferiore della finestra.
+     */
     private void setupStatusBar() {
         JPanel statusBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel statusLabel = new JLabel("Welcome to Pacman!");
+        JLabel statusLabel = new JLabel("Benvenuto in Pacman!");
         statusBar.add(statusLabel);
         add(statusBar, BorderLayout.SOUTH);
     }
 
+    /**
+     * Imposta il listener per i tasti per gestire gli input dell'utente.
+     */
     private void setupKeyListener() {
         addKeyListener(new KeyAdapter() {
             @Override
@@ -85,6 +118,9 @@ public class View extends JFrame {
         });
     }
 
+    /**
+     * Mostra la finestra di gioco e aggiorna i pannelli di gioco e informazioni.
+     */
     public void showGameWindow() {
         if (gamePanel != null) {
             remove(gamePanel);
@@ -101,6 +137,9 @@ public class View extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Carica le immagini necessarie per il gioco.
+     */
     private void loadImages() {
         images = new HashMap<>();
         String[] imageNames = { "wall", "smallDot", "bigDot", "ghost_orange", "ghost_blue", "ghost_pink", "ghost_red",
@@ -132,6 +171,12 @@ public class View extends JFrame {
         }
     }
 
+    /**
+     * Gestisce l'input della tastiera e muove Pacman nella direzione
+     * corrispondente.
+     *
+     * @param e l'evento di pressione del tasto
+     */
     private void handleKeyPress(KeyEvent e) {
         Direction direction = switch (e.getKeyCode()) {
             case KeyEvent.VK_UP -> Direction.UP;
@@ -154,6 +199,10 @@ public class View extends JFrame {
         }
     }
 
+    /**
+     * Verifica se il gioco è finito o se è stato vinto e mostra la schermata
+     * appropriata.
+     */
     private void winOrGameOver() {
         if (model.isGameOver()) {
             showGameOverScreen();
@@ -162,21 +211,40 @@ public class View extends JFrame {
         }
     }
 
+    /**
+     * Ripristina le statistiche e mostra la finestra di gioco.
+     *
+     * @param win true se il gioco è stato vinto, false altrimenti
+     */
     public void resetStats(boolean win) {
         model.resetGame(win);
         showGameWindow();
     }
 
+    /**
+     * Mostra la schermata di vittoria.
+     *
+     * @param score il punteggio del gioco
+     */
     public void showWinScreen(int score) {
         new GameWonScreen(controller, score);
-        dispose();
+        dispose(); // Chiude la finestra di gioco
     }
 
+    /**
+     * Mostra la schermata di Game Over.
+     */
     private void showGameOverScreen() {
-        new GameOverScreen(controller, model.getScore()); // Mostra la nuova schermata Game Over
-        dispose(); // Chiude la finestra attuale del gioco
+        new GameOverScreen(controller, model.getScore()); // Mostra la schermata di Game Over
+        dispose(); // Chiude la finestra di gioco
     }
 
+    /**
+     * Converte una direzione in una stringa di descrizione in italiano.
+     *
+     * @param direction la direzione da convertire
+     * @return la stringa di descrizione della direzione
+     */
     private String switchDirezione(Direction direction) {
         return switch (direction) {
             case UP -> "sopra";
@@ -186,6 +254,9 @@ public class View extends JFrame {
         };
     }
 
+    /**
+     * Mostra il menu principale.
+     */
     public void showMainMenu() {
         if (mainMenu != null) {
             remove(mainMenu);
@@ -196,6 +267,9 @@ public class View extends JFrame {
         repaint();
     }
 
+    /**
+     * Aggiorna il pannello delle informazioni con le statistiche correnti.
+     */
     public void updateInfoPanel() {
         if (infoPanel != null) {
             infoPanel.setLives(model.getLives());
@@ -203,6 +277,11 @@ public class View extends JFrame {
         }
     }
 
+    /**
+     * Aggiorna lo stato della modalità Supermode nel pannello delle informazioni.
+     *
+     * @param movesRemaining il numero di mosse rimanenti nella modalità Supermode
+     */
     public void updateSuperModeStatus(int movesRemaining) {
         if (infoPanel != null) {
             infoPanel.setSuperModeStatus(movesRemaining);

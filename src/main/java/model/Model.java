@@ -17,11 +17,14 @@ import main.java.model.Entities.GhostColor;
 import main.java.model.Entities.Pacman;
 import main.java.model.Grid.Grid;
 import main.java.view.GUI.GamePanel;
-
 import javax.swing.Timer;
 
 public class Model {
     private static final int MAX_DOTS = 176; // Numero totale dei dots nella mappa
+    private static final int CHASE_INTERVAL_MIN = 6000;
+    private static final int CHASE_INTERVAL_MAX = 9000;
+    private static final int SCATTER_INTERVAL_MIN = 1700;
+    private static final int SCATTER_INTERVAL_MAX = 2000;
 
     private boolean gameOver;
     private boolean onGoing;
@@ -42,6 +45,9 @@ public class Model {
     private Timer scatterTimer;
     private final Random random;
 
+    /**
+     * Costruttore della classe Model.
+     */
     public Model() {
         this.onGoing = false;
         this.paused = false;
@@ -60,67 +66,120 @@ public class Model {
         this.random = new Random();
     }
 
+    /**
+     * Inizializza il timer per la strategia di inseguimento dei fantasmi.
+     */
     public void initChaseTimer() {
-        this.chaseTimer = new Timer(this.random.nextInt(6000, 9000), e -> changeStrategy(true));
-        this.chaseTimer.start();
+        this.chaseTimer = createTimer(CHASE_INTERVAL_MIN, CHASE_INTERVAL_MAX, true);
     }
 
+    /**
+     * Inizializza il timer per la strategia di dispersione dei fantasmi.
+     */
     public void initScatterTimer() {
-        this.scatterTimer = new Timer(this.random.nextInt(1700, 2000), e -> changeStrategy(false));
-        this.scatterTimer.start();
+        this.scatterTimer = createTimer(SCATTER_INTERVAL_MIN, SCATTER_INTERVAL_MAX, false);
     }
 
+    /**
+     * Crea e avvia un timer con intervallo casuale tra min e max.
+     *
+     * @param min     Il valore minimo dell'intervallo.
+     * @param max     Il valore massimo dell'intervallo.
+     * @param chasing True se il timer deve cambiare la strategia a chasing, false
+     *                se scatter.
+     * @return Il timer creato.
+     */
+    private Timer createTimer(int min, int max, boolean chasing) {
+        int interval = this.random.nextInt(max - min + 1) + min;
+        Timer timer = new Timer(interval, e -> changeStrategy(chasing));
+        timer.start();
+        return timer;
+    }
+
+    /**
+     * Ferma i timer di inseguimento e dispersione.
+     */
     private void stopTimers() {
-        this.scatterTimer.stop();
-        this.chaseTimer.stop();
+        if (this.scatterTimer != null)
+            this.scatterTimer.stop();
+        if (this.chaseTimer != null)
+            this.chaseTimer.stop();
     }
 
+    /**
+     * Cambia la strategia di movimento dei fantasmi tra dispersione e inseguimento.
+     *
+     * @param chasing True se i fantasmi devono inseguire, false se devono
+     *                disperdersi.
+     */
     private void changeStrategy(boolean chasing) {
-        String newStrat;
-
+        String newStrat = chasing ? "scatter" : "chase";
         for (Ghost ghost : ghosts) {
-            if (chasing) {
-                ghost.setMovementStrategy(new GhostScatterStrategy(ghost, grid, this, gamePanel, false));
-                newStrat = "scatter";
-            } else {
-                ghost.setMovementStrategy(new GhostChaseStrategy(ghost, grid, this, gamePanel, false));
-                newStrat = "chase";
-            }
+            ghost.setMovementStrategy(chasing
+                    ? new GhostScatterStrategy(ghost, grid, this, gamePanel, false)
+                    : new GhostChaseStrategy(ghost, grid, this, gamePanel, false));
             System.out.println("Strategia " + ghost.getColor() + " cambiata in " + newStrat);
         }
     }
 
+    /**
+     * Aggiunge un listener per le statistiche del gioco.
+     *
+     * @param lis Il listener da aggiungere.
+     */
     public void addStatisticsListener(GameStatisticsListener lis) {
         listeners.add(lis);
     }
 
+    /**
+     * Notifica i listener che il punteggio è cambiato.
+     */
     public void notifyScoreChanged() {
         listeners.forEach(lis -> lis.onScoreChanged(score));
     }
 
+    /**
+     * Notifica i listener che il numero di vite è cambiato.
+     */
     public void notifyLivesChanged() {
         listeners.forEach(lis -> lis.onLivesChanged(lives));
     }
 
+    /**
+     * Notifica i listener che lo stato della modalità Super è cambiato.
+     *
+     * @param movesRemaining Il numero di mosse rimanenti nella modalità Super.
+     */
     public void notifySuperModeStatusChanged(int movesRemaining) {
         listeners.forEach(listener -> listener.onSuperModeStatusChanged(movesRemaining));
     }
 
+    /**
+     * Muove Pacman nella direzione specificata.
+     *
+     * @param direction La direzione in cui muovere Pacman.
+     */
     public void movePacman(Direction direction) {
         pacmanMovementStrategy.move(direction); // Let strategy handle movement
 
-        // Handle game logic related to movement
+        // Gestisci la logica di gioco relativa al movimento
         if (isSuperModeActive()) {
             decrementSuperModeMovesRemaining();
         }
     }
 
+    /**
+     * Muove tutti i fantasmi.
+     */
     public void moveGhosts() {
         for (Ghost g : ghosts) {
             g.move();
         }
     }
 
+    /**
+     * Gestisce il consumo dei dots da parte di Pacman.
+     */
     public void handleDotEat() {
         Position pacPos = pacman.getPosition();
 
@@ -147,31 +206,39 @@ public class Model {
         }
     }
 
+    /**
+     * Inizializza i fantasmi con le loro posizioni e strategie di movimento.
+     */
     private void initializeGhosts() {
         for (int i = 0; i < GhostColor.values().length; i++) {
             Ghost ghost = new Ghost(grid.getGhostStartPositions().get(i), GhostColor.values()[i]);
-            ghost.setMovementStrategy(new GhostChaseStrategy(ghost,
-                    grid,
-                    this,
-                    this.gamePanel,
-                    true));
+            ghost.setMovementStrategy(new GhostChaseStrategy(ghost, grid, this, this.gamePanel, true));
             ghost.getMovementStrategy().setMovStratId(i);
             ghosts.add(ghost);
         }
     }
 
+    /**
+     * Reset dei fantasmi.
+     */
     private void resetGhosts() {
         ghosts.clear();
         initializeGhosts();
     }
 
+    /**
+     * Reset di Pacman.
+     */
     private void resetPacman() {
         this.pacman.setPosition(grid.getPacmanStartPosition());
-        this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman,
-                grid,
-                this);
+        this.pacmanMovementStrategy = new PacmanMovementStrategy(pacman, grid, this);
     }
 
+    /**
+     * Attiva la modalità Super.
+     *
+     * @param moves Il numero di mosse nella modalità Super.
+     */
     public void activateSuperMode(int moves) {
         this.superModeMovesRemaining = moves;
         pacman.setSuperMode(true);
@@ -179,6 +246,9 @@ public class Model {
         System.out.println("Supermode attivata! Mosse rimanenti: " + superModeMovesRemaining);
     }
 
+    /**
+     * Decrementa il numero di mosse rimanenti nella modalità Super.
+     */
     public void decrementSuperModeMovesRemaining() {
         if (superModeMovesRemaining > 0) {
             superModeMovesRemaining--;
@@ -189,38 +259,35 @@ public class Model {
         }
     }
 
-    public void deactivateSuperMode() {
+    /**
+     * Disattiva la modalità Super.
+     */
+    private void deactivateSuperMode() {
         pacman.setSuperMode(false);
         enableDisableScare(false);
-        System.out.println("Supermode disattivata. I fantasmi tornano alla normalità.");
+        System.out.println("Supermode disattivata.");
     }
 
-    private void enableDisableScare(boolean scared) {
+    /**
+     * Abilita o disabilita l'effetto spaventapasseri per i fantasmi.
+     *
+     * @param enable True per abilitare, false per disabilitare.
+     */
+    private void enableDisableScare(boolean enable) {
         for (Ghost ghost : ghosts) {
-            if (scared) {
-                ghost.setMovementStrategy(new GhostFleeStrategy(ghost,
-                        grid,
-                        this,
-                        gamePanel,
-                        false));
-                System.out.println("settato flee");
-                stopTimers();
-            } else {
-                ghost.setMovementStrategy(new GhostChaseStrategy(ghost,
-                        grid,
-                        this,
-                        gamePanel,
-                        false));
-                this.chaseTimer.start();
-                this.scatterTimer.start();
-            }
-            ghost.setScared(scared);
+            ghost.setScared(enable);
         }
     }
 
+    /**
+     * Gestisce l'azione di Pacman che mangia un fantasma.
+     * 
+     * @param ghostPosition La posizione del fantasma da mangiare.
+     */
     public void eatGhost(Position ghostPosition) {
         Ghost eatenGhost = null;
 
+        // Trova il fantasma alla posizione specificata
         for (Ghost ghost : ghosts) {
             if (ghost.getPosition().equals(ghostPosition)) {
                 eatenGhost = ghost;
@@ -228,6 +295,7 @@ public class Model {
             }
         }
 
+        // Se un fantasma viene trovato, rilocalizzalo e aggiorna il punteggio
         if (eatenGhost != null) {
             relocateGhost(eatenGhost);
             System.out.println("Fantasma alla posizione " + ghostPosition + " è stato mangiato!");
@@ -237,6 +305,11 @@ public class Model {
         }
     }
 
+    /**
+     * Rilocalizza il fantasma dato a una nuova posizione disponibile.
+     * 
+     * @param g Il fantasma da rilocalizzare.
+     */
     private void relocateGhost(Ghost g) {
         this.grid.getGhostStartPositions().stream()
                 .filter(startPosition -> !isPositionOccupiedByGhost(startPosition))
@@ -251,15 +324,24 @@ public class Model {
         g.setScared(false);
     }
 
-    private boolean isPositionOccupiedByGhost(Position position){
+    /**
+     * Verifica se una posizione è occupata da un fantasma.
+     * 
+     * @param position La posizione da verificare.
+     * @return True se la posizione è occupata da un fantasma, false altrimenti.
+     */
+    private boolean isPositionOccupiedByGhost(Position position) {
         for (Ghost ghost : ghosts) {
             if (ghost.getPosition().equals(position)) {
-                return true; // Position is occupied by a ghost
+                return true; // La posizione è occupata da un fantasma
             }
         }
         return false;
     }
 
+    /**
+     * Controlla se il gioco è stato vinto.
+     */
     public void winGame() {
         if (this.dotsEaten == MAX_DOTS) {
             this.win = true;
@@ -267,11 +349,21 @@ public class Model {
         }
     }
 
+    /**
+     * Incrementa il punteggio di gioco.
+     * 
+     * @param points I punti da aggiungere al punteggio.
+     */
     public void incrementScore(int points) {
         score += points;
         notifyScoreChanged();
     }
 
+    /**
+     * Resetta lo stato del gioco.
+     * 
+     * @param win Indica se il gioco è stato vinto o meno.
+     */
     public void resetGame(boolean win) {
         if (!win) {
             this.score = 0;
@@ -286,6 +378,9 @@ public class Model {
         resetGhosts();
     }
 
+    /**
+     * Gestisce la perdita di una vita.
+     */
     public void loseLife() {
         this.lives--;
         if (this.lives <= 0) {
@@ -300,6 +395,9 @@ public class Model {
         }
     }
 
+    /**
+     * Gestisce l'evento in cui Pacman viene ucciso.
+     */
     private void onPacmanKilled() {
         stopTimers();
         ghosts.forEach(g -> g.setMovementStrategy(new GhostChaseStrategy(g,
@@ -311,6 +409,12 @@ public class Model {
         initScatterTimer();
     }
 
+    /**
+     * Gestisce la coordinata magica per la teletrasportazione.
+     * 
+     * @param pos La posizione da verificare.
+     * @return La posizione di destinazione se esiste, altrimenti un oggetto vuoto.
+     */
     public Optional<Position> handleMagicCoords(Position pos) {
         Map<Position, Position> magicCoordsMap = Map.of(
                 new Position(9, 0), new Position(9, 17),
@@ -319,71 +423,62 @@ public class Model {
         return Optional.ofNullable(magicCoordsMap.get(pos));
     }
 
+    /**
+     * Avvia o ferma il gioco.
+     * 
+     * @param onGoing True per avviare il gioco, false per fermarlo.
+     */
     public void startStopGame(boolean onGoing) {
         this.onGoing = onGoing;
         this.paused = false;
         this.gameOver = false;
     }
 
+    /**
+     * Pausa o riprende il gioco.
+     * 
+     * @param paused True per mettere in pausa il gioco, false per riprenderlo.
+     */
     public void pauseUnpauseGame(boolean paused) {
         this.paused = paused;
         this.onGoing = !paused;
     }
 
+    /**
+     * Imposta lo stato del gioco su "Game Over".
+     * 
+     * @param gameOver True per impostare il gioco su "Game Over", false altrimenti.
+     */
     public void setGameOver(boolean gameOver) {
         this.onGoing = false;
         this.paused = false;
         this.gameOver = gameOver;
     }
 
-    public boolean isOnGoing() {
-        return onGoing;
-    }
-
-    public boolean isPaused() {
-        return paused;
-    }
-
-    public boolean isGameOver() {
-        return gameOver;
-    }
-
-    public boolean isWin() {
-        return win;
-    }
-
+    /**
+     * Verifica se la modalità Supermode è attiva.
+     * 
+     * @return True se la modalità Supermode è attiva, false altrimenti.
+     */
     public boolean isSuperModeActive() {
         return superModeMovesRemaining > 0;
     }
 
-    public void setGamePanel(GamePanel gamePanel) {
-        this.gamePanel = gamePanel;
-    }
-
+    /**
+     * Ottiene il pannello di gioco.
+     * 
+     * @return Il pannello di gioco.
+     */
     public GamePanel getGamePanel() {
         return gamePanel;
     }
 
-    public Grid getGrid() {
-        return this.grid;
-    }
-
-    public Pacman getPacman() {
-        return pacman;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public int getLives() {
-        return lives;
-    }
-
-    public List<Ghost> getGhosts() {
-        return ghosts;
-    }
-
+    /**
+     * Ottiene il fantasma alla posizione specificata.
+     * 
+     * @param index L'indice del fantasma.
+     * @return Il fantasma all'indice specificato, o null se l'indice non è valido.
+     */
     public Ghost getGhost(int index) {
         if (index >= 0 && index < ghosts.size()) {
             return ghosts.get(index);
@@ -393,6 +488,9 @@ public class Model {
         }
     }
 
+    /**
+     * Mostra un messaggio basato sullo stato del gioco.
+     */
     public void displayMessage() {
         if (gameOver) {
             System.out.println("Hai perso! Riprovare?");
@@ -401,5 +499,171 @@ public class Model {
         } else {
             System.out.println("Partita in corso");
         }
+    }
+
+    // Metodi getter e setter
+
+    /**
+     * Restituisce lo stato del gioco, se è finito o meno.
+     * 
+     * @return True se il gioco è finito, false altrimenti.
+     */
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    /**
+     * Restituisce lo stato del gioco, se è in corso o meno.
+     * 
+     * @return True se il gioco è in corso, false altrimenti.
+     */
+    public boolean isOnGoing() {
+        return onGoing;
+    }
+
+    /**
+     * Restituisce lo stato di pausa del gioco.
+     * 
+     * @return True se il gioco è in pausa, false altrimenti.
+     */
+    public boolean isPaused() {
+        return paused;
+    }
+
+    /**
+     * Restituisce lo stato della vittoria del gioco.
+     * 
+     * @return True se il gioco è vinto, false altrimenti.
+     */
+    public boolean isWin() {
+        return win;
+    }
+
+    /**
+     * Restituisce il numero di punti raccolti da Pacman.
+     * 
+     * @return Il numero di punti raccolti.
+     */
+    public int getDotsEaten() {
+        return dotsEaten;
+    }
+
+    /**
+     * Restituisce il numero di vite rimanenti.
+     * 
+     * @return Il numero di vite rimanenti.
+     */
+    public int getLives() {
+        return lives;
+    }
+
+    /**
+     * Restituisce il punteggio attuale del gioco.
+     * 
+     * @return Il punteggio attuale.
+     */
+    public int getScore() {
+        return score;
+    }
+
+    /**
+     * Restituisce il numero di mosse rimanenti in Supermode.
+     * 
+     * @return Il numero di mosse rimanenti in Supermode.
+     */
+    public int getSuperModeMovesRemaining() {
+        return superModeMovesRemaining;
+    }
+
+    /**
+     * Restituisce la griglia di gioco.
+     * 
+     * @return La griglia di gioco.
+     */
+    public Grid getGrid() {
+        return grid;
+    }
+
+    /**
+     * Imposta il pannello di gioco.
+     * 
+     * @param gamePanel Il pannello di gioco da impostare.
+     */
+    public void setGamePanel(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
+    }
+
+    /**
+     * Imposta lo stato di pausa del gioco.
+     * 
+     * @param paused True per mettere in pausa il gioco, false per riprenderlo.
+     */
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
+
+    /**
+     * Imposta il numero di vite rimanenti e notifica il cambiamento.
+     * 
+     * @param lives Il numero di vite da impostare.
+     */
+    public void setLives(int lives) {
+        this.lives = lives;
+        notifyLivesChanged(); // Notifica il cambiamento del numero di vite
+    }
+
+    /**
+     * Imposta il punteggio del gioco e notifica il cambiamento.
+     * 
+     * @param score Il punteggio da impostare.
+     */
+    public void setScore(int score) {
+        this.score = score;
+        notifyScoreChanged(); // Notifica il cambiamento del punteggio
+    }
+
+    /**
+     * Restituisce l'istanza di Pacman.
+     * 
+     * @return L'istanza di Pacman.
+     */
+    public Pacman getPacman() {
+        return pacman;
+    }
+
+    /**
+     * Restituisce la lista dei fantasmi.
+     * 
+     * @return La lista dei fantasmi.
+     */
+    public List<Ghost> getGhosts() {
+        return ghosts;
+    }
+
+    /**
+     * Restituisce il timer per la modalità inseguimento dei fantasmi.
+     * 
+     * @return Il timer per la modalità inseguimento.
+     */
+    public Timer getChaseTimer() {
+        return chaseTimer;
+    }
+
+    /**
+     * Restituisce il timer per la modalità dispersione dei fantasmi.
+     * 
+     * @return Il timer per la modalità dispersione.
+     */
+    public Timer getScatterTimer() {
+        return scatterTimer;
+    }
+
+    /**
+     * Restituisce l'istanza di Random usata per generare numeri casuali.
+     * 
+     * @return L'istanza di Random.
+     */
+    public Random getRandom() {
+        return random;
     }
 }
