@@ -21,20 +21,20 @@
 
 1. **Clonare il repository**:
     ```bash
-    git clone https://github.com/tuo-username/pacman-java.git
+    git clone https://github.com/flyingEgg/PacMan_PMO-S.autunnale-2023-24.git
     ```
 2. **Navigare nella directory del progetto**:
     ```bash
-    cd pacman-java
+    cd PacMan_PMO-S.autunnale-2023-24
     ```
-3. **Compila il progetto**:
+3. **Compilare il progetto**:
    Se si sta utilizzando un IDE, importare semplicemente il progetto e compilarlo. Se si usa la riga di comando:
     ```bash
-    javac -d bin src/*.java
+    javac -d out -sourcepath src src/main/java/app/Main.java src/main/java/controller/*.java src/model/*.java src/view/*.java
     ```
 4. **Esegui il gioco**:
     ```bash
-    java -cp bin com.example.pacman.Main
+    java -cp out main.java.app.Main
     ```
 
 ## Utilizzo
