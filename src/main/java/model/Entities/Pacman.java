@@ -1,8 +1,8 @@
 package main.java.model.Entities;
 
-import main.java.model.Grid;
 import main.java.model.API.Direction;
 import main.java.model.API.Position;
+import main.java.model.Grid.Grid;
 
 import javax.swing.*;
 import java.awt.*;

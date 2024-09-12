@@ -1,4 +1,4 @@
-package main.java.view;
+package main.java.view.GUI;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;

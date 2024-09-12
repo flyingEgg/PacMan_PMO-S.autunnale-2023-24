@@ -1,11 +1,11 @@
 package main.java.controller.Strategies;
 
-import main.java.model.Grid;
 import main.java.model.Model;
 import main.java.model.API.Direction;
 import main.java.model.API.Position;
 import main.java.model.Entities.Ghost;
-import main.java.view.GamePanel;
+import main.java.model.Grid.Grid;
+import main.java.view.GUI.GamePanel;
 
 public class GhostChaseStrategy extends GhostMovementStrategy {
 

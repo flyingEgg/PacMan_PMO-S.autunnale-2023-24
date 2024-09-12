@@ -1,4 +1,4 @@
-package main.java.view;
+package main.java.view.GUI;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -11,7 +11,6 @@ import java.util.Optional;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import main.java.model.Grid;
 import main.java.model.Model;
 import main.java.model.API.MapComponent;
 import main.java.model.API.Position;
@@ -20,6 +19,7 @@ import main.java.model.Composite.SmallDot;
 import main.java.model.Composite.Wall;
 import main.java.model.Entities.Ghost;
 import main.java.model.Entities.Pacman;
+import main.java.model.Grid.Grid;
 
 public class GamePanel extends JPanel {
     private Pacman pacman;

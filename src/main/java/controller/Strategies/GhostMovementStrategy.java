@@ -2,13 +2,13 @@ package main.java.controller.Strategies;
 
 import main.java.model.Entities.GhostColor;
 import main.java.model.Exceptions.IllegalEntityMovementException;
-import main.java.model.Grid;
+import main.java.model.Grid.Grid;
+import main.java.view.GUI.GamePanel;
 import main.java.model.Model;
 import main.java.model.API.Direction;
 import main.java.model.API.MovementStrategy;
 import main.java.model.API.Position;
 import main.java.model.Entities.Ghost;
-import main.java.view.GamePanel;
 
 import javax.swing.Timer;
 import java.util.List;
@@ -19,8 +19,8 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     private final Grid grid;
     private final GamePanel gamePanel;
     private final Random rand;
-    private final  List<Direction> initialMoves;
-    private final  Map<GhostColor, Position> initialPositionsMap;
+    private final List<Direction> initialMoves;
+    private final Map<GhostColor, Position> initialPositionsMap;
     private boolean newStrat;
     private int initialMoveIndex = 0;
     protected final Ghost ghost;

@@ -1,12 +1,12 @@
 package main.java.controller.Strategies;
 
-import main.java.model.Grid;
 import main.java.model.Model;
 import main.java.model.API.Direction;
 import main.java.model.API.MovementStrategy;
 import main.java.model.API.Position;
 import main.java.model.Entities.Pacman;
 import main.java.model.Exceptions.IllegalEntityMovementException;
+import main.java.model.Grid.Grid;
 
 import java.util.EnumMap;
 import java.util.Map;

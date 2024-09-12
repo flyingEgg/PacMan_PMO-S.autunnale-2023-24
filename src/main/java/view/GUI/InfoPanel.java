@@ -1,4 +1,4 @@
-package main.java.view;
+package main.java.view.GUI;
 
 import main.java.model.Model;
 import main.java.model.API.GameStatisticsListener;

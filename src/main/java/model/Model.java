@@ -15,7 +15,8 @@ import main.java.model.Composite.SmallDot;
 import main.java.model.Entities.Ghost;
 import main.java.model.Entities.GhostColor;
 import main.java.model.Entities.Pacman;
-import main.java.view.GamePanel;
+import main.java.model.Grid.Grid;
+import main.java.view.GUI.GamePanel;
 
 import javax.swing.Timer;
 

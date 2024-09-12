@@ -1,24 +1,25 @@
-package main.java.view;
+package main.java.view.GUI;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import main.java.controller.Controller;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class GameOverScreen extends JFrame {
+public class GameWonScreen extends JFrame {
     private final Controller controller;
     private final int score;
 
-    public GameOverScreen(Controller controller, int score) {
+    public GameWonScreen(Controller controller, int score) {
         this.controller = controller;
         this.score = score;
-        setupGameOverScreen();
+        setupGameWonScreen();
     }
 
-    public void setupGameOverScreen() {
-        setTitle("Game Over");
+    public void setupGameWonScreen() {
+        setTitle("You Win!");
 
         try {
             BufferedImage icon = ImageIO.read(getClass().getResource("/main/java/view/images/right.gif"));
@@ -55,13 +56,13 @@ public class GameOverScreen extends JFrame {
         scoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Creazione pulsanti
-        JButton restartButton = new RoundedButton("Restart Game");
-        restartButton.setBackground(new Color(34, 139, 34)); // Verde scuro
-        restartButton.setFont(new Font("Arial", Font.BOLD, 22));
-        restartButton.setMaximumSize(new Dimension(200, 50));
-        restartButton.addActionListener(e -> {
-            controller.restartGame();
-            dispose(); // Chiude la schermata di Game Over
+        JButton keepPlayingButton = new RoundedButton("Keep Playing");
+        keepPlayingButton.setBackground(new Color(34, 139, 34)); // Verde scuro
+        keepPlayingButton.setFont(new Font("Arial", Font.BOLD, 22));
+        keepPlayingButton.setMaximumSize(new Dimension(200, 50));
+        keepPlayingButton.addActionListener(e -> {
+            controller.keepPlayingWin();
+            dispose(); // Chiude la schermata di Vittoria
         });
 
         JButton menuButton = new RoundedButton("Main Menu");
@@ -70,18 +71,18 @@ public class GameOverScreen extends JFrame {
         menuButton.setMaximumSize(new Dimension(200, 50));
         menuButton.addActionListener(e -> {
             controller.showMainMenu();
-            dispose(); // Chiude la schermata di Game Over
+            dispose(); // Chiude la schermata di Vittoria
         });
 
         panel.add(Box.createVerticalStrut(50));
         panel.add(scoreLabel);
         panel.add(Box.createVerticalGlue());
-        panel.add(restartButton);
+        panel.add(keepPlayingButton);
         panel.add(Box.createVerticalStrut(20)); // Spazio tra i pulsanti
         panel.add(menuButton);
         panel.add(Box.createVerticalStrut(50));
 
-        restartButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        keepPlayingButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         menuButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         backgroundPanel.add(panel, BorderLayout.CENTER);

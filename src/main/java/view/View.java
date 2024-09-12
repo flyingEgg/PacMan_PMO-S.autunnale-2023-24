@@ -17,6 +17,11 @@ import main.java.controller.Controller;
 import main.java.model.Model;
 import main.java.model.API.Direction;
 import main.java.model.Exceptions.IllegalEntityMovementException;
+import main.java.view.GUI.GameOverScreen;
+import main.java.view.GUI.GamePanel;
+import main.java.view.GUI.GameWonScreen;
+import main.java.view.GUI.InfoPanel;
+import main.java.view.GUI.MainMenu;
 
 public class View extends JFrame {
     private Controller controller;

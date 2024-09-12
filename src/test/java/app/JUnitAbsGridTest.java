@@ -1,12 +1,12 @@
 package test.java.app;
 
-import main.java.model.Grid;
 import main.java.model.API.MapComponent;
 import main.java.model.API.Position;
 import main.java.model.Composite.BigDot;
 import main.java.model.Composite.SmallDot;
 import main.java.model.Composite.Wall;
 import main.java.model.Entities.Pacman;
+import main.java.model.Grid.Grid;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
