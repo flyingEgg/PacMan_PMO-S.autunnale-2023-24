@@ -33,7 +33,6 @@ public class Model {
 
     private boolean gameOver;
     private boolean onGoing;
-    private boolean paused;
     private boolean win;
     private int dotsEaten;
     private int lives;
@@ -55,7 +54,6 @@ public class Model {
      */
     public Model() {
         this.onGoing = false;
-        this.paused = false;
         this.gameOver = false;
         this.dotsEaten = 0;
         this.lives = 3;
@@ -459,7 +457,6 @@ public class Model {
      */
     public void startStopGame(boolean onGoing) {
         this.onGoing = onGoing;
-        this.paused = false;
         this.gameOver = false;
     }
 
@@ -469,7 +466,6 @@ public class Model {
      * @param paused True per mettere in pausa il gioco, false per riprenderlo.
      */
     public void pauseUnpauseGame(boolean paused) {
-        this.paused = paused;
         this.onGoing = !paused;
     }
 
@@ -480,7 +476,6 @@ public class Model {
      */
     public void setGameOver(boolean gameOver) {
         this.onGoing = false;
-        this.paused = false;
         this.gameOver = gameOver;
     }
 
@@ -517,19 +512,6 @@ public class Model {
         }
     }
 
-    /**
-     * Mostra un messaggio basato sullo stato del gioco.
-     */
-    public void displayMessage() {
-        if (gameOver) {
-            System.out.println("Hai perso! Riprovare?");
-        } else if (paused) {
-            System.out.println("Partita in pausa");
-        } else {
-            System.out.println("Partita in corso");
-        }
-    }
-
     // Metodi getter e setter
 
     /**
@@ -548,15 +530,6 @@ public class Model {
      */
     public boolean isOnGoing() {
         return onGoing;
-    }
-
-    /**
-     * Restituisce lo stato di pausa del gioco.
-     * 
-     * @return True se il gioco è in pausa, false altrimenti.
-     */
-    public boolean isPaused() {
-        return paused;
     }
 
     /**
@@ -620,15 +593,6 @@ public class Model {
      */
     public void setGamePanel(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
-    }
-
-    /**
-     * Imposta lo stato di pausa del gioco.
-     * 
-     * @param paused True per mettere in pausa il gioco, false per riprenderlo.
-     */
-    public void setPaused(boolean paused) {
-        this.paused = paused;
     }
 
     /**

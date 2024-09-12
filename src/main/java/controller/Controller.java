@@ -39,7 +39,7 @@ public class Controller {
      * @param direction la direzione in cui muovere Pacman
      */
     public void movePacman(Direction direction) {
-        if (model.isOnGoing() && !model.isPaused()) {
+        if (model.isOnGoing()) {
             checkForCollisions(); // Controlla le collisioni prima di muovere Pacman
             model.movePacman(direction);
             checkForCollisions(); // Controlla le collisioni dopo aver mosso Pacman
@@ -53,7 +53,7 @@ public class Controller {
      * Muove i fantasmi.
      */
     public void moveGhosts() {
-        if (model.isOnGoing() && !model.isPaused()) {
+        if (model.isOnGoing()) {
             model.moveGhosts();
             view.getGamePanel().repaint(); // Ridisegna il pannello di gioco per riflettere le modifiche
         }
