@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import main.java.model.API.Position;
+import main.java.model.Movement.Position;
 import main.java.model.Composite.BigDot;
 import main.java.model.Composite.SmallDot;
 import main.java.model.Composite.Wall;

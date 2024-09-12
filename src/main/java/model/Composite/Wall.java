@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import main.java.model.API.MapComponent;
-import main.java.model.API.Position;
+import main.java.model.Movement.Position;
 
 /**
  * Rappresenta un muro nel gioco che ostacola il movimento degli altri oggetti.

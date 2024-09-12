@@ -3,7 +3,7 @@ package main.java.model.Grid;
 import java.util.Optional;
 
 import main.java.model.API.MapComponent;
-import main.java.model.API.Position;
+import main.java.model.Movement.Position;
 import main.java.model.Util.Pair;
 
 /**

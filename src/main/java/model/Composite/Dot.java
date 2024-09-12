@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 
 import main.java.model.Model;
 import main.java.model.API.MapComponent;
-import main.java.model.API.Position;
+import main.java.model.Movement.Position;
 
 /**
  * Rappresenta un punto nel gioco, che può essere raccolto dal giocatore.

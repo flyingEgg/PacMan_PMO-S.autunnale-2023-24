@@ -1,5 +1,7 @@
 package main.java.model.API;
 
+import main.java.model.Movement.Position;
+
 import java.awt.Graphics2D;
 import java.util.Map;
 import javax.swing.ImageIcon;

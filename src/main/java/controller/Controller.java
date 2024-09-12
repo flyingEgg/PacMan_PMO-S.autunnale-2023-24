@@ -1,7 +1,7 @@
 package main.java.controller;
 
 import main.java.model.Model;
-import main.java.model.API.Direction;
+import main.java.model.Movement.Direction;
 import main.java.model.Entities.Ghost;
 import main.java.view.View;
 

@@ -1,6 +1,7 @@
 package main.java.model.API;
 
 import main.java.model.Entities.AbstractEntity;
+import main.java.model.Movement.Direction;
 
 /**
  * Interfaccia per la strategia di movimento di un'entità.

@@ -6,8 +6,8 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import main.java.controller.Strategies.GhostMovementStrategy;
-import main.java.model.API.Direction;
-import main.java.model.API.Position;
+import main.java.model.Movement.Direction;
+import main.java.model.Movement.Position;
 import main.java.model.Grid.Grid;
 
 /**
@@ -16,7 +16,7 @@ import main.java.model.Grid.Grid;
  * del fantasma.
  */
 public class Ghost extends AbstractEntity {
-    private GhostColor color;
+    private final GhostColor color;
     private GhostMovementStrategy movementStrategy;
     private boolean scared;
     private Direction direction;

@@ -1,4 +1,4 @@
-package main.java.model.API;
+package main.java.model.Movement;
 
 /**
  * Enum che rappresenta le direzioni di movimento in gioco.
