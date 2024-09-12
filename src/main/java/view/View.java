@@ -151,17 +151,25 @@ public class View extends JFrame {
 
     private void winOrGameOver() {
         if (model.isGameOver()) {
-            JOptionPane.showMessageDialog(this, "Game Over! Your score: " + model.getScore());
-            resetStats(false);
+            showGameOverScreen();
         } else if (model.isWin()) {
-            JOptionPane.showMessageDialog(this, "Congrats! You won! " + model.getScore());
-            resetStats(true);
+            showWinScreen(model.getScore());
         }
     }
 
     public void resetStats(boolean win) {
         model.resetGame(win);
         showGameWindow();
+    }
+
+    public void showWinScreen(int score) {
+        new GameWonScreen(controller, score);
+        dispose();
+    }
+
+    private void showGameOverScreen() {
+        new GameOverScreen(controller, model.getScore()); // Mostra la nuova schermata Game Over
+        dispose(); // Chiude la finestra attuale del gioco
     }
 
     private String switchDirezione(Direction direction) {

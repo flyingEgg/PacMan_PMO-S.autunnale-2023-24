@@ -32,14 +32,14 @@ public class Controller {
         if (model.isOnGoing() && !model.isPaused()) {
             checkForCollisions();
             model.movePacman(direction);
-            checkForCollisions();           // DA RIVEDERE
+            checkForCollisions(); // DA RIVEDERE
 
             view.updateInfoPanel(); // Update the info panel after Pacman moves
             view.getGamePanel().repaint(); // Repaint the game panel to reflect changes
         }
     }
 
-    public void moveGhosts(){
+    public void moveGhosts() {
         if (model.isOnGoing() && !model.isPaused()) {
             model.moveGhosts();
             view.getGamePanel().repaint(); // Repaint the game panel to reflect changes
@@ -64,4 +64,17 @@ public class Controller {
     public void setView(View view) {
         this.view = view;
     }
+
+    public void showMainMenu() {
+        view.showMainMenu();
+    }
+
+    public void restartGame() {
+        view.resetStats(false);
+    }
+
+    public void keepPlayingWin() {
+        view.resetStats(true);
+    }
+
 }

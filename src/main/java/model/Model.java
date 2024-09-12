@@ -251,7 +251,7 @@ public class Model {
     }
 
     public void resetGame(boolean win) {
-        if (!win){
+        if (!win) {
             this.score = 0;
             this.lives = 3;
         }
@@ -270,15 +270,15 @@ public class Model {
             setGameOver(true);
         } else {
             this.pacman.setPosition(grid.getPacmanStartPosition());
-            IntStream.range(0, ghosts.size()).
-                    forEach(i -> ghosts.get(i).setPosition(grid.getGhostStartPositions().get(i)));
+            IntStream.range(0, ghosts.size())
+                    .forEach(i -> ghosts.get(i).setPosition(grid.getGhostStartPositions().get(i)));
             onPacmanKilled();
 
             notifyLivesChanged();
         }
     }
 
-    private void onPacmanKilled(){
+    private void onPacmanKilled() {
         stopTimers();
         ghosts.forEach(g -> g.setMovementStrategy(new GhostChaseStrategy(g,
                 grid,
