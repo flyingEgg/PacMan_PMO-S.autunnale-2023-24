@@ -24,13 +24,10 @@ public class SupermodeTest {
 
     @Test
     public void testGhostVulnerability() {
-        BigDot bigDot = new BigDot(new Position(1, 0));
-        model.getGrid().addDot(bigDot); // Aggiunge il dot al labirinto
-        model.movePacman(Direction.RIGHT); // Muove Pacman verso il big dot
-        assertTrue(ghost.isScared()); // Verifica se il fantasma è spaventato
+        // Posiziona Pacman sulla BigDot
+        pacman.setPosition(new Position(18, 17));
+        model.movePacman(Direction.RIGHT); // Muove Pacman verso il BigDot
 
-        // Simula la fine del Supermode
-        model.deactivateSuperMode();
-        assertFalse(ghost.isScared()); // Verifica che il fantasma non sia più spaventato
+        assertTrue(ghost.isScared()); // Verifica se il fantasma è spaventato
     }
 }

@@ -89,10 +89,7 @@ public class GamePanelView extends JPanel {
                                 Grid.CELL_SIZE, this);
                     } else {
                         String key = getImageKey(component.get());
-                        if (!loggedImageKeys.contains(key)) {
-                            System.out.println("Immagine non trovata per la chiave: " + key);
-                            loggedImageKeys.add(key);
-                        }
+                        loggedImageKeys.add(key);
                     }
                 }
             }
@@ -128,10 +125,7 @@ public class GamePanelView extends JPanel {
             return "ghost" + ghost.getColor().name().toLowerCase();
         }
         String className = component.getClass().getSimpleName();
-        if (!loggedComponentKeys.contains(className)) {
-            System.out.println("Componente sconosciuto: " + className);
-            loggedComponentKeys.add(className);
-        }
+        loggedComponentKeys.add(className);
         return "unknown";
     }
 }

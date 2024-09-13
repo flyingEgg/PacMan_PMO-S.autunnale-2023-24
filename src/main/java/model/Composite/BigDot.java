@@ -51,7 +51,5 @@ public class BigDot extends Dot {
         model.incrementScore(points);
         // Attiva la super modalità con un numero fisso di mosse
         model.activateSuperMode(20);
-        // Stampa un messaggio di debug con la posizione del grande punto
-        System.out.println("BigDot mangiato alla posizione: " + getPosition());
     }
 }

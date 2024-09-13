@@ -197,8 +197,7 @@ public class View extends JFrame {
                 controller.moveGhosts();
                 gamePanel.repaint();
                 winOrGameOver();
-            } catch (IllegalEntityMovementException ex) {
-                System.out.println("Pacman ha colpito un muro: " + switchDirection(direction));
+            } catch (IllegalEntityMovementException ignored) {
             }
         }
     }

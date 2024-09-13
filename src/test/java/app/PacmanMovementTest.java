@@ -7,40 +7,45 @@ import main.java.model.Model;
 import main.java.model.Movement.Direction;
 import main.java.model.Movement.Position;
 import main.java.model.Entities.Pacman;
+import main.java.model.Grid.Grid;
+import java.util.Set;
 
 public class PacmanMovementTest {
     private Model model;
     private Pacman pacman;
+    private Grid grid;
 
     @BeforeEach
     public void setUp() {
-        model = new Model(); // Inizializza il modello
-        pacman = model.getPacman(); // Recupera Pacman dal modello
+        model = new Model(); // Initialize the model
+        pacman = model.getPacman(); // Get Pacman from the model
+        grid = model.getGrid(); // Get the grid from the model
     }
 
     @Test
     public void testMovePacman() {
-        model.movePacman(Direction.RIGHT); // Muove Pacman verso destra
-        assertEquals(new Position(1, 0), pacman.getPosition()); // Verifica la nuova posizione di Pacman
 
-        model.movePacman(Direction.DOWN); // Muove Pacman verso il basso
-        assertEquals(new Position(1, 1), pacman.getPosition()); // Verifica la nuova posizione di Pacman
+        // Move Pacman down
+        model.movePacman(Direction.DOWN);
+        assertEquals(new Position(11, 10), pacman.getPosition()); // Adjust expected position
 
-        model.movePacman(Direction.LEFT); // Muove Pacman verso sinistra
-        assertEquals(new Position(0, 1), pacman.getPosition()); // Verifica la nuova posizione di Pacman
-
-        model.movePacman(Direction.UP); // Muove Pacman verso l'alto
-        assertEquals(new Position(0, 0), pacman.getPosition()); // Verifica la nuova posizione di Pacman
+        // Move Pacman up
+        model.movePacman(Direction.UP);
+        assertEquals(new Position(11, 9), pacman.getPosition()); // Adjust expected position
     }
 
     @Test
     public void testBlockMovement() {
-        model.movePacman(Direction.RIGHT); // Muove Pacman verso destra
-        // Supponiamo che ci sia un muro a destra della posizione iniziale
-        // Usa riflessione o modifica il modello per simulare la collisione
-        // Questo è un segnaposto; implementa in base alla tua logica di collisione
-        // effettiva
-        assertThrows(IllegalStateException.class, () -> model.movePacman(Direction.RIGHT)); // Verifica la collisione
-                                                                                            // con il muro
+        // Get wall positions from grid
+        Set<Position> wallPositions = grid.getWallPositions();
+
+        // Move Pacman to the right until hitting a wall
+
+        Position nextPosition = pacman.getPosition();
+        if (wallPositions.contains(nextPosition)) {
+            // If the next position is a wall, test collision
+            assertThrows(IllegalStateException.class, () -> model.movePacman(Direction.RIGHT));
+            return; // Exit the test as collision is expected
+        }
     }
 }

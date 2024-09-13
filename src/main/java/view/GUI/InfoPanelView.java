@@ -218,19 +218,16 @@ public class InfoPanelView extends JPanel implements GameStatisticsListener {
 
     @Override
     public void onScoreChanged(int newScore) {
-        System.out.println("Score changed: " + newScore); // Debug
         SwingUtilities.invokeLater(() -> setScore(newScore));
     }
 
     @Override
     public void onLivesChanged(int newLives) {
-        System.out.println("Lives changed: " + newLives); // Debug
         SwingUtilities.invokeLater(() -> setLives(newLives));
     }
 
     @Override
     public void onSuperModeStatusChanged(int movesRemaining) {
-        System.out.println("SuperMode moves remaining: " + movesRemaining); // Debug
         SwingUtilities.invokeLater(() -> setSuperModeStatus(movesRemaining));
     }
 }

@@ -20,16 +20,13 @@ public class DotInteractionTest {
 
     @Test
     public void testCollectSmallDot() {
-        SmallDot dot = new SmallDot(new Position(1, 0));
-        model.getGrid().addDot(dot); // Aggiunge il dot al labirinto
-        model.movePacman(Direction.RIGHT); // Muove Pacman verso il dot
+        model.movePacman(Direction.DOWN); // Muove Pacman verso il dot
         assertEquals(10, model.getScore()); // Verifica il punteggio; assume 10 punti per il SmallDot
     }
 
     @Test
     public void testActivateSupermode() {
-        BigDot bigDot = new BigDot(new Position(1, 0));
-        model.getGrid().addDot(bigDot); // Aggiunge il dot al labirinto
+        model.getPacman().setPosition(new Position(18, 17));
         model.movePacman(Direction.RIGHT); // Muove Pacman verso il big dot
         assertTrue(model.isSuperModeActive()); // Verifica se il Supermode è attivo
     }

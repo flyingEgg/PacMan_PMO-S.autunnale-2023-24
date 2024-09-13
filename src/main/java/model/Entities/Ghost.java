@@ -48,8 +48,6 @@ public class Ghost extends AbstractEntity {
         if (ghostImage != null) {
             g2d.drawImage(ghostImage.getImage(), getPosition().getX() * Grid.CELL_SIZE,
                     getPosition().getY() * Grid.CELL_SIZE, null);
-        } else {
-            System.out.println("Ghost image not found for color: " + color);
         }
     }
 
@@ -115,7 +113,6 @@ public class Ghost extends AbstractEntity {
      */
     public void setMovementStrategy(GhostMovementStrategy strategy) {
         this.movementStrategy = strategy;
-        System.out.println("Movement strategy set successfully for ghost.");
     }
 
     /**

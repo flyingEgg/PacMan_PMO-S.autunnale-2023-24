@@ -129,7 +129,6 @@ public class Model {
             ghost.setMovementStrategy(chasing
                     ? new GhostScatterStrategy(ghost, grid, this, gamePanel, false)
                     : new GhostChaseStrategy(ghost, grid, this, gamePanel, false));
-            System.out.println("Strategia " + ghost.getColor() + " cambiata in " + newStrat);
         }
     }
 
@@ -305,7 +304,6 @@ public class Model {
         this.superModeMovesRemaining = moves;
         pacman.setSuperMode(true);
         enableDisableScare(true);
-        System.out.println("Supermode attivata! Mosse rimanenti: " + superModeMovesRemaining);
     }
 
     /**
@@ -327,7 +325,6 @@ public class Model {
     private void deactivateSuperMode() {
         pacman.setSuperMode(false);
         enableDisableScare(false);
-        System.out.println("Supermode disattivata.");
     }
 
     /**
@@ -350,7 +347,6 @@ public class Model {
                         this,
                         gamePanel,
                         false));
-                System.out.println("settato flee");
                 stopTimers();
             } else {
                 ghost.setMovementStrategy(new GhostChaseStrategy(ghost,
@@ -376,10 +372,9 @@ public class Model {
                 findFirst().
                 orElse(null);
 
-        // Se un fantasma viene trovato, rilocalizzalo e aggiorna il punteggio
+        // Se un fantasma viene trovato, viene rilocalizzato e aggiornato il punteggio
         if (eatenGhost != null) {
             relocateGhost(eatenGhost);
-            System.out.println("Fantasma alla posizione " + ghostPosition + " è stato mangiato!");
             incrementScore(200);
         } else {
             System.out.println("Nessun fantasma trovato alla posizione " + ghostPosition);

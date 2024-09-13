@@ -75,10 +75,7 @@ public class Controller {
                     // Pacman perde una vita
                     model.loseLife();
                 }
-                // Aggiorna il pannello delle informazioni se un fantasma è stato mangiato o se
-                // è stata persa una vita
                 view.updateInfoPanel();
-                // Termina il controllo dopo aver gestito una collisione
                 return;
             }
         }

@@ -58,6 +58,5 @@ public class SmallDot extends Dot {
     protected void onCollect(Model model) {
         model.incrementScore(points); // Aumenta il punteggio
         model.notifyScoreChanged(); // Notifica il cambiamento di punteggio
-        System.out.println("SmallDot mangiato alla posizione: " + getPosition());
     }
 }
