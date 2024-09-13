@@ -1,4 +1,4 @@
-package main.java.controller.Strategies;
+package main.java.model.Strategies;
 
 import main.java.model.Model;
 import main.java.model.Movement.Direction;

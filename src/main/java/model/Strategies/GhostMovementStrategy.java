@@ -1,4 +1,4 @@
-package main.java.controller.Strategies;
+package main.java.model.Strategies;
 
 import main.java.model.Entities.GhostColor;
 import main.java.model.Exceptions.IllegalEntityMovementException;

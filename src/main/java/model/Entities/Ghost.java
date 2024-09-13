@@ -5,7 +5,7 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
-import main.java.controller.Strategies.GhostMovementStrategy;
+import main.java.model.Strategies.GhostMovementStrategy;
 import main.java.model.Movement.Direction;
 import main.java.model.Movement.Position;
 import main.java.model.Grid.Grid;

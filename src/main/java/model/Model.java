@@ -14,10 +14,10 @@ import java.util.stream.IntStream;
 
 import javax.swing.Timer;
 
-import main.java.controller.Strategies.GhostChaseStrategy;
-import main.java.controller.Strategies.GhostFleeStrategy;
-import main.java.controller.Strategies.GhostScatterStrategy;
-import main.java.controller.Strategies.PacmanMovementStrategy;
+import main.java.model.Strategies.GhostChaseStrategy;
+import main.java.model.Strategies.GhostFleeStrategy;
+import main.java.model.Strategies.GhostScatterStrategy;
+import main.java.model.Strategies.PacmanMovementStrategy;
 import main.java.model.Movement.Direction;
 import main.java.API.GameStatisticsListener;
 import main.java.model.Movement.Position;
