@@ -32,7 +32,6 @@ import main.java.view.GUI.MainMenu;
 public class View extends JFrame {
 
     private Controller controller;
-    private final Model model;
     private Map<String, ImageIcon> images;
     private GamePanel gamePanel;
     private InfoPanel infoPanel;
@@ -41,11 +40,9 @@ public class View extends JFrame {
     /**
      * Costruisce una vista con il modello e il controller specificati.
      *
-     * @param model      l'istanza del modello
      * @param controller l'istanza del controller
      */
-    public View(Model model, Controller controller) {
-        this.model = model;
+    public View(Controller controller) {
         this.controller = controller;
     }
 
@@ -131,8 +128,8 @@ public class View extends JFrame {
         if (infoPanel != null) {
             remove(infoPanel);
         }
-        gamePanel = new GamePanel(model, model.getPacman(), model.getGhosts(), images);
-        infoPanel = new InfoPanel(model);
+        gamePanel = new GamePanel(controller.getModel(), controller.getModel().getPacman(), controller.getModel().getGhosts(), images);
+        infoPanel = new InfoPanel(controller.getModel());
         add(gamePanel, BorderLayout.CENTER);
         add(infoPanel, BorderLayout.EAST);
         revalidate();
@@ -190,7 +187,7 @@ public class View extends JFrame {
         };
 
         if (direction != null) {
-            model.getPacman().setDirection(direction);
+            controller.getModel().getPacman().setDirection(direction);
             try {
                 controller.movePacman(direction);
                 controller.moveGhosts();
@@ -207,10 +204,10 @@ public class View extends JFrame {
      * appropriata.
      */
     private void winOrGameOver() {
-        if (model.isGameOver()) {
+        if (controller.getModel().isGameOver()) {
             showGameOverScreen();
-        } else if (model.isWin()) {
-            showWinScreen(model.getScore());
+        } else if (controller.getModel().isWin()) {
+            showWinScreen(controller.getModel().getScore());
         }
     }
 
@@ -220,7 +217,7 @@ public class View extends JFrame {
      * @param win true se il gioco è stato vinto, false altrimenti
      */
     public void resetStats(boolean win) {
-        model.resetGame(win);
+        controller.getModel().resetGame(win);
         showGameWindow();
     }
 
@@ -238,7 +235,7 @@ public class View extends JFrame {
      * Mostra la schermata di Game Over.
      */
     private void showGameOverScreen() {
-        new GameOverScreen(controller, model.getScore()); // Mostra la schermata di Game Over
+        new GameOverScreen(controller, controller.getModel().getScore()); // Mostra la schermata di Game Over
         dispose(); // Chiude la finestra di gioco
     }
 
@@ -275,8 +272,8 @@ public class View extends JFrame {
      */
     public void updateInfoPanel() {
         if (infoPanel != null) {
-            infoPanel.setLives(model.getLives());
-            infoPanel.setScore(model.getScore());
+            infoPanel.setLives(controller.getModel().getLives());
+            infoPanel.setScore(controller.getModel().getScore());
         }
     }
 
