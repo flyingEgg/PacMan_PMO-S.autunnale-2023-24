@@ -6,7 +6,7 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
-import main.java.model.API.MapComponent;
+import main.java.API.MapComponent;
 import main.java.model.Movement.Position;
 
 /**

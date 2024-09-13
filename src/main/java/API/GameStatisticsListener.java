@@ -1,4 +1,4 @@
-package main.java.model.API;
+package main.java.API;
 
 /**
  * Interfaccia per ascoltare le modifiche delle statistiche del gioco.

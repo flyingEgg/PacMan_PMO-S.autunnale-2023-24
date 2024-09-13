@@ -14,7 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import main.java.model.Model;
-import main.java.model.API.MapComponent;
+import main.java.API.MapComponent;
 import main.java.model.Movement.Position;
 import main.java.model.Composite.BigDot;
 import main.java.model.Composite.SmallDot;

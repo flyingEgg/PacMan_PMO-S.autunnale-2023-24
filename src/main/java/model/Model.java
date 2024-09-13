@@ -19,7 +19,7 @@ import main.java.controller.Strategies.GhostFleeStrategy;
 import main.java.controller.Strategies.GhostScatterStrategy;
 import main.java.controller.Strategies.PacmanMovementStrategy;
 import main.java.model.Movement.Direction;
-import main.java.model.API.GameStatisticsListener;
+import main.java.API.GameStatisticsListener;
 import main.java.model.Movement.Position;
 import main.java.model.Composite.BigDot;
 import main.java.model.Composite.SmallDot;

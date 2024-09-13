@@ -1,6 +1,6 @@
 package test.java.app;
 
-import main.java.model.API.MapComponent;
+import main.java.API.MapComponent;
 import main.java.model.Movement.Position;
 import main.java.model.Composite.BigDot;
 import main.java.model.Composite.SmallDot;

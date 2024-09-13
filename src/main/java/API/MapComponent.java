@@ -1,4 +1,4 @@
-package main.java.model.API;
+package main.java.API;
 
 import main.java.model.Movement.Position;
 
