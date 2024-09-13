@@ -332,7 +332,7 @@ public class Model {
 
     /**
      * Abilita o disabilita lo stato di paura per tutti i fantasmi.
-     * 
+     * <p>
      * Se l'argomento {@code scared} è {@code true}, i fantasmi vengono impostati
      * per utilizzare una strategia di movimento di fuga
      * e i timer vengono fermati. Se l'argomento è {@code false}, i fantasmi vengono
@@ -421,7 +421,6 @@ public class Model {
     public void winGame() {
         if (this.dotsEaten == MAX_DOTS) {
             this.win = true;
-            // resetGame();
         }
     }
 
