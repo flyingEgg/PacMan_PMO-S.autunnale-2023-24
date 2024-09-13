@@ -522,15 +522,6 @@ public class Model {
     }
 
     /**
-     * Pausa o riprende il gioco.
-     * 
-     * @param paused True per mettere in pausa il gioco, false per riprenderlo.
-     */
-    public void pauseUnpauseGame(boolean paused) {
-        this.onGoing = !paused;
-    }
-
-    /**
      * Imposta lo stato del gioco su "Game Over".
      * 
      * @param gameOver True per impostare il gioco su "Game Over", false altrimenti.
