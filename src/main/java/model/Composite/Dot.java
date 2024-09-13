@@ -69,12 +69,4 @@ public abstract class Dot implements MapComponent {
         return position;
     }
 
-    /**
-     * Verifica se il punto è stato raccolto.
-     * 
-     * @return true se il punto è stato raccolto, false altrimenti.
-     */
-    public boolean isEaten() {
-        return eaten;
-    }
 }
