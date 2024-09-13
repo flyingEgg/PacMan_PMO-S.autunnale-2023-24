@@ -237,7 +237,7 @@ public class Model {
      */
     public void moveGhosts() {
         for (Ghost g : ghosts) {
-            g.move();
+            g.moveByStrategy();
         }
     }
 
