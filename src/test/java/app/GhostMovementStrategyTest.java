@@ -13,23 +13,24 @@ import main.java.model.Movement.Position;
 public class GhostMovementStrategyTest {
     private Model model;
     private Ghost ghost;
-    private Position initialGhostPosition;
 
     @BeforeEach
     public void setUp() {
         model = new Model(); // Inizializza il modello
         ghost = model.getGhost(0); // Recupera il primo fantasma dal modello
-        initialGhostPosition = model.getGrid().getGhostStartPositions().get(0); // Salva la posizione iniziale del fantasma
+        model.getGrid().getGhostStartPositions().get(0); // Salva la posizione iniziale del fantasma
     }
 
     @Test
     public void testGhostMovementStrategy() {
         ghost.setMovementStrategy(new GhostChaseStrategy(ghost, model.getGrid(), model, null, true));
         model.moveGhosts(); // Muove i fantasmi in base alla strategia corrente
-        assertTrue(ghost.getMovementStrategy() instanceof GhostChaseStrategy); // Verifica che il fantasma stia usando la strategia Chase
+        assertTrue(ghost.getMovementStrategy() instanceof GhostChaseStrategy); // Verifica che il fantasma stia usando
+                                                                               // la strategia Chase
 
         ghost.setMovementStrategy(new GhostScatterStrategy(ghost, model.getGrid(), model, null, true));
         model.moveGhosts(); // Muove i fantasmi in base alla nuova strategia
-        assertTrue(ghost.getMovementStrategy() instanceof GhostScatterStrategy); // Verifica che il fantasma stia usando la strategia Scatter
+        assertTrue(ghost.getMovementStrategy() instanceof GhostScatterStrategy); // Verifica che il fantasma stia usando
+                                                                                 // la strategia Scatter
     }
 }

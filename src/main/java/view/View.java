@@ -243,21 +243,6 @@ public class View extends JFrame {
     }
 
     /**
-     * Converte una direzione in una stringa di descrizione in italiano.
-     *
-     * @param direction la direzione da convertire
-     * @return la stringa di descrizione della direzione
-     */
-    private String switchDirection(Direction direction) {
-        return switch (direction) {
-            case UP -> "sopra";
-            case DOWN -> "sotto";
-            case RIGHT -> "a destra";
-            case LEFT -> "a sinistra";
-        };
-    }
-
-    /**
      * Mostra il menu principale.
      */
     public void showMainMenu() {

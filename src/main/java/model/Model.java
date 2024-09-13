@@ -124,7 +124,6 @@ public class Model {
      *                disperdersi.
      */
     private void changeStrategy(boolean chasing) {
-        String newStrat = chasing ? "scatter" : "chase";
         for (Ghost ghost : ghosts) {
             ghost.setMovementStrategy(chasing
                     ? new GhostScatterStrategy(ghost, grid, this, gamePanel, false)
@@ -367,10 +366,8 @@ public class Model {
      * @param ghostPosition La posizione del fantasma da mangiare.
      */
     public void eatGhost(Position ghostPosition) {
-        Ghost eatenGhost = ghosts.stream().
-                filter(ghost -> ghost.getPosition().equals(ghostPosition)).
-                findFirst().
-                orElse(null);
+        Ghost eatenGhost = ghosts.stream().filter(ghost -> ghost.getPosition().equals(ghostPosition)).findFirst()
+                .orElse(null);
 
         // Se un fantasma viene trovato, viene rilocalizzato e aggiornato il punteggio
         if (eatenGhost != null) {
