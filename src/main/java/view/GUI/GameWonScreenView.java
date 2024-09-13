@@ -24,7 +24,7 @@ import main.java.controller.Controller;
  * Visualizza il punteggio del giocatore e fornisce opzioni per continuare a
  * giocare o tornare al menu principale.
  */
-public class GameWonScreen extends JFrame {
+public class GameWonScreenView extends JFrame {
     private final Controller controller; // Controller per gestire le azioni di gioco
     private final int score; // Punteggio del giocatore da visualizzare
 
@@ -34,7 +34,7 @@ public class GameWonScreen extends JFrame {
      * @param controller Il controller per gestire le azioni di gioco
      * @param score      Il punteggio da visualizzare sulla schermata
      */
-    public GameWonScreen(Controller controller, int score) {
+    public GameWonScreenView(Controller controller, int score) {
         this.controller = controller;
         this.score = score;
         setupGameWonScreen();

@@ -3,7 +3,7 @@ package main.java.controller.Strategies;
 import main.java.model.Entities.GhostColor;
 import main.java.model.Exceptions.IllegalEntityMovementException;
 import main.java.model.Grid.Grid;
-import main.java.view.GUI.GamePanel;
+import main.java.view.GUI.GamePanelView;
 import main.java.model.Model;
 import main.java.model.Movement.Direction;
 import main.java.API.MovementStrategy;
@@ -24,7 +24,7 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
     protected final Ghost ghost;
     protected final Model model;
     private final Grid grid;
-    private final GamePanel gamePanel;
+    private final GamePanelView gamePanel;
     private final Random rand;
     private final List<Direction> initialMoves;
     private final Map<GhostColor, Position> initialPositionsMap;
@@ -41,7 +41,7 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
      * @param gamePanel Il pannello di gioco per la visualizzazione.
      * @param newStrat  Indica se è una nuova strategia.
      */
-    public GhostMovementStrategy(Ghost ghost, Grid grid, Model model, GamePanel gamePanel, boolean newStrat) {
+    public GhostMovementStrategy(Ghost ghost, Grid grid, Model model, GamePanelView gamePanel, boolean newStrat) {
         this.ghost = ghost;
         this.grid = grid;
         this.model = model;

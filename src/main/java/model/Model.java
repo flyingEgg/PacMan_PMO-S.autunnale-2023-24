@@ -27,7 +27,7 @@ import main.java.model.Entities.Ghost;
 import main.java.model.Entities.GhostColor;
 import main.java.model.Entities.Pacman;
 import main.java.model.Grid.Grid;
-import main.java.view.GUI.GamePanel;
+import main.java.view.GUI.GamePanelView;
 
 public class Model {
     private static final int MAX_DOTS = 176; // Numero totale dei dots nella mappa
@@ -46,7 +46,7 @@ public class Model {
     private int highScore;
     private int superModeMovesRemaining;
     private Grid grid;
-    private GamePanel gamePanel;
+    private GamePanelView gamePanel;
     private PacmanMovementStrategy pacmanMovementStrategy;
     private final Pacman pacman;
     private final List<Ghost> ghosts;
@@ -545,7 +545,7 @@ public class Model {
      * 
      * @return Il pannello di gioco.
      */
-    public GamePanel getGamePanel() {
+    public GamePanelView getGamePanel() {
         return gamePanel;
     }
 
@@ -643,7 +643,7 @@ public class Model {
      * 
      * @param gamePanel Il pannello di gioco da impostare.
      */
-    public void setGamePanel(GamePanel gamePanel) {
+    public void setGamePanel(GamePanelView gamePanel) {
         this.gamePanel = gamePanel;
     }
 

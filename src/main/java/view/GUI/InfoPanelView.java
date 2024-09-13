@@ -34,7 +34,7 @@ import main.java.API.GameStatisticsListener;
  * Implementa l'interfaccia GameStatisticsListener per aggiornare dinamicamente
  * le informazioni.
  */
-public class InfoPanel extends JPanel implements GameStatisticsListener {
+public class InfoPanelView extends JPanel implements GameStatisticsListener {
     private static final Font LABEL_FONT;
     private static final String SCORE_TEXT = "Score: ";
     private static final String SUPERMODE_TEXT = "Supermode: ";
@@ -49,7 +49,7 @@ public class InfoPanel extends JPanel implements GameStatisticsListener {
 
     static {
         Font tempFont = null;
-        try (InputStream fontStream = InfoPanel.class.getResourceAsStream("/main/java/view/fonts/Pixel.ttf")) {
+        try (InputStream fontStream = InfoPanelView.class.getResourceAsStream("/main/java/view/fonts/Pixel.ttf")) {
             if (fontStream != null) {
                 tempFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
                 GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -71,7 +71,7 @@ public class InfoPanel extends JPanel implements GameStatisticsListener {
      * @param model Il modello del gioco che fornisce le informazioni da
      *              visualizzare
      */
-    public InfoPanel(Model model) {
+    public InfoPanelView(Model model) {
         this.model = model;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(new Color(50, 50, 50));

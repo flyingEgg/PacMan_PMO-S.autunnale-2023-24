@@ -22,7 +22,7 @@ import main.java.controller.Controller;
 /**
  * Classe che rappresenta il menu principale del gioco.
  */
-public class MainMenu extends JFrame {
+public class MainMenuView extends JFrame {
     private final Controller controller;
     private JLabel highScoreLabel;
 
@@ -31,7 +31,7 @@ public class MainMenu extends JFrame {
      *
      * @param controller Il controller del gioco per gestire le azioni dei pulsanti
      */
-    public MainMenu(Controller controller) {
+    public MainMenuView(Controller controller) {
         this.controller = controller;
         setupMenu();
         updateHighScoreLabel();

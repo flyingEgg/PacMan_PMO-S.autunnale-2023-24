@@ -5,7 +5,7 @@ import main.java.model.Movement.Direction;
 import main.java.model.Movement.Position;
 import main.java.model.Entities.Ghost;
 import main.java.model.Grid.Grid;
-import main.java.view.GUI.GamePanel;
+import main.java.view.GUI.GamePanelView;
 
 /**
  * Strategia di movimento per i fantasmi durante la fase di fuga.
@@ -22,7 +22,7 @@ public class GhostFleeStrategy extends GhostMovementStrategy {
      * @param gamePanel Il pannello di gioco.
      * @param newStrat  Indica se utilizzare una nuova strategia.
      */
-    public GhostFleeStrategy(Ghost ghost, Grid grid, Model model, GamePanel gamePanel, boolean newStrat) {
+    public GhostFleeStrategy(Ghost ghost, Grid grid, Model model, GamePanelView gamePanel, boolean newStrat) {
         super(ghost, grid, model, gamePanel, newStrat);
     }
 

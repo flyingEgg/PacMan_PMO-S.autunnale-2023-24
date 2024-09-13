@@ -6,7 +6,7 @@ import main.java.model.Movement.Position;
 import main.java.model.Entities.Ghost;
 import main.java.model.Entities.GhostColor;
 import main.java.model.Grid.Grid;
-import main.java.view.GUI.GamePanel;
+import main.java.view.GUI.GamePanelView;
 
 /**
  * Strategia di movimento per il fantasma durante la fase di scatter.
@@ -28,7 +28,7 @@ public class GhostScatterStrategy extends GhostMovementStrategy {
      * @param gamePanel Il pannello di gioco per la visualizzazione.
      * @param newStrat  Indica se è una nuova strategia.
      */
-    public GhostScatterStrategy(Ghost ghost, Grid grid, Model model, GamePanel gamePanel, boolean newStrat) {
+    public GhostScatterStrategy(Ghost ghost, Grid grid, Model model, GamePanelView gamePanel, boolean newStrat) {
         super(ghost, grid, model, gamePanel, newStrat);
         this.scatterTarget = determineScatterTarget(ghost.getColor(), grid);
     }

@@ -19,11 +19,11 @@ import javax.swing.JPanel;
 import main.java.controller.Controller;
 import main.java.model.Movement.Direction;
 import main.java.model.Exceptions.IllegalEntityMovementException;
-import main.java.view.GUI.GameOverScreen;
-import main.java.view.GUI.GamePanel;
-import main.java.view.GUI.GameWonScreen;
-import main.java.view.GUI.InfoPanel;
-import main.java.view.GUI.MainMenu;
+import main.java.view.GUI.GameOverScreenView;
+import main.java.view.GUI.GamePanelView;
+import main.java.view.GUI.GameWonScreenView;
+import main.java.view.GUI.InfoPanelView;
+import main.java.view.GUI.MainMenuView;
 
 /**
  * Classe View per la visualizzazione dell'interfaccia utente del gioco.
@@ -32,9 +32,9 @@ public class View extends JFrame {
 
     private Controller controller;
     private Map<String, ImageIcon> images;
-    private GamePanel gamePanel;
-    private InfoPanel infoPanel;
-    private MainMenu mainMenu;
+    private GamePanelView gamePanel;
+    private InfoPanelView infoPanel;
+    private MainMenuView mainMenu;
 
     /**
      * Costruisce una vista con il modello e il controller specificati.
@@ -59,7 +59,7 @@ public class View extends JFrame {
      *
      * @return il pannello di gioco
      */
-    public GamePanel getGamePanel() {
+    public GamePanelView getGamePanel() {
         return gamePanel;
     }
 
@@ -127,9 +127,9 @@ public class View extends JFrame {
         if (infoPanel != null) {
             remove(infoPanel);
         }
-        gamePanel = new GamePanel(controller.getModel(), controller.getModel().getPacman(),
+        gamePanel = new GamePanelView(controller.getModel(), controller.getModel().getPacman(),
                 controller.getModel().getGhosts(), images);
-        infoPanel = new InfoPanel(controller.getModel());
+        infoPanel = new InfoPanelView(controller.getModel());
         add(gamePanel, BorderLayout.CENTER);
         add(infoPanel, BorderLayout.EAST);
         revalidate();
@@ -142,23 +142,27 @@ public class View extends JFrame {
      */
     private void loadImages() {
         images = new HashMap<>();
-        String[] imageNames = { "wall", "smallDot", "bigDot", "ghost_orange", "ghost_blue", "ghost_pink", "ghost_red",
-                "ghost_scared", "heart", "pacman", "left", "right", "up", "down" };
+
+        String[] imageNames = {
+                "bigDot", "down", "ghost_blue", "ghost_orange", "ghost_pink", "ghost_red",
+                "ghost_scared", "heart", "left", "pacman", "right", "smallDot", "up", "wall"
+        };
+
         String[] imagePaths = {
-                "/main/java/view/images/wall_x.png",
-                "/main/java/view/images/smallDot.png",
                 "/main/java/view/images/bigDot.png",
-                "/main/java/view/images/ghost_orange.gif",
+                "/main/java/view/images/down.gif",
                 "/main/java/view/images/ghost_blue.gif",
+                "/main/java/view/images/ghost_orange.gif",
                 "/main/java/view/images/ghost_pink.gif",
                 "/main/java/view/images/ghost_red.gif",
                 "/main/java/view/images/ghost_scared.gif",
                 "/main/java/view/images/heart.png",
-                "/main/java/view/images/pacman.png",
                 "/main/java/view/images/left.gif",
+                "/main/java/view/images/pacman.png",
                 "/main/java/view/images/right.gif",
+                "/main/java/view/images/smallDot.png",
                 "/main/java/view/images/up.gif",
-                "/main/java/view/images/down.gif"
+                "/main/java/view/images/wall.png"
         };
 
         for (int i = 0; i < imageNames.length; i++) {
@@ -227,7 +231,7 @@ public class View extends JFrame {
      * @param score il punteggio del gioco
      */
     public void showWinScreen(int score) {
-        new GameWonScreen(controller, score);
+        new GameWonScreenView(controller, score);
         dispose(); // Chiude la finestra di gioco
     }
 
@@ -235,7 +239,7 @@ public class View extends JFrame {
      * Mostra la schermata di Game Over.
      */
     private void showGameOverScreen() {
-        new GameOverScreen(controller, controller.getModel().getScore()); // Mostra la schermata di Game Over
+        new GameOverScreenView(controller, controller.getModel().getScore()); // Mostra la schermata di Game Over
         dispose(); // Chiude la finestra di gioco
     }
 
@@ -261,7 +265,7 @@ public class View extends JFrame {
         if (mainMenu != null) {
             remove(mainMenu);
         }
-        mainMenu = new MainMenu(controller);
+        mainMenu = new MainMenuView(controller);
         mainMenu.setupMenu();
         revalidate();
         repaint();

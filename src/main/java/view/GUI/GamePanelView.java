@@ -27,7 +27,7 @@ import main.java.model.Grid.Grid;
  * Pannello di gioco che gestisce la visualizzazione di Pacman, dei fantasmi e
  * della griglia.
  */
-public class GamePanel extends JPanel {
+public class GamePanelView extends JPanel {
     private Pacman pacman;
     private List<Ghost> ghosts;
     private final Map<String, ImageIcon> images;
@@ -43,7 +43,7 @@ public class GamePanel extends JPanel {
      * @param ghosts La lista dei fantasmi
      * @param images La mappa delle immagini
      */
-    public GamePanel(Model model, Pacman pacman, List<Ghost> ghosts, Map<String, ImageIcon> images) {
+    public GamePanelView(Model model, Pacman pacman, List<Ghost> ghosts, Map<String, ImageIcon> images) {
         setDoubleBuffered(true);
         this.model = model;
         this.pacman = pacman;
