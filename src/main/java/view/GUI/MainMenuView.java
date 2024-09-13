@@ -73,7 +73,7 @@ public class MainMenuView extends JFrame {
         buttonPanel.setOpaque(false);
 
         // Label per visualizzare l'high score
-        highScoreLabel = new JLabel("High Score: " + getHighScore(), JLabel.CENTER);
+        highScoreLabel = new JLabel("High Score: " + controller.getHighScore(), JLabel.CENTER);
         highScoreLabel.setFont(new Font("Arial", Font.BOLD, 20));
         highScoreLabel.setForeground(Color.WHITE);
 
@@ -123,35 +123,11 @@ public class MainMenuView extends JFrame {
     }
 
     /**
-     * Ottiene l'high score salvato localmente.
-     *
-     * @return L'high score salvato, o 0 se non è stato ancora salvato nessun
-     *         punteggio.
+     * Aggiorna semplicemente l'etichetta dell'high score nel menu principale.
+     * Il modello si occupa della logica di confronto e aggiornamento.
      */
-    private int getHighScore() {
-        return controller.getHighScore();
+    public void updateHighScoreLabel() {
+        highScoreLabel.setText("High Score: " + controller.getHighScore());
     }
 
-    /**
-     * Aggiorna l'high score se il punteggio attuale è più alto dell'high score
-     * salvato.
-     *
-     * @param score Il punteggio attuale che sarà confrontato con l'high score
-     *              salvato.
-     */
-    public void updateHighScore(int score) {
-        int highScore = controller.getHighScore();
-        if (score > highScore) {
-            controller.updateHighScore(score);
-            highScoreLabel.setText("High Score: " + score); // Aggiorna la label con il nuovo high score
-        }
-    }
-
-    /**
-     * Aggiorna il testo dell'etichetta dell'high score quando il menu principale
-     * viene mostrato.
-     */
-    private void updateHighScoreLabel() {
-        highScoreLabel.setText("High Score: " + getHighScore()); // Rilegge l'high score salvato
-    }
 }
