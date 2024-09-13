@@ -34,7 +34,7 @@
     ```
    NB: ripetere il comando per ogni Package (e.g. API, controller...)
 
-4. **Esegui il gioco**:
+4. **Eseguire il gioco**:
     ```bash
     java -cp out main.java.app.Main
     ```
