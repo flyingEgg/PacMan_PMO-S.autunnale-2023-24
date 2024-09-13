@@ -13,7 +13,6 @@ import main.java.model.Grid.Grid;
  * Rappresenta il personaggio di Pacman nel gioco.
  */
 public class Pacman extends AbstractEntity {
-    private Direction direction;
     private boolean superMode;
 
     /**

@@ -19,7 +19,6 @@ public class Ghost extends AbstractEntity {
     private final GhostColor color;
     private GhostMovementStrategy movementStrategy;
     private boolean scared;
-    private Direction direction;
     private boolean inSpawn;
 
     /**
@@ -72,7 +71,7 @@ public class Ghost extends AbstractEntity {
     /**
      * Muove il fantasma secondo la strategia di movimento.
      */
-    public void move() {
+    public void moveByStrategy() {
         if (movementStrategy != null) {
             Direction nextDirection = movementStrategy.determineNextDirection();
             setDirection(nextDirection); // Aggiorna la direzione

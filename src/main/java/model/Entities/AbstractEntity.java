@@ -6,7 +6,7 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import main.java.model.Movement.Direction;
-import main.java.model.API.MapComponent;
+import main.java.API.MapComponent;
 import main.java.model.Movement.Position;
 
 /**
@@ -15,6 +15,7 @@ import main.java.model.Movement.Position;
  */
 public abstract class AbstractEntity implements MapComponent {
     protected Position position;
+    protected Direction direction;
 
     /**
      * Crea una nuova entità con la posizione specificata.

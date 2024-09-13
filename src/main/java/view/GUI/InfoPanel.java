@@ -26,7 +26,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import main.java.model.Model;
-import main.java.model.API.GameStatisticsListener;
+import main.java.API.GameStatisticsListener;
 
 /**
  * Pannello informativo che visualizza il punteggio, le vite e lo stato del
