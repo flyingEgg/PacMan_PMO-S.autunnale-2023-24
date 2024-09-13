@@ -17,7 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import main.java.controller.Controller;
-import main.java.model.Model;
 import main.java.model.Movement.Direction;
 import main.java.model.Exceptions.IllegalEntityMovementException;
 import main.java.view.GUI.GameOverScreen;
@@ -128,7 +127,8 @@ public class View extends JFrame {
         if (infoPanel != null) {
             remove(infoPanel);
         }
-        gamePanel = new GamePanel(controller.getModel(), controller.getModel().getPacman(), controller.getModel().getGhosts(), images);
+        gamePanel = new GamePanel(controller.getModel(), controller.getModel().getPacman(),
+                controller.getModel().getGhosts(), images);
         infoPanel = new InfoPanel(controller.getModel());
         add(gamePanel, BorderLayout.CENTER);
         add(infoPanel, BorderLayout.EAST);
