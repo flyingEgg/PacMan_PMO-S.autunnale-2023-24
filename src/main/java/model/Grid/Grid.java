@@ -244,9 +244,8 @@ public class Grid extends AbsGrid {
      */
     private Set<Position> getBidimensionalArray(int[][] positions) {
         Set<Position> set = new HashSet<>();
-        for (int[] pos : positions) {
-            set.add(new Position(pos[0], pos[1]));
-        }
+
+        Arrays.stream(positions).forEach(pos -> set.add(new Position(pos[0], pos[1])));
         return set;
     }
 
