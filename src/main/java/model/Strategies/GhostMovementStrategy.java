@@ -10,6 +10,7 @@ import main.java.API.MovementStrategy;
 import main.java.model.Movement.Position;
 import main.java.model.Entities.Ghost;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -190,12 +191,10 @@ public abstract class GhostMovementStrategy implements MovementStrategy<Ghost> {
      * @return Una direzione alternativa valida.
      */
     protected Direction findAlternativeDirection() {
-        for (Direction dir : Direction.values()) {
-            if (canMove(dir)) {
-                return dir;
-            }
-        }
-        return null; // Non dovrebbe accadere se la logica è corretta
+        return Arrays.stream(Direction.values())
+                .filter(this::canMove)
+                .findFirst()
+                .orElse(null); // Non dovrebbe accadere se la logica è corretta
     }
 
     /**

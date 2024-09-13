@@ -236,9 +236,7 @@ public class Model {
      * Muove tutti i fantasmi.
      */
     public void moveGhosts() {
-        for (Ghost g : ghosts) {
-            g.moveByStrategy();
-        }
+        ghosts.forEach(Ghost::moveByStrategy);
     }
 
     /**
@@ -373,15 +371,10 @@ public class Model {
      * @param ghostPosition La posizione del fantasma da mangiare.
      */
     public void eatGhost(Position ghostPosition) {
-        Ghost eatenGhost = null;
-
-        // Trova il fantasma alla posizione specificata
-        for (Ghost ghost : ghosts) {
-            if (ghost.getPosition().equals(ghostPosition)) {
-                eatenGhost = ghost;
-                break;
-            }
-        }
+        Ghost eatenGhost = ghosts.stream().
+                filter(ghost -> ghost.getPosition().equals(ghostPosition)).
+                findFirst().
+                orElse(null);
 
         // Se un fantasma viene trovato, rilocalizzalo e aggiorna il punteggio
         if (eatenGhost != null) {
@@ -419,12 +412,7 @@ public class Model {
      * @return True se la posizione è occupata da un fantasma, false altrimenti.
      */
     private boolean isPositionOccupiedByGhost(Position position) {
-        for (Ghost ghost : ghosts) {
-            if (ghost.getPosition().equals(position)) {
-                return true; // La posizione è occupata da un fantasma
-            }
-        }
-        return false;
+        return ghosts.stream().anyMatch(ghost -> ghost.getPosition().equals(position));
     }
 
     /**
