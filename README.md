@@ -15,7 +15,7 @@
 ## Requisiti
 
 - **Java 8** o superiore
-- IDE come **Eclipse** o **IntelliJ IDEA** (opzionale)
+- IDE come **Visual studio code** o **IntelliJ IDEA** (opzionale)
 
 ## Guida all'Installazione
 
