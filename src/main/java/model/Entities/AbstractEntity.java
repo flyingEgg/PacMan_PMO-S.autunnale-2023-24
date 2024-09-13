@@ -15,6 +15,7 @@ import main.java.model.Movement.Position;
  */
 public abstract class AbstractEntity implements MapComponent {
     protected Position position;
+    protected Direction direction;
 
     /**
      * Crea una nuova entità con la posizione specificata.

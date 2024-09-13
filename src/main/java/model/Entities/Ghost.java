@@ -19,7 +19,6 @@ public class Ghost extends AbstractEntity {
     private final GhostColor color;
     private GhostMovementStrategy movementStrategy;
     private boolean scared;
-    private Direction direction;
     private boolean inSpawn;
 
     /**
