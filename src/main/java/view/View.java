@@ -19,9 +19,9 @@ import javax.swing.JPanel;
 import main.java.controller.Controller;
 import main.java.model.Movement.Direction;
 import main.java.model.Exceptions.IllegalEntityMovementException;
-import main.java.view.GUI.GameOverScreenView;
+import main.java.view.GUI.GameOverView;
 import main.java.view.GUI.GamePanelView;
-import main.java.view.GUI.GameWonScreenView;
+import main.java.view.GUI.GameWonView;
 import main.java.view.GUI.InfoPanelView;
 import main.java.view.GUI.MainMenuView;
 
@@ -231,7 +231,7 @@ public class View extends JFrame {
      * @param score il punteggio del gioco
      */
     public void showWinScreen(int score) {
-        new GameWonScreenView(controller, score);
+        new GameWonView(controller, score);
         dispose(); // Chiude la finestra di gioco
     }
 
@@ -239,7 +239,7 @@ public class View extends JFrame {
      * Mostra la schermata di Game Over.
      */
     private void showGameOverScreen() {
-        new GameOverScreenView(controller, controller.getModel().getScore()); // Mostra la schermata di Game Over
+        new GameOverView(controller, controller.getModel().getScore()); // Mostra la schermata di Game Over
         dispose(); // Chiude la finestra di gioco
     }
 

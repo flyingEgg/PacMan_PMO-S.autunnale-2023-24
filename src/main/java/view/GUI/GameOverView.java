@@ -23,7 +23,7 @@ import main.java.controller.Controller;
  * Consente di visualizzare il punteggio finale e aggiornare l'high score se
  * necessario.
  */
-public class GameOverScreenView extends JFrame {
+public class GameOverView extends JFrame {
     private final Controller controller;
     private final int score;
 
@@ -33,7 +33,7 @@ public class GameOverScreenView extends JFrame {
      * @param controller Il controller del gioco
      * @param score      Il punteggio finale del giocatore
      */
-    public GameOverScreenView(Controller controller, int score) {
+    public GameOverView(Controller controller, int score) {
         this.controller = controller;
         this.score = score;
 
