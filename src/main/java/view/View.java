@@ -11,39 +11,62 @@ import java.util.Map;
 import java.util.Objects;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import main.java.controller.Controller;
-import main.java.model.Model;
-import main.java.model.API.Direction;
+import main.java.model.Movement.Direction;
 import main.java.model.Exceptions.IllegalEntityMovementException;
-import main.java.view.GUI.GameOverScreen;
-import main.java.view.GUI.GamePanel;
-import main.java.view.GUI.GameWonScreen;
-import main.java.view.GUI.InfoPanel;
-import main.java.view.GUI.MainMenu;
+import main.java.view.GUI.GameOverView;
+import main.java.view.GUI.GamePanelView;
+import main.java.view.GUI.GameWonView;
+import main.java.view.GUI.InfoPanelView;
+import main.java.view.GUI.MainMenuView;
 
+/**
+ * Classe View per la visualizzazione dell'interfaccia utente del gioco.
+ */
 public class View extends JFrame {
-    private Controller controller;
-    private final Model model;
-    private Map<String, ImageIcon> images;
-    private GamePanel gamePanel;
-    private InfoPanel infoPanel;
-    private MainMenu mainMenu;
 
-    public View(Model model, Controller controller) {
-        this.model = model;
+    private Controller controller;
+    private Map<String, ImageIcon> images;
+    private GamePanelView gamePanel;
+    private InfoPanelView infoPanel;
+    private MainMenuView mainMenu;
+
+    /**
+     * Costruisce una vista con il modello e il controller specificati.
+     *
+     * @param controller l'istanza del controller
+     */
+    public View(Controller controller) {
         this.controller = controller;
     }
 
+    /**
+     * Imposta il controller per la vista.
+     *
+     * @param controller il nuovo controller da impostare
+     */
     public void setController(Controller controller) {
         this.controller = controller;
     }
 
-    public GamePanel getGamePanel() {
+    /**
+     * Restituisce il pannello di gioco corrente.
+     *
+     * @return il pannello di gioco
+     */
+    public GamePanelView getGamePanel() {
         return gamePanel;
     }
 
+    /**
+     * Inizializza la vista caricando le immagini, configurando la finestra e
+     * impostando il listener per i tasti.
+     */
     public void initializeView() {
         loadImages();
         setupWindow();
@@ -51,6 +74,9 @@ public class View extends JFrame {
         setupKeyListener();
     }
 
+    /**
+     * Configura la finestra principale dell'applicazione.
+     */
     private void setupWindow() {
         setTitle("Pacman");
 
@@ -66,16 +92,22 @@ public class View extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
-        showMainMenu();
+        showMainMenu(); // Mostra il menu principale all'avvio
     }
 
+    /**
+     * Configura la barra di stato nella parte inferiore della finestra.
+     */
     private void setupStatusBar() {
         JPanel statusBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel statusLabel = new JLabel("Welcome to Pacman!");
+        JLabel statusLabel = new JLabel("Benvenuto in Pacman!");
         statusBar.add(statusLabel);
         add(statusBar, BorderLayout.SOUTH);
     }
 
+    /**
+     * Imposta il listener per i tasti per gestire gli input dell'utente.
+     */
     private void setupKeyListener() {
         addKeyListener(new KeyAdapter() {
             @Override
@@ -85,6 +117,9 @@ public class View extends JFrame {
         });
     }
 
+    /**
+     * Mostra la finestra di gioco e aggiorna i pannelli di gioco e informazioni.
+     */
     public void showGameWindow() {
         if (gamePanel != null) {
             remove(gamePanel);
@@ -92,8 +127,9 @@ public class View extends JFrame {
         if (infoPanel != null) {
             remove(infoPanel);
         }
-        gamePanel = new GamePanel(model, model.getPacman(), model.getGhosts(), images);
-        infoPanel = new InfoPanel(model);
+        gamePanel = new GamePanelView(controller.getModel(), controller.getModel().getPacman(),
+                controller.getModel().getGhosts(), images);
+        infoPanel = new InfoPanelView(controller.getModel());
         add(gamePanel, BorderLayout.CENTER);
         add(infoPanel, BorderLayout.EAST);
         revalidate();
@@ -101,25 +137,32 @@ public class View extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Carica le immagini necessarie per il gioco.
+     */
     private void loadImages() {
         images = new HashMap<>();
-        String[] imageNames = { "wall", "smallDot", "bigDot", "ghost_orange", "ghost_blue", "ghost_pink", "ghost_red",
-                "ghost_scared", "heart", "pacman", "left", "right", "up", "down" };
+
+        String[] imageNames = {
+                "bigDot", "down", "ghost_blue", "ghost_orange", "ghost_pink", "ghost_red",
+                "ghost_scared", "heart", "left", "pacman", "right", "smallDot", "up", "wall"
+        };
+
         String[] imagePaths = {
-                "/main/java/view/images/wall_x.png",
-                "/main/java/view/images/smallDot.png",
                 "/main/java/view/images/bigDot.png",
-                "/main/java/view/images/ghost_orange.gif",
+                "/main/java/view/images/down.gif",
                 "/main/java/view/images/ghost_blue.gif",
+                "/main/java/view/images/ghost_orange.gif",
                 "/main/java/view/images/ghost_pink.gif",
                 "/main/java/view/images/ghost_red.gif",
                 "/main/java/view/images/ghost_scared.gif",
                 "/main/java/view/images/heart.png",
-                "/main/java/view/images/pacman.png",
                 "/main/java/view/images/left.gif",
+                "/main/java/view/images/pacman.png",
                 "/main/java/view/images/right.gif",
+                "/main/java/view/images/smallDot.png",
                 "/main/java/view/images/up.gif",
-                "/main/java/view/images/down.gif"
+                "/main/java/view/images/wall.png"
         };
 
         for (int i = 0; i < imageNames.length; i++) {
@@ -132,6 +175,12 @@ public class View extends JFrame {
         }
     }
 
+    /**
+     * Gestisce l'input della tastiera e muove Pacman nella direzione
+     * corrispondente.
+     *
+     * @param e l'evento di pressione del tasto
+     */
     private void handleKeyPress(KeyEvent e) {
         Direction direction = switch (e.getKeyCode()) {
             case KeyEvent.VK_UP -> Direction.UP;
@@ -142,42 +191,65 @@ public class View extends JFrame {
         };
 
         if (direction != null) {
-            model.getPacman().setDirection(direction);
+            controller.getModel().getPacman().setDirection(direction);
             try {
                 controller.movePacman(direction);
                 controller.moveGhosts();
                 gamePanel.repaint();
                 winOrGameOver();
             } catch (IllegalEntityMovementException ex) {
-                System.out.println("Pacman ha colpito un muro: " + switchDirezione(direction));
+                System.out.println("Pacman ha colpito un muro: " + switchDirection(direction));
             }
         }
     }
 
+    /**
+     * Verifica se il gioco è finito o se è stato vinto e mostra la schermata
+     * appropriata.
+     */
     private void winOrGameOver() {
-        if (model.isGameOver()) {
+        if (controller.getModel().isGameOver()) {
             showGameOverScreen();
-        } else if (model.isWin()) {
-            showWinScreen(model.getScore());
+        } else if (controller.getModel().isWin()) {
+            showWinScreen(controller.getModel().getScore());
         }
     }
 
+    /**
+     * Ripristina le statistiche e mostra la finestra di gioco.
+     *
+     * @param win true se il gioco è stato vinto, false altrimenti
+     */
     public void resetStats(boolean win) {
-        model.resetGame(win);
+        controller.getModel().resetGame(win);
         showGameWindow();
     }
 
+    /**
+     * Mostra la schermata di vittoria.
+     *
+     * @param score il punteggio del gioco
+     */
     public void showWinScreen(int score) {
-        new GameWonScreen(controller, score);
-        dispose();
+        new GameWonView(controller, score);
+        dispose(); // Chiude la finestra di gioco
     }
 
+    /**
+     * Mostra la schermata di Game Over.
+     */
     private void showGameOverScreen() {
-        new GameOverScreen(controller, model.getScore()); // Mostra la nuova schermata Game Over
-        dispose(); // Chiude la finestra attuale del gioco
+        new GameOverView(controller, controller.getModel().getScore()); // Mostra la schermata di Game Over
+        dispose(); // Chiude la finestra di gioco
     }
 
-    private String switchDirezione(Direction direction) {
+    /**
+     * Converte una direzione in una stringa di descrizione in italiano.
+     *
+     * @param direction la direzione da convertire
+     * @return la stringa di descrizione della direzione
+     */
+    private String switchDirection(Direction direction) {
         return switch (direction) {
             case UP -> "sopra";
             case DOWN -> "sotto";
@@ -186,23 +258,34 @@ public class View extends JFrame {
         };
     }
 
+    /**
+     * Mostra il menu principale.
+     */
     public void showMainMenu() {
         if (mainMenu != null) {
             remove(mainMenu);
         }
-        mainMenu = new MainMenu(controller);
+        mainMenu = new MainMenuView(controller);
         mainMenu.setupMenu();
         revalidate();
         repaint();
     }
 
+    /**
+     * Aggiorna il pannello delle informazioni con le statistiche correnti.
+     */
     public void updateInfoPanel() {
         if (infoPanel != null) {
-            infoPanel.setLives(model.getLives());
-            infoPanel.setScore(model.getScore());
+            infoPanel.setLives(controller.getModel().getLives());
+            infoPanel.setScore(controller.getModel().getScore());
         }
     }
 
+    /**
+     * Aggiorna lo stato della modalità Supermode nel pannello delle informazioni.
+     *
+     * @param movesRemaining il numero di mosse rimanenti nella modalità Supermode
+     */
     public void updateSuperModeStatus(int movesRemaining) {
         if (infoPanel != null) {
             infoPanel.setSuperModeStatus(movesRemaining);

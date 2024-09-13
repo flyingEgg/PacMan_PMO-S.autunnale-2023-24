@@ -1,31 +1,34 @@
 package main.java.model.Grid;
 
-import java.util.*;
-/* 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-*/
 
-import main.java.model.API.Position;
+import main.java.model.Movement.Position;
 import main.java.model.Composite.BigDot;
 import main.java.model.Composite.SmallDot;
 import main.java.model.Composite.Wall;
 import main.java.model.Entities.Ghost;
 import main.java.model.Entities.Pacman;
 
+/**
+ * La classe Grid gestisce la griglia di gioco, inclusi i muri, i piccoli e
+ * grandi punti,
+ * e le posizioni di spawn di Pacman e dei fantasmi.
+ */
 public class Grid extends AbsGrid {
     public static final int CELL_SIZE = 20;
     private static final int COLUMNS = 21; // Numero di colonne della griglia
     private static final int ROWS = 19; // Numero di righe della griglia
+
     private Set<Position> excludedPositions;
     private Map<Position, SmallDot> smallDotMap;
     private Map<Position, BigDot> bigDotMap;
 
-    // Posizi oni d ei m uri
+    // Posizioni dei muri
     private static final int[][] WALL_POSITIONS = {
             { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 },
             { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 },
@@ -59,7 +62,6 @@ public class Grid extends AbsGrid {
             { 10, 18 }, { 11, 18 }, { 12, 18 }, { 13, 18 }, { 14, 18 }, { 15, 18 }, { 16, 18 }, { 17, 18 },
             { 18, 18 }, { 19, 18 }, { 20, 18 }
     };
-    // tocca liberare i fantasmi da { 8, 9 }
 
     // Posizioni dei Big Dot
     private static final int[][] BIG_DOT_POSITIONS = {
@@ -78,13 +80,16 @@ public class Grid extends AbsGrid {
             new Position(9, 9), new Position(9, 8), new Position(9, 10), new Position(8, 9)
     };
 
-    // Altre posi zion i es clus e
+    // Altre posizioni escluse
     private static final int[][] OTHER_EXCLUDED_POSITIONS = {
             { 9, 1 }, { 9, 2 }, { 9, 3 }, { 9, 15 }, { 9, 16 }, { 9, 17 },
             { 7, 1 }, { 7, 2 }, { 7, 16 }, { 7, 17 },
             { 11, 1 }, { 11, 2 }, { 11, 16 }, { 11, 17 }
     };
 
+    /**
+     * Costruttore per inizializzare la griglia.
+     */
     public Grid() {
         super(COLUMNS, ROWS);
         this.smallDotMap = new HashMap<>();
@@ -93,30 +98,63 @@ public class Grid extends AbsGrid {
         initializeMap();
     }
 
+    /**
+     * Imposta Pacman nella griglia.
+     * 
+     * @param pacman L'istanza di Pacman da aggiungere alla griglia.
+     */
     public void setPacman(Pacman pacman) {
         addComponent(pacman);
     }
 
+    /**
+     * Imposta i fantasmi nella griglia.
+     * 
+     * @param ghosts La lista di fantasmi da aggiungere alla griglia.
+     */
     public void setGhosts(List<Ghost> ghosts) {
         ghosts.forEach(this::addComponent);
     }
 
+    /**
+     * Restituisce le posizioni dei muri.
+     * 
+     * @return Un set di posizioni che rappresentano i muri.
+     */
     public Set<Position> getWallPositions() {
         return getBidimensionalArray(WALL_POSITIONS);
     }
 
+    /**
+     * Restituisce le coordinate magiche.
+     * 
+     * @return Un set di posizioni che rappresentano le coordinate magiche.
+     */
     public Set<Position> getMagicCoords() {
         return getBidimensionalArray(MAGIC_COORDS);
     }
 
+    /**
+     * Restituisce le posizioni di spawn dei fantasmi.
+     * 
+     * @return Una lista di posizioni di spawn dei fantasmi.
+     */
     public List<Position> getGhostStartPositions() {
         return Arrays.asList(GHOST_SPAWN_POSITIONS);
     }
 
+    /**
+     * Restituisce la posizione di partenza di Pacman.
+     * 
+     * @return La posizione di partenza di Pacman.
+     */
     public Position getPacmanStartPosition() {
         return PACMAN_START_POSITION;
     }
 
+    /**
+     * Inizializza le posizioni escluse dalla griglia.
+     */
     private void initializeExcludedPositions() {
         excludedPositions = new HashSet<>();
         addPositions(WALL_POSITIONS);
@@ -127,6 +165,9 @@ public class Grid extends AbsGrid {
         addPositions(MAGIC_COORDS);
     }
 
+    /**
+     * Inizializza la mappa con SmallDot e BigDot.
+     */
     private void initializeMap() {
         SmallDot smallDot;
 
@@ -145,6 +186,9 @@ public class Grid extends AbsGrid {
         addBigDotsToGrid();
     }
 
+    /**
+     * Aggiunge BigDots alla griglia.
+     */
     private void addBigDotsToGrid() {
         Arrays.stream(BIG_DOT_POSITIONS)
                 .forEach(position -> {
@@ -154,32 +198,62 @@ public class Grid extends AbsGrid {
                 });
     }
 
+    /**
+     * Restituisce il SmallDot alla posizione specificata.
+     * 
+     * @param pos La posizione del SmallDot.
+     * @return Il SmallDot alla posizione specificata.
+     */
     public SmallDot getSmallDotAtPosition(Position pos) {
         return smallDotMap.get(pos); // Ottieni SmallDot dalla mappa
     }
 
+    /**
+     * Restituisce il BigDot alla posizione specificata.
+     * 
+     * @param pos La posizione del BigDot.
+     * @return Il BigDot alla posizione specificata.
+     */
     public BigDot getBigDotAtPosition(Position pos) {
         return bigDotMap.get(pos); // Ottieni BigDot dalla mappa
     }
 
+    /**
+     * Rimuove un dot (SmallDot o BigDot) dalla mappa alla posizione specificata.
+     * 
+     * @param pos La posizione del dot da rimuovere.
+     */
     public void removeDotFromMap(Position pos) {
         smallDotMap.remove(pos); // Rimuovi SmallDot
         bigDotMap.remove(pos); // Rimuovi BigDot
     }
 
+    /**
+     * Aggiunge i muri alla griglia.
+     */
     private void addWallsToGrid() {
         Arrays.stream(WALL_POSITIONS)
                 .forEach(position -> addComponent(new Wall(new Position(position[0], position[1]))));
     }
 
+    /**
+     * Converte una matrice bidimensionale di posizioni in un set di posizioni.
+     * 
+     * @param positions La matrice di posizioni.
+     * @return Un set di posizioni.
+     */
     private Set<Position> getBidimensionalArray(int[][] positions) {
         Set<Position> set = new HashSet<>();
-        for (int[] pos : positions) {
-            set.add(new Position(pos[0], pos[1]));
-        }
+
+        Arrays.stream(positions).forEach(pos -> set.add(new Position(pos[0], pos[1])));
         return set;
     }
 
+    /**
+     * Aggiunge posizioni escluse alla griglia.
+     * 
+     * @param positions La matrice di posizioni da aggiungere.
+     */
     private void addPositions(int[][] positions) {
         Arrays.stream(positions)
                 .forEach(pos -> excludedPositions.add(new Position(pos[0], pos[1])));

@@ -2,6 +2,12 @@ package main.java.model.Util;
 
 import java.util.Objects;
 
+/**
+ * Rappresenta una coppia di valori di tipo generico.
+ *
+ * @param <A> Il tipo del primo valore della coppia
+ * @param <B> Il tipo del secondo valore della coppia
+ */
 public class Pair<A, B> {
 
     private final A a;
@@ -36,11 +42,23 @@ public class Pair<A, B> {
         return b;
     }
 
+    /**
+     * Restituisce una rappresentazione in formato stringa della coppia.
+     *
+     * @return Una stringa che rappresenta la coppia
+     */
     @Override
     public String toString() {
         return "Pair [a=" + a + ", b=" + b + "]";
     }
 
+    /**
+     * Confronta questa coppia con un altro oggetto per verificare se sono uguali.
+     *
+     * @param o L'oggetto da confrontare con questa coppia
+     * @return {@code true} se l'oggetto è una coppia con gli stessi valori,
+     *         {@code false} altrimenti
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -51,6 +69,11 @@ public class Pair<A, B> {
         return Objects.equals(a, pair.a) && Objects.equals(b, pair.b);
     }
 
+    /**
+     * Calcola l'hash code per questa coppia.
+     *
+     * @return L'hash code della coppia
+     */
     @Override
     public int hashCode() {
         return Objects.hash(a, b);
