@@ -95,16 +95,4 @@ public class Position {
     public String toString() {
         return "(" + x + ", " + y + ")";
     }
-
-    /**
-     * Calcola la distanza euclidea tra questa posizione e un'altra posizione.
-     * 
-     * @param other La posizione con cui calcolare la distanza.
-     * @return La distanza euclidea tra le due posizioni.
-     */
-    public double distanceTo(Position other) {
-        int dx = this.x - other.x;
-        int dy = this.y - other.y;
-        return Math.sqrt(dx * dx + dy * dy);
-    }
 }
