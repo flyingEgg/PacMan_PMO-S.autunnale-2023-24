@@ -198,7 +198,7 @@ public class View extends JFrame {
                 gamePanel.repaint();
                 winOrGameOver();
             } catch (IllegalEntityMovementException ex) {
-                System.out.println("Pacman ha colpito un muro: " + switchDirezione(direction));
+                System.out.println("Pacman ha colpito un muro: " + switchDirection(direction));
             }
         }
     }
@@ -249,7 +249,7 @@ public class View extends JFrame {
      * @param direction la direzione da convertire
      * @return la stringa di descrizione della direzione
      */
-    private String switchDirezione(Direction direction) {
+    private String switchDirection(Direction direction) {
         return switch (direction) {
             case UP -> "sopra";
             case DOWN -> "sotto";
