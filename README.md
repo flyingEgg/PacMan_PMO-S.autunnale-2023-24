@@ -32,8 +32,8 @@
     ```bash
     javac -d out -sourcepath src src/main/java/app/Main.java src/main/java/API/*.java src/main/java/controller/*.java src/main/java/model/*.java src/main/java/view/*.java
     ```
-    (NB: ripetere il comando per ogni Package)
-    
+   (NB: ripetere il comando per ogni Package)
+
 4. **Esegui il gioco**:
     ```bash
     java -cp out main.java.app.Main
