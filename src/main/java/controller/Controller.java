@@ -131,4 +131,13 @@ public class Controller {
     public void updateHighScore(int score) {
         model.updateHighScore(score);
     }
+
+    /**
+     * Ottiene il Model.
+     *
+     * @return l'istanza del Model
+     */
+    public Model getModel(){
+        return model;
+    }
 }
