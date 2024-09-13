@@ -29,7 +29,7 @@ public class Main {
      */
     private static void initializeApplication() {
         Model model = new Model(); // Crea un'istanza del Model
-        View view = new View(model, null); // Crea un'istanza della View, placeholder per il Controller
+        View view = new View(null); // Crea un'istanza della View, placeholder per il Controller
         Controller controller = new Controller(model, view); // Crea un'istanza del Controller
 
         // Imposta il Controller nella View e il GamePanel nel Model
